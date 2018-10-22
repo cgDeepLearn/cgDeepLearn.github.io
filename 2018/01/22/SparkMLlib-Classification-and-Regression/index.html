@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="D5-qRqseoFKaMoLLpwgLLeyygQcyL2YH5spNiQ4g9gE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="http://fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="逻辑回归,决策树,GBDT,Naive Bayes," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cgDeepLearn" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本节涵盖分类和回归算法。它还包括讨论特定类别算法的部分，例如线性方法，树和集成方法。">
+<meta name="keywords" content="逻辑回归,决策树,GBDT,Naive Bayes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparkMLlib-Classification-and-Regression">
+<meta property="og:url" content="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/index.html">
+<meta property="og:site_name" content="cgDeepLearn">
+<meta property="og:description" content="本节涵盖分类和回归算法。它还包括讨论特定类别算法的部分，例如线性方法，树和集成方法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-19d700cb25582df73feeb3a8ac96d6fe_r.jpg">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/logisticregressionsoftmax.png?raw=true">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/MLPC.png?raw=true">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/GLM.png?raw=true">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/GLM.png?raw=true">
+<meta property="og:updated_time" content="2018-03-01T09:36:14.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SparkMLlib-Classification-and-Regression">
+<meta name="twitter:description" content="本节涵盖分类和回归算法。它还包括讨论特定类别算法的部分，例如线性方法，树和集成方法。">
+<meta name="twitter:image" content="https://pic4.zhimg.com/v2-19d700cb25582df73feeb3a8ac96d6fe_r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '5IB1N2USIP',
+      apiKey: '2acaab00a79e34bd9030a923f014cdcb',
+      indexName: 'my_github.io_search',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} ， 共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/"/>
+
+
+
+
+
+  <title>SparkMLlib-Classification-and-Regression | cgDeepLearn</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11315781-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--forkmeon github
+    <a href="https://github.com/cgDeepLearn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cgDeepLearn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">More than code</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            最热
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cgDeepLearn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cgDeepLearn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SparkMLlib-Classification-and-Regression</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T10:31:37+08:00">
+                2018-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+                  >
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/MLlib/" itemprop="url" rel="index">
+                    <span itemprop="name">MLlib</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/22/SparkMLlib-Classification-and-Regression/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/22/SparkMLlib-Classification-and-Regression/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/22/SparkMLlib-Classification-and-Regression/" class="leancloud_visitors" data-flag-title="SparkMLlib-Classification-and-Regression">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  9,335
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><p class="description">本节涵盖分类和回归算法。它还包括讨论特定类别算法的部分，例如线性方法，树和集成方法。<br></p>
+
+<p><img src="https://pic4.zhimg.com/v2-19d700cb25582df73feeb3a8ac96d6fe_r.jpg" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="Classfication"><a href="#Classfication" class="headerlink" title="Classfication"></a><strong>Classfication</strong></h2><h3 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h3><p><code>Logistic Regression</code>(逻辑回归)是一个流行的分类问题预测方法。它是<a href="https://en.wikipedia.org/wiki/Generalized_linear_model" target="_blank" rel="noopener">Generalized Linear models</a>(广义线性模型)的一个特殊应用以预测结果概率。在spark.ml逻辑回归中，可以使用二分类逻辑回归来预测二分类问题，或者可以使用多分类逻辑回归来预测多类别分类问题。使用family 参数来选择这两个算法，或者不设置，Spark会推断出正确的变量。</p>
+<ol>
+<li><p>将family参数设置为“multinomial”时，多分类逻辑回归可以用于二分类问题。它会产生两套coeficients(w)和两个inercepts(b)。</p>
+</li>
+<li><p>当在具无拦截的连续非零列的数据集上训练LogisticRegressionModel时，Spark MLlib输出连续非零列零系数。这种行为与R glmnet相同，但与LIBSVM不同。</p>
+</li>
+</ol>
+<h4 id="Binomial-Logistic-Regression"><a href="#Binomial-Logistic-Regression" class="headerlink" title="Binomial Logistic Regression"></a>Binomial Logistic Regression</h4><p>有关二项逻辑回归实现的更多背景和更多细节，请参阅中的<a href="https://spark.apache.org/docs/latest/mllib-linear-methods.html#logistic-regression" target="_blank" rel="noopener">logistic regression spark.mllib文档</a>。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>下面的例子显示了如何用弹性网络正则化的二元分类问题训练二项和多项逻辑回归模型。elasticNetParam参数对应于α(学习率)，regParam参数对应于λ(正则化参数)。有关参数的更多细节可以在<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegression" target="_blank" rel="noopener">Python API文档</a>中找到。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"LogisticRegressionWithElasticNetExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">training = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>, elasticNetParam=<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">lrModel = lr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercept for logistic regression</span></span><br><span class="line">print(<span class="string">"Coefficients: "</span> + str(lrModel.coefficients))</span><br><span class="line">print(<span class="string">"Intercept: "</span> + str(lrModel.intercept))</span><br><span class="line"></span><br><span class="line"><span class="comment"># We can also use the multinomial family for binary classification</span></span><br><span class="line">mlr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>, elasticNetParam=<span class="number">0.8</span>, family=<span class="string">"multinomial"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">mlrModel = mlr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercepts for logistic regression with multinomial family</span></span><br><span class="line">print(<span class="string">"Multinomial coefficients: "</span> + str(mlrModel.coefficientMatrix))</span><br><span class="line">print(<span class="string">"Multinomial intercepts: "</span> + str(mlrModel.interceptVector))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Coefficients: (<span class="number">692</span>,[<span class="number">244</span>,<span class="number">263</span>,<span class="number">272</span>,<span class="number">300</span>,<span class="number">301</span>,<span class="number">328</span>,<span class="number">350</span>,<span class="number">351</span>,<span class="number">378</span>,<span class="number">379</span>,<span class="number">405</span>,<span class="number">406</span>,<span class="number">407</span>,<span class="number">428</span>,<span class="number">433</span>,<span class="number">434</span>,<span class="number">455</span>,<span class="number">456</span>,<span class="number">461</span>,<span class="number">462</span>,<span class="number">483</span>,<span class="number">484</span>,<span class="number">489</span>,<span class="number">490</span>,<span class="number">496</span>,<span class="number">511</span>,<span class="number">512</span>,<span class="number">517</span>,<span class="number">539</span>,<span class="number">540</span>,<span class="number">568</span>],[<span class="number">-7.35398352419e-05</span>,<span class="number">-9.10273850559e-05</span>,<span class="number">-0.000194674305469</span>,<span class="number">-0.000203006424735</span>,<span class="number">-3.14761833149e-05</span>,<span class="number">-6.84297760266e-05</span>,<span class="number">1.58836268982e-05</span>,<span class="number">1.40234970914e-05</span>,<span class="number">0.00035432047525</span>,<span class="number">0.000114432728982</span>,<span class="number">0.000100167123837</span>,<span class="number">0.00060141093038</span>,<span class="number">0.000284024817912</span>,<span class="number">-0.000115410847365</span>,<span class="number">0.000385996886313</span>,<span class="number">0.000635019557424</span>,<span class="number">-0.000115064123846</span>,<span class="number">-0.00015271865865</span>,<span class="number">0.000280493380899</span>,<span class="number">0.000607011747119</span>,<span class="number">-0.000200845966325</span>,<span class="number">-0.000142107557929</span>,<span class="number">0.000273901034116</span>,<span class="number">0.00027730456245</span>,<span class="number">-9.83802702727e-05</span>,<span class="number">-0.000380852244352</span>,<span class="number">-0.000253151980086</span>,<span class="number">0.000277477147708</span>,<span class="number">-0.000244361976392</span>,<span class="number">-0.00153947446876</span>,<span class="number">-0.000230733284113</span>])</span><br><span class="line">Intercept: <span class="number">0.22456315961250325</span></span><br><span class="line">Multinomial coefficients: <span class="number">2</span> X <span class="number">692</span> CSRMatrix</span><br><span class="line">(<span class="number">0</span>,<span class="number">244</span>) <span class="number">0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">263</span>) <span class="number">0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">272</span>) <span class="number">0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">300</span>) <span class="number">0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">350</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">351</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">378</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">379</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">405</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">406</span>) <span class="number">-0.0006</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">407</span>) <span class="number">-0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">428</span>) <span class="number">0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">433</span>) <span class="number">-0.0</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">434</span>) <span class="number">-0.0007</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">455</span>) <span class="number">0.0001</span></span><br><span class="line">(<span class="number">0</span>,<span class="number">456</span>) <span class="number">0.0001</span></span><br><span class="line">..</span><br><span class="line">..</span><br><span class="line">Multinomial intercepts: [<span class="number">-0.120658794459</span>,<span class="number">0.120658794459</span>]</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/logistic_regression_with_elastic_net.py” in the Spark repo.</p>
+<p>spark.ml逻辑回归工具还支持在训练集上提取模型的总结。请注意，在 BinaryLogisticRegressionSummary中存储为DataFrame的预测结果和指标被注释@transient(临时的)，因此仅适用于驱动程序。</p>
+<p><a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegressionSummary" target="_blank" rel="noopener">LogisticRegressionTrainingSummary</a> 为 <a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegressionModel" target="_blank" rel="noopener">LogisticRegressionModel</a>提供了一个summary。目前只支持二分类问题。将来会增加对多分类问题模型summary的支持。</p>
+<p>继续上面的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession \</span><br><span class="line">    .builder \</span><br><span class="line">    .appName(<span class="string">"LogisticRegressionSummary"</span>) \</span><br><span class="line">    .getOrCreate()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">training = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>, elasticNetParam=<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">lrModel = lr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># $example on$</span></span><br><span class="line"><span class="comment"># Extract the summary from the returned LogisticRegressionModel instance trained</span></span><br><span class="line"><span class="comment"># in the earlier example</span></span><br><span class="line">trainingSummary = lrModel.summary</span><br><span class="line"></span><br><span class="line"><span class="comment"># Obtain the objective per iteration</span></span><br><span class="line">objectiveHistory = trainingSummary.objectiveHistory</span><br><span class="line">print(<span class="string">"objectiveHistory:"</span>)</span><br><span class="line"><span class="keyword">for</span> objective <span class="keyword">in</span> objectiveHistory:</span><br><span class="line">    print(objective)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Obtain the receiver-operating characteristic as a dataframe and areaUnderROC.</span></span><br><span class="line">trainingSummary.roc.show()</span><br><span class="line">print(<span class="string">"areaUnderROC: "</span> + str(trainingSummary.areaUnderROC))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the model threshold to maximize F-Measure</span></span><br><span class="line">fMeasure = trainingSummary.fMeasureByThreshold</span><br><span class="line">maxFMeasure = fMeasure.groupBy().max(<span class="string">'F-Measure'</span>).select(<span class="string">'max(F-Measure)'</span>).head()</span><br><span class="line">bestThreshold = fMeasure.where(fMeasure[<span class="string">'F-Measure'</span>] == maxFMeasure[<span class="string">'max(F-Measure)'</span>]) \</span><br><span class="line">    .select(<span class="string">'threshold'</span>).head()[<span class="string">'threshold'</span>]</span><br><span class="line">lr.setThreshold(bestThreshold)</span><br><span class="line"><span class="comment"># $example off$</span></span><br><span class="line"></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">objectiveHistory:</span><br><span class="line"><span class="number">0.6833149135741672</span></span><br><span class="line"><span class="number">0.6662875751473734</span></span><br><span class="line"><span class="number">0.6217068546034618</span></span><br><span class="line"><span class="number">0.6127265245887887</span></span><br><span class="line"><span class="number">0.6060347986802873</span></span><br><span class="line"><span class="number">0.6031750687571562</span></span><br><span class="line"><span class="number">0.5969621534836274</span></span><br><span class="line"><span class="number">0.5940743031983118</span></span><br><span class="line"><span class="number">0.5906089243339022</span></span><br><span class="line"><span class="number">0.5894724576491042</span></span><br><span class="line"><span class="number">0.5882187775729587</span></span><br><span class="line">+---+--------------------+</span><br><span class="line">|FPR|                 TPR|</span><br><span class="line">+---+--------------------+</span><br><span class="line">|<span class="number">0.0</span>|                 <span class="number">0.0</span>|</span><br><span class="line">|<span class="number">0.0</span>|<span class="number">0.017543859649122806</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.03508771929824561</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.05263157894736842</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.07017543859649122</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.08771929824561403</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.10526315789473684</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.12280701754385964</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.14035087719298245</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.15789473684210525</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.17543859649122806</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.19298245614035087</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.21052631578947367</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.22807017543859648</span>|</span><br><span class="line">|<span class="number">0.0</span>| <span class="number">0.24561403508771928</span>|</span><br><span class="line">|<span class="number">0.0</span>|  <span class="number">0.2631578947368421</span>|</span><br><span class="line">|<span class="number">0.0</span>|  <span class="number">0.2807017543859649</span>|</span><br><span class="line">|<span class="number">0.0</span>|  <span class="number">0.2982456140350877</span>|</span><br><span class="line">|<span class="number">0.0</span>|  <span class="number">0.3157894736842105</span>|</span><br><span class="line">|<span class="number">0.0</span>|  <span class="number">0.3333333333333333</span>|</span><br><span class="line">+---+--------------------+</span><br><span class="line">only showing top <span class="number">20</span> rows</span><br><span class="line"></span><br><span class="line">areaUnderROC: <span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/logistic_regression_summary_example.py” in the Spark repo.</p>
+<h4 id="Multinomial-Logistic-Regression"><a href="#Multinomial-Logistic-Regression" class="headerlink" title="Multinomial Logistic Regression"></a>Multinomial Logistic Regression</h4><p>多分类通过多项逻辑（softmax）回归来支持。在多项逻辑回归中，算法产生K sets的系数集合(类似机器学习中的W)或维度K × J的矩阵其中K是结果分类数量和J是特征的数量。如果算法拟合时使用了偏置(类似机器学习中的b)，则偏置b也是一个K长度的向量。</p>
+<ol>
+<li><p>多项逻辑回归的系数(coefficients)：coefficientMatrix，偏置(intercepts):interceptVector。</p>
+</li>
+<li><p>coefficients和intercept在用多项逻辑回归训练模型中不适用。请使用coefficientMatrix，interceptVector</p>
+</li>
+</ol>
+<p>结果的条件概率使用的是softmax function建模，我们使用多分类响应模型将加权负对数似然最小化，并使用elastic-net penalty来控制过拟合。</p>
+<p><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/logisticregressionsoftmax.png?raw=true" alt="Multinomial Logistic Regression"><br>关于推导的细节请查阅<a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression#As_a_log-linear_model" target="_blank" rel="noopener">这里</a>.</p>
+<p>下面的例子展示了如何训练具有弹性网络正则化的多类逻辑回归模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"MultinomialLogisticRegression"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">training = spark \</span><br><span class="line">    .read \</span><br><span class="line">    .format(<span class="string">"libsvm"</span>) \</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_multiclass_classification_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>, elasticNetParam=<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">lrModel = lr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercept for multinomial logistic regression</span></span><br><span class="line">print(<span class="string">"Coefficients: \n"</span> + str(lrModel.coefficientMatrix))</span><br><span class="line">print(<span class="string">"Intercept: "</span> + str(lrModel.interceptVector))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Coefficients: </span><br><span class="line"><span class="number">3</span> X <span class="number">4</span> CSRMatrix</span><br><span class="line">(<span class="number">0</span>,<span class="number">3</span>) <span class="number">0.3176</span></span><br><span class="line">(<span class="number">1</span>,<span class="number">2</span>) <span class="number">-0.7804</span></span><br><span class="line">(<span class="number">1</span>,<span class="number">3</span>) <span class="number">-0.377</span></span><br><span class="line">Intercept: [<span class="number">0.0516523165983</span>,<span class="number">-0.123912249909</span>,<span class="number">0.0722599333102</span>]</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/multiclass_logistic_regression_with_elastic_net.py” in the Spark repo.</p>
+<h2 id="Decision-Tree-Classifier"><a href="#Decision-Tree-Classifier" class="headerlink" title="Decision Tree Classifier"></a>Decision Tree Classifier</h2><p><code>决策树</code>是一种流行的分类和回归方法。关于spark.ml实现的更多信息可以在<a href="https://spark.apache.org/docs/latest/ml-classification-regression.html#decision-trees" target="_blank" rel="noopener">决策树部分</a>进一步找到。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>以下示例以<code>LibSVM</code>格式加载数据集，将其分解为训练集和测试集，在训练数据集上训练，然后在保留的测试集上进行评估。我们使用两个特征变换器来准备数据; 这些帮助建立对标签和分类特征的索引，添加元数据到决策树算法可以识别的DataFrame上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> StringIndexer, VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"DecisionTreeExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load the data stored in LIBSVM format as a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Index labels, adding metadata to the label column.</span></span><br><span class="line"><span class="comment"># Fit on whole dataset to include all labels in index.</span></span><br><span class="line">labelIndexer = StringIndexer(inputCol=<span class="string">"label"</span>, outputCol=<span class="string">"indexedLabel"</span>).fit(data)</span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># We specify maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a DecisionTree model.</span></span><br><span class="line">dt = DecisionTreeClassifier(labelCol=<span class="string">"indexedLabel"</span>, featuresCol=<span class="string">"indexedFeatures"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexers and tree in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[labelIndexer, featureIndexer, dt])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexers.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"prediction"</span>, <span class="string">"indexedLabel"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = MulticlassClassificationEvaluator(</span><br><span class="line">    labelCol=<span class="string">"indexedLabel"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"accuracy"</span>)</span><br><span class="line">accuracy = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Test Error = %g "</span> % (<span class="number">1.0</span> - accuracy))</span><br><span class="line"></span><br><span class="line">treeModel = model.stages[<span class="number">2</span>]</span><br><span class="line"><span class="comment"># summary only</span></span><br><span class="line">print(treeModel)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+----------+------------+--------------------+</span><br><span class="line">|prediction|indexedLabel|            features|</span><br><span class="line">+----------+------------+--------------------+</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">95</span>,<span class="number">96</span>,<span class="number">97</span>,<span class="number">12.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">122</span>,<span class="number">123</span>,<span class="number">124.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">125</span>,<span class="number">126</span>,<span class="number">127.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">126</span>,<span class="number">127</span>,<span class="number">128.</span>..|</span><br><span class="line">+----------+------------+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Test Error = <span class="number">0.0454545</span> </span><br><span class="line">DecisionTreeClassificationModel (uid=DecisionTreeClassifier_4b29a1e1d3b0e6e09baf) of depth <span class="number">1</span> <span class="keyword">with</span> <span class="number">3</span> nodes</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/decision_tree_classification_example.py” in the Spark repo.</p>
+<h3 id="Random-Forest-Classifier"><a href="#Random-Forest-Classifier" class="headerlink" title="Random Forest Classifier"></a>Random Forest Classifier</h3><p><code>随机森林</code>是一种流行的分类和回归方法。关于spark.ml实现的更多信息可以在关于<a href="https://spark.apache.org/docs/latest/ml-classification-regression.html#random-forests" target="_blank" rel="noopener">随机森林的章节</a>中进一步找到。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>以下示例以LibSVM格式加载数据集，将其分解为训练集和测试集，在训练数据集上训练，然后在测试集上进行评估。我们使用两个特征变换器来准备数据,这有助于帮助索引标签和分类特征的类别，添加元数据到DtaFrame(基于树的算法可以识别的)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> IndexToString, StringIndexer, VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">'RandomForestExample'</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load and parse the data file, converting it to a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Index labels, adding metadata to the label column.</span></span><br><span class="line"><span class="comment"># Fit on whole dataset to include all labels in index.</span></span><br><span class="line">labelIndexer = StringIndexer(inputCol=<span class="string">"label"</span>, outputCol=<span class="string">"indexedLabel"</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># Set maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a RandomForest model.</span></span><br><span class="line">rf = RandomForestClassifier(labelCol=<span class="string">"indexedLabel"</span>, featuresCol=<span class="string">"indexedFeatures"</span>, numTrees=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert indexed labels back to original labels.</span></span><br><span class="line">labelConverter = IndexToString(inputCol=<span class="string">"prediction"</span>, outputCol=<span class="string">"predictedLabel"</span>,</span><br><span class="line">                               labels=labelIndexer.labels)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexers and forest in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[labelIndexer, featureIndexer, rf, labelConverter])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexers.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"predictedLabel"</span>, <span class="string">"label"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = MulticlassClassificationEvaluator(</span><br><span class="line">    labelCol=<span class="string">"indexedLabel"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"accuracy"</span>)</span><br><span class="line">accuracy = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Test Error = %g"</span> % (<span class="number">1.0</span> - accuracy))</span><br><span class="line"></span><br><span class="line">rfModel = model.stages[<span class="number">2</span>]</span><br><span class="line">print(rfModel)  <span class="comment"># summary only</span></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+--------------+-----+--------------------+</span><br><span class="line">|predictedLabel|label|            features|</span><br><span class="line">+--------------+-----+--------------------+</span><br><span class="line">|           <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">98</span>,<span class="number">99</span>,<span class="number">100</span>,<span class="number">1.</span>..|</span><br><span class="line">|           <span class="number">1.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|</span><br><span class="line">|           <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|           <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|           <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">+--------------+-----+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Test Error = <span class="number">0.0416667</span></span><br><span class="line">RandomForestClassificationModel (uid=RandomForestClassifier_4e8ca5bee5432b4471d3) <span class="keyword">with</span> <span class="number">10</span> trees</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/random_forest_classifier_example.py” in the Spark repo.</p>
+<h3 id="Gradient-Boosted-Tree-Classifier"><a href="#Gradient-Boosted-Tree-Classifier" class="headerlink" title="Gradient-Boosted Tree Classifier"></a>Gradient-Boosted Tree Classifier</h3><p><code>Gradient-boosted trees (GBTs)</code> 是一种流行的分类和回归方法，是一种决策树的集成算法。关于spark.ml实现的更多信息可以在<a href="https://spark.apache.org/docs/latest/ml-classification-regression.html#gradient-boosted-trees-gbts" target="_blank" rel="noopener">GBT</a>的一节中找到。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> GBTClassifier</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> StringIndexer, VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">'GBTExample'</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load and parse the data file, converting it to a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Index labels, adding metadata to the label column.</span></span><br><span class="line"><span class="comment"># Fit on whole dataset to include all labels in index.</span></span><br><span class="line">labelIndexer = StringIndexer(inputCol=<span class="string">"label"</span>, outputCol=<span class="string">"indexedLabel"</span>).fit(data)</span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># Set maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a GBT model.</span></span><br><span class="line">gbt = GBTClassifier(labelCol=<span class="string">"indexedLabel"</span>, featuresCol=<span class="string">"indexedFeatures"</span>, maxIter=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexers and GBT in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[labelIndexer, featureIndexer, gbt])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexers.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"prediction"</span>, <span class="string">"indexedLabel"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = MulticlassClassificationEvaluator(</span><br><span class="line">    labelCol=<span class="string">"indexedLabel"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"accuracy"</span>)</span><br><span class="line">accuracy = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Test Error = %g"</span> % (<span class="number">1.0</span> - accuracy))</span><br><span class="line"></span><br><span class="line">gbtModel = model.stages[<span class="number">2</span>]</span><br><span class="line">print(gbtModel)  <span class="comment"># summary only</span></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+----------+------------+--------------------+</span><br><span class="line">|prediction|indexedLabel|            features|</span><br><span class="line">+----------+------------+--------------------+</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">98</span>,<span class="number">99</span>,<span class="number">100</span>,<span class="number">1.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|       <span class="number">1.0</span>|         <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">+----------+------------+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Test Error = <span class="number">0.030303</span></span><br><span class="line">GBTClassificationModel (uid=GBTClassifier_439db0c5094b1786e321) <span class="keyword">with</span> <span class="number">10</span> trees</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/gradient_boosted_tree_classifier_example.py” in the Spark repo</p>
+<h3 id="Multilayer-Perception-Classifier"><a href="#Multilayer-Perception-Classifier" class="headerlink" title="Multilayer Perception Classifier"></a>Multilayer Perception Classifier</h3><p><code>多层感知器分类器（MLPC）</code>是基于<a href="https://en.wikipedia.org/wiki/Feedforward_neural_network" target="_blank" rel="noopener">前馈人工神经网络</a>的分类器。MLPC由多层节点组成。每层完全连接到网络中的下一层。输入层中的节点表示输入数据。所有其他节点通过输入与节点权重<strong>w</strong> 和偏差<strong>b</strong>的线性组合并应用激活函数将输入映射到输出。<strong>K + 1</strong>层的MPLC可写成如下的矩阵形式：<br><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/MLPC.png?raw=true" alt="MLPC"></p>
+<p> 中间层节点使用sigmoid（logistic）函数：f(zi) = 1/(1 + e^-zi)\<br>  输出层中的节点使用softmax函数：f(zi) = e^zi/(∑e^zi) \<br> 输出层中N代表类别数目\<br> 多层感知机通过方向向传播来学习模型，我们使用逻辑损失函数优化,L-BFGS作为优化程序.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> MultilayerPerceptronClassifier</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">'MLPCExample'</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training dat</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>)\</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_multiclass_classification_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into train and test</span></span><br><span class="line">splits = data.randomSplit([<span class="number">0.6</span>, <span class="number">0.4</span>], <span class="number">1234</span>)</span><br><span class="line">train = splits[<span class="number">0</span>]</span><br><span class="line">test = splits[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># specify layers for the neural network:</span></span><br><span class="line"><span class="comment"># input layer of size 4 (features), two intermediate of size 5 and 4</span></span><br><span class="line"><span class="comment"># and output of size 3 (classes)</span></span><br><span class="line">layers = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># create the trainer and set its parameters</span></span><br><span class="line">trainer = MultilayerPerceptronClassifier(maxIter=<span class="number">100</span>, layers=layers, blockSize=<span class="number">128</span>, seed=<span class="number">1234</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># train the model</span></span><br><span class="line">model = trainer.fit(train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute accuracy on the test set</span></span><br><span class="line">result = model.transform(test)</span><br><span class="line">predictionAndLabels = result.select(<span class="string">"prediction"</span>, <span class="string">"label"</span>)</span><br><span class="line">evaluator = MulticlassClassificationEvaluator(metricName=<span class="string">"accuracy"</span>)</span><br><span class="line">print(<span class="string">"Test set accuracy = "</span> + str(evaluator.evaluate(predictionAndLabels)))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Test set accuracy = <span class="number">0.8627450980392157</span></span><br></pre></td></tr></table></figure>
+<p> Find full example code at “examples/src/main/python/ml/multilayer_perceptron_classification.py” in the Spark repo.</p>
+<h3 id="Linear-Support-Vector-Machine"><a href="#Linear-Support-Vector-Machine" class="headerlink" title="Linear Support Vector Machine"></a>Linear Support Vector Machine</h3><p>一个<a href="https://en.wikipedia.org/wiki/Support_vector_machine" target="_blank" rel="noopener">支持向量机</a>在高或无限维空间构建一个或一簇超平面，该空间可用于分类，回归或其他任务。直觉上，通过寻找距离任何类别的最近的训练数据点（所谓的functional margin）最大距离的超平面来实现良好的分离，因为一般而言，margin越大，分类器的泛化误差越低。Spark ML中的LinearSVC支持线性SVM的二元分类。在内部，它使用OWLQN优化器来优化<a href="https://en.wikipedia.org/wiki/Hinge_loss" target="_blank" rel="noopener">hinge loss</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LinearSVC</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"linearSVCExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">training = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">lsvc = LinearSVC(maxIter=<span class="number">10</span>, regParam=<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">lsvcModel = lsvc.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercept for linearsSVC</span></span><br><span class="line">print(<span class="string">"Coefficients: "</span> + str(lsvcModel.coefficients))</span><br><span class="line">print(<span class="string">"Intercept: "</span> + str(lsvcModel.intercept))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Coefficients:</span><br><span class="line">[<span class="number">0.0</span>,<span class="number">0.0</span>,......,<span class="number">-5.83656045253e-05</span>,<span class="number">-0.000123781942165</span>,<span class="number">-0.000117507049533</span>,<span class="number">-6.19711523061e-05</span>,<span class="number">-5.04200964581e-05</span>,<span class="number">-0.000140552602236</span>,<span class="number">-0.000141033094247</span>,<span class="number">-0.000192723082389</span>,<span class="number">-0.000480248996468</span>]</span><br><span class="line">Intercept: <span class="number">0.012911305214513969</span></span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/linearsvc.py” in the Spark repo.</p>
+<h3 id="One-vs-Rest-Classifier-又叫-One-vs-All"><a href="#One-vs-Rest-Classifier-又叫-One-vs-All" class="headerlink" title="One-vs-Rest Classifier(又叫 One-vs-All)"></a>One-vs-Rest Classifier(又叫 One-vs-All)</h3><p><a href="http://en.wikipedia.org/wiki/Multiclass_classification#One-vs.-rest" target="_blank" rel="noopener">OneVsRest</a>是一个将一个给定的二分类算法有效地扩展到多分类问题应用中的算法，也叫做“One-vs-All”算法。</p>
+<p><code>OneVsRest</code>是一个被实现为Estimator。它采用一个基础的Classifier然后对于k个类别分别创建二分类问题。类别i的二分类分类器用来预测类别为i还是不为i，即将i类和其他类别区分开来。最后，通过依次对k个二分类分类器进行评估，取置信最高的分类器的标签作为i类别的标签。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>下面的示例演示了如何加载<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/multiclass/iris.scale" target="_blank" rel="noopener">Iris数据集</a>，将其解析为DataFrame并使用其执行多类别分类OneVsRest。计算测试误差以测量算法精度。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression, OneVsRest</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"oneVsRestExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># load data file.</span></span><br><span class="line">inputData = spark.read.format(<span class="string">"libsvm"</span>) \</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_multiclass_classification_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># generate the train/test split.</span></span><br><span class="line">(train, test) = inputData.randomSplit([<span class="number">0.8</span>, <span class="number">0.2</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate the base classifier.</span></span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, tol=<span class="number">1E-6</span>, fitIntercept=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate the One Vs Rest Classifier.</span></span><br><span class="line">ovr = OneVsRest(classifier=lr)</span><br><span class="line"></span><br><span class="line"><span class="comment"># train the multiclass model.</span></span><br><span class="line">ovrModel = ovr.fit(train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># score the model on test data.</span></span><br><span class="line">predictions = ovrModel.transform(test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># obtain evaluator.</span></span><br><span class="line">evaluator = MulticlassClassificationEvaluator(metricName=<span class="string">"accuracy"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute the classification error on test data.</span></span><br><span class="line">accuracy = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Test Error = %g"</span> % (<span class="number">1.0</span> - accuracy))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Test Error = 0.0625</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/one_vs_rest_example.py” in the Spark repo.</p>
+<h3 id="Naive-Bayes"><a href="#Naive-Bayes" class="headerlink" title="Naive Bayes"></a>Naive Bayes</h3><p><a href="http://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank" rel="noopener">朴素贝叶斯分类器</a>是一个简单的基于贝叶斯定理与特征条件独立假设的概率分类器。spark.ml目前的实现支持<a href="http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html" target="_blank" rel="noopener">多项式朴素贝叶斯</a>和<a href="http://nlp.stanford.edu/IR-book/html/htmledition/the-bernoulli-model-1.html" target="_blank" rel="noopener">伯努利朴素贝叶斯</a>。更多的信息可以在MLlib的<a href="https://spark.apache.org/docs/latest/mllib-naive-bayes.html#naive-bayes-sparkmllib" target="_blank" rel="noopener">Naive Bayes</a>一节中找到。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> NaiveBayes</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> MulticlassClassificationEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"NaiveBayesExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>) \</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into train and test</span></span><br><span class="line">splits = data.randomSplit([<span class="number">0.6</span>, <span class="number">0.4</span>], <span class="number">1234</span>)</span><br><span class="line">train = splits[<span class="number">0</span>]</span><br><span class="line">test = splits[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># create the trainer and set its parameters</span></span><br><span class="line">nb = NaiveBayes(smoothing=<span class="number">1.0</span>, modelType=<span class="string">"multinomial"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># train the model</span></span><br><span class="line">model = nb.fit(train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># select example rows to display.</span></span><br><span class="line">predictions = model.transform(test)</span><br><span class="line">predictions.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute accuracy on the test set</span></span><br><span class="line">evaluator = MulticlassClassificationEvaluator(labelCol=<span class="string">"label"</span>, predictionCol=<span class="string">"prediction"</span>,</span><br><span class="line">                                              metricName=<span class="string">"accuracy"</span>)</span><br><span class="line">accuracy = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Test set accuracy = "</span> + str(accuracy))</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+-----+--------------------+--------------------+-----------+----------+</span><br><span class="line">|label|            features|       rawPrediction|probability|prediction|</span><br><span class="line">+-----+--------------------+--------------------+-----------+----------+</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">95</span>,<span class="number">96</span>,<span class="number">97</span>,<span class="number">12.</span>..|[<span class="number">-174115.98587057</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">98</span>,<span class="number">99</span>,<span class="number">100</span>,<span class="number">1.</span>..|[<span class="number">-178402.52307196</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|[<span class="number">-100905.88974016</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">123</span>,<span class="number">124</span>,<span class="number">125.</span>..|[<span class="number">-244784.29791241</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">123</span>,<span class="number">124</span>,<span class="number">125.</span>..|[<span class="number">-196900.88506109</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|[<span class="number">-238164.45338794</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|[<span class="number">-184206.87833381</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">127</span>,<span class="number">128</span>,<span class="number">129.</span>..|[<span class="number">-214174.52863813</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">127</span>,<span class="number">128</span>,<span class="number">129.</span>..|[<span class="number">-182844.62193963</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">128</span>,<span class="number">129</span>,<span class="number">130.</span>..|[<span class="number">-246557.10990301</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">152</span>,<span class="number">153</span>,<span class="number">154.</span>..|[<span class="number">-208282.08496711</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">152</span>,<span class="number">153</span>,<span class="number">154.</span>..|[<span class="number">-243457.69885665</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">153</span>,<span class="number">154</span>,<span class="number">155.</span>..|[<span class="number">-260933.50931276</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">154</span>,<span class="number">155</span>,<span class="number">156.</span>..|[<span class="number">-220274.72552901</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">181</span>,<span class="number">182</span>,<span class="number">183.</span>..|[<span class="number">-154830.07125175</span>...|  [<span class="number">1.0</span>,<span class="number">0.0</span>]|       <span class="number">0.0</span>|</span><br><span class="line">|  <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">99</span>,<span class="number">100</span>,<span class="number">101</span>,...|[<span class="number">-145978.24563975</span>...|  [<span class="number">0.0</span>,<span class="number">1.0</span>]|       <span class="number">1.0</span>|</span><br><span class="line">|  <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|[<span class="number">-147916.32657832</span>...|  [<span class="number">0.0</span>,<span class="number">1.0</span>]|       <span class="number">1.0</span>|</span><br><span class="line">|  <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">123</span>,<span class="number">124</span>,<span class="number">125.</span>..|[<span class="number">-139663.27471685</span>...|  [<span class="number">0.0</span>,<span class="number">1.0</span>]|       <span class="number">1.0</span>|</span><br><span class="line">|  <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|[<span class="number">-129013.44238751</span>...|  [<span class="number">0.0</span>,<span class="number">1.0</span>]|       <span class="number">1.0</span>|</span><br><span class="line">|  <span class="number">1.0</span>|(<span class="number">692</span>,[<span class="number">125</span>,<span class="number">126</span>,<span class="number">127.</span>..|[<span class="number">-81829.799906049</span>...|  [<span class="number">0.0</span>,<span class="number">1.0</span>]|       <span class="number">1.0</span>|</span><br><span class="line">+-----+--------------------+--------------------+-----------+----------+</span><br><span class="line">only showing top <span class="number">20</span> rows</span><br><span class="line"></span><br><span class="line">Test set accuracy = <span class="number">1.0</span></span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/naive_bayes_example.py” in the Spark repo.</p>
+<h2 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a><strong>Regression</strong></h2><h3 id="Linear-regression"><a href="#Linear-regression" class="headerlink" title="Linear regression"></a>Linear regression</h3><p>用于处理线性回归模型和模型摘要的界面与逻辑回归情况类似。</p>
+<ul>
+<li><p>When fitting LinearRegressionModel without intercept on dataset with constant nonzero column by “l-bfgs” solver, Spark MLlib outputs zero coefficients for constant nonzero columns. This behavior is the same as R glmnet but different from LIBSVM.</p>
+</li>
+<li><p>Examples</p>
+</li>
+</ul>
+<p>下面的例子演示了训练弹性网络正则化线性回归模型和提取模型总结统计。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"LinearRegressionExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">training = spark.read.format(<span class="string">"libsvm"</span>)\</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_linear_regression_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">lr = LinearRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>, elasticNetParam=<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">lrModel = lr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercept for linear regression</span></span><br><span class="line">print(<span class="string">"Coefficients: %s"</span> % str(lrModel.coefficients))</span><br><span class="line">print(<span class="string">"Intercept: %s"</span> % str(lrModel.intercept))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Summarize the model over the training set and print out some metrics</span></span><br><span class="line">trainingSummary = lrModel.summary</span><br><span class="line">print(<span class="string">"numIterations: %d"</span> % trainingSummary.totalIterations)</span><br><span class="line">print(<span class="string">"objectiveHistory: %s"</span> % str(trainingSummary.objectiveHistory))</span><br><span class="line">trainingSummary.residuals.show()</span><br><span class="line">print(<span class="string">"RMSE: %f"</span> % trainingSummary.rootMeanSquaredError)</span><br><span class="line">print(<span class="string">"r2: %f"</span> % trainingSummary.r2)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Coefficients: [<span class="number">0.0</span>,<span class="number">0.322925166774</span>,<span class="number">-0.343854803456</span>,<span class="number">1.91560170235</span>,<span class="number">0.0528805868039</span>,<span class="number">0.76596272046</span>,<span class="number">0.0</span>,<span class="number">-0.151053926692</span>,<span class="number">-0.215879303609</span>,<span class="number">0.220253691888</span>]</span><br><span class="line">Intercept: <span class="number">0.1598936844239736</span></span><br><span class="line">numIterations: <span class="number">7</span></span><br><span class="line">objectiveHistory: [<span class="number">0.49999999999999994</span>, <span class="number">0.4967620357443381</span>, <span class="number">0.4936361664340463</span>, <span class="number">0.4936351537897608</span>, <span class="number">0.4936351214177871</span>, <span class="number">0.49363512062528014</span>, <span class="number">0.4936351206216114</span>]</span><br><span class="line">+--------------------+</span><br><span class="line">|           residuals|</span><br><span class="line">+--------------------+</span><br><span class="line">|  <span class="number">-9.889232683103197</span>|</span><br><span class="line">|  <span class="number">0.5533794340053554</span>|</span><br><span class="line">|  <span class="number">-5.204019455758823</span>|</span><br><span class="line">| <span class="number">-20.566686715507508</span>|</span><br><span class="line">|    <span class="number">-9.4497405180564</span>|</span><br><span class="line">|  <span class="number">-6.909112502719486</span>|</span><br><span class="line">|  <span class="number">-10.00431602969873</span>|</span><br><span class="line">|   <span class="number">2.062397807050484</span>|</span><br><span class="line">|  <span class="number">3.1117508432954772</span>|</span><br><span class="line">| <span class="number">-15.893608229419382</span>|</span><br><span class="line">|  <span class="number">-5.036284254673026</span>|</span><br><span class="line">|   <span class="number">6.483215876994333</span>|</span><br><span class="line">|  <span class="number">12.429497299109002</span>|</span><br><span class="line">|  <span class="number">-20.32003219007654</span>|</span><br><span class="line">| <span class="number">-2.0049838218725005</span>|</span><br><span class="line">| <span class="number">-17.867901734183793</span>|</span><br><span class="line">|   <span class="number">7.646455887420495</span>|</span><br><span class="line">| <span class="number">-2.2653482182417406</span>|</span><br><span class="line">|<span class="number">-0.10308920436195645</span>|</span><br><span class="line">|  <span class="number">-1.380034070385301</span>|</span><br><span class="line">+--------------------+</span><br><span class="line">only showing top <span class="number">20</span> rows</span><br><span class="line"></span><br><span class="line">RMSE: <span class="number">10.189077</span></span><br><span class="line">r2: <span class="number">0.022861</span></span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/linear_regression_with_elastic_net.py” in the Spark repo.</p>
+<h3 id="Generalized-linear-regression"><a href="#Generalized-linear-regression" class="headerlink" title="Generalized linear regression"></a>Generalized linear regression</h3><p>与线性回归假设输出服从高斯分布不同，广义线性模型（GLMs）指定线性模型的因变量服从指数分布。<br>Spark的GeneralizedLinearRegression接口允许指定GLMs包括线性回归、泊松回归、逻辑回归等来处理多种预测问题。目前spark.ml仅支持指数型分布家族中的一部分类型，如下：</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Response Type</th>
+<th>Supported Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gaussian(高斯)</td>
+<td>Continuous(连续)</td>
+<td>Identity*, Log, Inverse</td>
+</tr>
+<tr>
+<td>Binomial(二项)</td>
+<td>Binary(二进制)</td>
+<td>Logit*, Probit, CLogLog</td>
+</tr>
+<tr>
+<td>Poisson(泊松)</td>
+<td>Count(计数)</td>
+<td>Log*, Identity, Sqrt</td>
+</tr>
+<tr>
+<td>Gamma(伽马)</td>
+<td>Continuous(连续)</td>
+<td>Inverse*, Idenity, Log</td>
+</tr>
+<tr>
+<td>Tweedie</td>
+<td>Zero-inflated continuous(零膨胀连续)</td>
+<td>Power link function</td>
+</tr>
+</tbody>
+</table>
+<p>注意：目前Spark在 GeneralizedLinearRegression仅支持最多4096个特征，如果特征超过4096个将会引发异常。对于线性回归和逻辑回归，如果模型特征数量会不断增长，则可通过 LinearRegression 和LogisticRegression来训练。</p>
+<p>GLMs要求的指数型分布可以为正则或者自然形式。自然指数型分布为如下形式：<br><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/GLM.png?raw=true" alt="广义线性模型"></p>
+<p>Spark的GeneralizedLinearRegression接口提供汇总统计来诊断GLM模型的拟合程度，包括残差、p值、残差、Akaike信息准则及其它。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>以下示例演示使用高斯响应和标识链接函数训练GLM并提取模型摘要统计信息。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> GeneralizedLinearRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"GeneralizedLinearRegression"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load training data</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>)\</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_linear_regression_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">glr = GeneralizedLinearRegression(family=<span class="string">"gaussian"</span>, link=<span class="string">"identity"</span>, maxIter=<span class="number">10</span>, regParam=<span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">model = glr.fit(dataset)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients and intercept for generalized linear regression model</span></span><br><span class="line">print(<span class="string">"Coefficients: "</span> + str(model.coefficients))</span><br><span class="line">print(<span class="string">"Intercept: "</span> + str(model.intercept))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Summarize the model over the training set and print out some metrics</span></span><br><span class="line">summary = model.summary</span><br><span class="line">print(<span class="string">"Coefficient Standard Errors: "</span> + str(summary.coefficientStandardErrors))</span><br><span class="line">print(<span class="string">"T Values: "</span> + str(summary.tValues))</span><br><span class="line">print(<span class="string">"P Values: "</span> + str(summary.pValues))</span><br><span class="line">print(<span class="string">"Dispersion: "</span> + str(summary.dispersion))</span><br><span class="line">print(<span class="string">"Null Deviance: "</span> + str(summary.nullDeviance))</span><br><span class="line">print(<span class="string">"Residual Degree Of Freedom Null: "</span> + str(summary.residualDegreeOfFreedomNull))</span><br><span class="line">print(<span class="string">"Deviance: "</span> + str(summary.deviance))</span><br><span class="line">print(<span class="string">"Residual Degree Of Freedom: "</span> + str(summary.residualDegreeOfFreedom))</span><br><span class="line">print(<span class="string">"AIC: "</span> + str(summary.aic))</span><br><span class="line">print(<span class="string">"Deviance Residuals: "</span>)</span><br><span class="line">summary.residuals().show()</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Coefficients: [<span class="number">0.0105418280813</span>,<span class="number">0.800325310056</span>,<span class="number">-0.784516554142</span>,<span class="number">2.36798871714</span>,<span class="number">0.501000208986</span>,<span class="number">1.12223511598</span>,<span class="number">-0.292682439862</span>,<span class="number">-0.498371743232</span>,<span class="number">-0.603579718068</span>,<span class="number">0.672555006719</span>]</span><br><span class="line">Intercept: <span class="number">0.14592176145232041</span></span><br><span class="line">Coefficient Standard Errors: [<span class="number">0.7950428434287478</span>, <span class="number">0.8049713176546897</span>, <span class="number">0.7975916824772489</span>, <span class="number">0.8312649247659919</span>, <span class="number">0.7945436200517938</span>, <span class="number">0.8118992572197593</span>, <span class="number">0.7919506385542777</span>, <span class="number">0.7973378214726764</span>, <span class="number">0.8300714999626418</span>, <span class="number">0.7771333489686802</span>, <span class="number">0.463930109648428</span>]</span><br><span class="line">T Values: [<span class="number">0.013259446542269243</span>, <span class="number">0.9942283563442594</span>, <span class="number">-0.9836067393599172</span>, <span class="number">2.848657084633759</span>, <span class="number">0.6305509179635714</span>, <span class="number">1.382234441029355</span>, <span class="number">-0.3695715687490668</span>, <span class="number">-0.6250446546128238</span>, <span class="number">-0.7271418403049983</span>, <span class="number">0.8654306337661122</span>, <span class="number">0.31453393176593286</span>]</span><br><span class="line">P Values: [<span class="number">0.989426199114056</span>, <span class="number">0.32060241580811044</span>, <span class="number">0.3257943227369877</span>, <span class="number">0.004575078538306521</span>, <span class="number">0.5286281628105467</span>, <span class="number">0.16752945248679119</span>, <span class="number">0.7118614002322872</span>, <span class="number">0.5322327097421431</span>, <span class="number">0.467486325282384</span>, <span class="number">0.3872259825794293</span>, <span class="number">0.753249430501097</span>]</span><br><span class="line">Dispersion: <span class="number">105.60988356821714</span></span><br><span class="line">Null Deviance: <span class="number">53229.3654338832</span></span><br><span class="line">Residual Degree Of Freedom Null: <span class="number">500</span></span><br><span class="line">Deviance: <span class="number">51748.8429484264</span></span><br><span class="line">Residual Degree Of Freedom: <span class="number">490</span></span><br><span class="line">AIC: <span class="number">3769.1895871765314</span></span><br><span class="line">Deviance Residuals: </span><br><span class="line">+-------------------+</span><br><span class="line">|  devianceResiduals|</span><br><span class="line">+-------------------+</span><br><span class="line">|<span class="number">-10.974359174246889</span>|</span><br><span class="line">| <span class="number">0.8872320138420559</span>|</span><br><span class="line">| <span class="number">-4.596541837478908</span>|</span><br><span class="line">|<span class="number">-20.411667435019638</span>|</span><br><span class="line">|<span class="number">-10.270419345342642</span>|</span><br><span class="line">|<span class="number">-6.0156058956799905</span>|</span><br><span class="line">|<span class="number">-10.663939415849267</span>|</span><br><span class="line">| <span class="number">2.1153960525024713</span>|</span><br><span class="line">| <span class="number">3.9807132379137675</span>|</span><br><span class="line">|<span class="number">-17.225218272069533</span>|</span><br><span class="line">| <span class="number">-4.611647633532147</span>|</span><br><span class="line">| <span class="number">6.4176669407698546</span>|</span><br><span class="line">| <span class="number">11.407137945300537</span>|</span><br><span class="line">| <span class="number">-20.70176540467664</span>|</span><br><span class="line">| <span class="number">-2.683748540510967</span>|</span><br><span class="line">|<span class="number">-16.755494794232536</span>|</span><br><span class="line">|  <span class="number">8.154668342638725</span>|</span><br><span class="line">|<span class="number">-1.4355057987358848</span>|</span><br><span class="line">|<span class="number">-0.6435058688185704</span>|</span><br><span class="line">|  <span class="number">-1.13802589316832</span>|</span><br><span class="line">+-------------------+</span><br><span class="line">only showing top <span class="number">20</span> rows</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/generalized_linear_regression_example.py” in the Spark repo.</p>
+<h3 id="Decision-tree-regression"><a href="#Decision-tree-regression" class="headerlink" title="Decision tree regression"></a>Decision tree regression</h3><p>决策树以及其集成算法是机器学习分类和回归问题中非常流行的算法。因其易解释性、可处理类别特征、易扩展到多分类问题、不需特征缩放等性质被广泛使用。树集成算法如随机森林以及boosting算法几乎是解决分类和回归问题中表现最优的算法。</p>
+<p>决策树是一个贪心算法递归地将特征空间划分为两个部分，在同一个叶子节点的数据最后会拥有同样的标签。每次划分通过贪心的以获得最大信息增益为目的，从可选择的分裂方式中选择最佳的分裂节点。节点不纯度有节点所含类别的同质性来衡量。工具提供为分类提供两种不纯度衡量（基尼不纯度和熵），为回归提供一种不纯度衡量（方差）。</p>
+<p>spark.ml支持二分类、多分类以及回归的决策树算法，适用于连续特征以及类别特征。另外，对于分类问题，工具可以返回属于每种类别的概率（类别条件概率），对于回归问题工具可以返回预测在偏置样本上的方差。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>以下示例以LibSVM格式加载数据集，将其分为训练集和测试集，在训练集训练，然后在测试集上进行评估。我们使用特征转换器为分类特征建立索引，并将元数据添加到DataFrame供决策树算法使用。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> RegressionEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"DecisionTreeRegressionExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load the data stored in LIBSVM format as a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># We specify maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a DecisionTree model.</span></span><br><span class="line">dt = DecisionTreeRegressor(featuresCol=<span class="string">"indexedFeatures"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexer and tree in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[featureIndexer, dt])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexer.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"prediction"</span>, <span class="string">"label"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = RegressionEvaluator(</span><br><span class="line">    labelCol=<span class="string">"label"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"rmse"</span>)</span><br><span class="line">rmse = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Root Mean Squared Error (RMSE) on test data = %g"</span> % rmse)</span><br><span class="line"></span><br><span class="line">treeModel = model.stages[<span class="number">1</span>]</span><br><span class="line"><span class="comment"># summary only</span></span><br><span class="line">print(treeModel)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|prediction|label|            features|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">122</span>,<span class="number">123</span>,<span class="number">124.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">123</span>,<span class="number">124</span>,<span class="number">125.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Root Mean Squared Error (RMSE) on test data = <span class="number">0.164399</span></span><br><span class="line">DecisionTreeRegressionModel (uid=DecisionTreeRegressor_415194352f1feffc1231) of depth <span class="number">1</span> <span class="keyword">with</span> <span class="number">3</span> nodes</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/decision_tree_regression_example.py” in the Spark repo.</p>
+<h3 id="Random-forest-regression"><a href="#Random-forest-regression" class="headerlink" title="Random forest regression"></a>Random forest regression</h3><p><code>随机森林</code>是决策树的集成算法。随机森林包含多个决策树来降低过拟合的风险。随机森林同样具有易解释性、可处理类别特征、易扩展到多分类问题、不需特征缩放等性质。</p>
+<p>随机森林分别训练一系列的决策树，所以训练过程是并行的。因算法中加入随机过程，所以每个决策树又有少量区别。通过合并每个树的预测结果来减少预测的方差，提高在测试集上的性能表现。</p>
+<p>随机性体现：<br>1.每次迭代时，对原始数据进行二次抽样来获得不同的训练数据。</p>
+<p>2.对于每个树节点，考虑不同的随机特征子集来进行分裂。</p>
+<p>除此之外，决策时的训练过程和单独决策树训练过程相同。</p>
+<p>对新实例进行预测时，随机森林需要整合其各个决策树的预测结果。回归和分类问题的整合的方式略有不同。分类问题采取投票制，每个决策树投票给一个类别，获得最多投票的类别为最终结果。回归问题每个树得到的预测结果为实数，最终的预测结果为各个树预测结果的平均值。</p>
+<p>spark.ml支持二分类、多分类以及回归的随机森林算法，适用于连续特征以及类别特征。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> RegressionEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"RandomForestRegressionExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load and parse the data file, converting it to a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># Set maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a RandomForest model.</span></span><br><span class="line">rf = RandomForestRegressor(featuresCol=<span class="string">"indexedFeatures"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexer and forest in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[featureIndexer, rf])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexer.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"prediction"</span>, <span class="string">"label"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = RegressionEvaluator(</span><br><span class="line">    labelCol=<span class="string">"label"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"rmse"</span>)</span><br><span class="line">rmse = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Root Mean Squared Error (RMSE) on test data = %g"</span> % rmse)</span><br><span class="line"></span><br><span class="line">rfModel = model.stages[<span class="number">1</span>]</span><br><span class="line">print(rfModel)  <span class="comment"># summary only</span></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|prediction|label|            features|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">95</span>,<span class="number">96</span>,<span class="number">97</span>,<span class="number">12.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">126</span>,<span class="number">127</span>,<span class="number">128.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">126</span>,<span class="number">127</span>,<span class="number">128.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">126</span>,<span class="number">127</span>,<span class="number">128.</span>..|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Root Mean Squared Error (RMSE) on test data = <span class="number">0.193434</span></span><br><span class="line">RandomForestRegressionModel (uid=RandomForestRegressor_4bfa98dd14412263de8e) <span class="keyword">with</span> <span class="number">20</span> trees</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/random_forest_regressor_example.py” in the Spark repo.</p>
+<h3 id="Gradient-boosted-tree-regression"><a href="#Gradient-boosted-tree-regression" class="headerlink" title="Gradient-boosted tree regression"></a>Gradient-boosted tree regression</h3><p><code>Gradient-boosted tree(GBTs)</code>梯度提升树是一种决策树的集成算法。它通过反复迭代训练决策树来最小化损失函数。与决策树类似，梯度提升树具有可处理类别特征、易扩展到多分类问题、不需特征缩放等性质。Spark.ml通过使用现有decision tree工具来实现。</p>
+<p>梯度提升树依次迭代训练一系列的决策树。在一次迭代中，算法使用现有的集成来对每个训练实例的类别进行预测，然后将预测结果与真实的标签值进行比较。通过重新标记，来赋予预测结果不好的实例更高的权重。所以，在下次迭代中，决策树会对先前的错误进行修正。</p>
+<p>对实例标签进行重新标记的机制由损失函数来指定。每次迭代过程中，梯度迭代树在训练数据上进一步减少损失函数的值。spark.ml为分类问题提供一种损失函数（Log Loss），为回归问题提供两种损失函数（平方误差与绝对误差）。</p>
+<p>Spark.ml支持二分类以及回归的随机森林算法，适用于连续特征以及类别特征。</p>
+<p>注意：梯度提升树目前不支持多分类问题。</p>
+<ul>
+<li>Examples</li>
+</ul>
+<p>注意：对于这个示例数据集，GBTRegressor实际上只需要1次迭代，但通常情况并非如此。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> GBTRegressor</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> VectorIndexer</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.evaluation <span class="keyword">import</span> RegressionEvaluator</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"GBTRegressionExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Load and parse the data file, converting it to a DataFrame.</span></span><br><span class="line">data = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically identify categorical features, and index them.</span></span><br><span class="line"><span class="comment"># Set maxCategories so features with &gt; 4 distinct values are treated as continuous.</span></span><br><span class="line">featureIndexer =\</span><br><span class="line">    VectorIndexer(inputCol=<span class="string">"features"</span>, outputCol=<span class="string">"indexedFeatures"</span>, maxCategories=<span class="number">4</span>).fit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the data into training and test sets (30% held out for testing)</span></span><br><span class="line">(trainingData, testData) = data.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train a GBT model.</span></span><br><span class="line">gbt = GBTRegressor(featuresCol=<span class="string">"indexedFeatures"</span>, maxIter=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Chain indexer and GBT in a Pipeline</span></span><br><span class="line">pipeline = Pipeline(stages=[featureIndexer, gbt])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train model.  This also runs the indexer.</span></span><br><span class="line">model = pipeline.fit(trainingData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions.</span></span><br><span class="line">predictions = model.transform(testData)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select example rows to display.</span></span><br><span class="line">predictions.select(<span class="string">"prediction"</span>, <span class="string">"label"</span>, <span class="string">"features"</span>).show(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select (prediction, true label) and compute test error</span></span><br><span class="line">evaluator = RegressionEvaluator(</span><br><span class="line">    labelCol=<span class="string">"label"</span>, predictionCol=<span class="string">"prediction"</span>, metricName=<span class="string">"rmse"</span>)</span><br><span class="line">rmse = evaluator.evaluate(predictions)</span><br><span class="line">print(<span class="string">"Root Mean Squared Error (RMSE) on test data = %g"</span> % rmse)</span><br><span class="line"></span><br><span class="line">gbtModel = model.stages[<span class="number">1</span>]</span><br><span class="line">print(gbtModel)  <span class="comment"># summary only</span></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|prediction|label|            features|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">100</span>,<span class="number">101</span>,<span class="number">102.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">121</span>,<span class="number">122</span>,<span class="number">123.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">122</span>,<span class="number">123</span>,<span class="number">124.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">123</span>,<span class="number">124</span>,<span class="number">125.</span>..|</span><br><span class="line">|       <span class="number">0.0</span>|  <span class="number">0.0</span>|(<span class="number">692</span>,[<span class="number">124</span>,<span class="number">125</span>,<span class="number">126.</span>..|</span><br><span class="line">+----------+-----+--------------------+</span><br><span class="line">only showing top <span class="number">5</span> rows</span><br><span class="line"></span><br><span class="line">Root Mean Squared Error (RMSE) on test data = <span class="number">0.288675</span></span><br><span class="line">GBTRegressionModel (uid=GBTRegressor_4e5384caecb49745ae29) <span class="keyword">with</span> <span class="number">10</span> trees</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/gradient_boosted_tree_regressor_example.py” in the Spark repo.</p>
+<h3 id="Survival-regression"><a href="#Survival-regression" class="headerlink" title="Survival regression"></a>Survival regression</h3><p>在spark.ml中，我们实施<a href="https://en.wikipedia.org/wiki/Accelerated_failure_time_model" target="_blank" rel="noopener">Acceleratedfailure time</a>(加速失效时间模型)，对于截尾数据它是一个参数化生存回归的模型。它描述了一个有对数生存时间的模型，所以它也常被称为生存分析的对数线性模型。与比例危险模型不同，因AFT模型中每个实例对目标函数的贡献是独立的，其更容易并行化。</p>
+<p>给定协变量的值x，对于可能的右截尾的随机生存时间，AFT模型下的似然函数如下：<br><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/GLM.png?raw=true" alt="AFT"></p>
+<p>可以证明AFT模型是一个凸优化问题，即是说找到凸函数ι(β,σ)的最小值取决于系数向量β以及尺度参数σ的对数.其中实现的优化算法为L-BFGS，该实现与R的生存函数survreg的结果相匹配。</p>
+<ul>
+<li><p>当使用无拦截的连续非零列训练AFTSurvivalRegressionModel时，Spark MLlib为连续非零列输出零系数。这种处理与R中的生存函数survreg不同。</p>
+</li>
+<li><p>Examples</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> AFTSurvivalRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.linalg <span class="keyword">import</span> Vectors</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"SurvivalRegressionExample"</span>).getOrCreate()</span><br><span class="line">training = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1.218</span>, <span class="number">1.0</span>, Vectors.dense(<span class="number">1.560</span>, <span class="number">-0.605</span>)),</span><br><span class="line">    (<span class="number">2.949</span>, <span class="number">0.0</span>, Vectors.dense(<span class="number">0.346</span>, <span class="number">2.158</span>)),</span><br><span class="line">    (<span class="number">3.627</span>, <span class="number">0.0</span>, Vectors.dense(<span class="number">1.380</span>, <span class="number">0.231</span>)),</span><br><span class="line">    (<span class="number">0.273</span>, <span class="number">1.0</span>, Vectors.dense(<span class="number">0.520</span>, <span class="number">1.151</span>)),</span><br><span class="line">    (<span class="number">4.199</span>, <span class="number">0.0</span>, Vectors.dense(<span class="number">0.795</span>, <span class="number">-0.226</span>))], [<span class="string">"label"</span>, <span class="string">"censor"</span>, <span class="string">"features"</span>])</span><br><span class="line">quantileProbabilities = [<span class="number">0.3</span>, <span class="number">0.6</span>]</span><br><span class="line">aft = AFTSurvivalRegression(quantileProbabilities=quantileProbabilities,</span><br><span class="line">                            quantilesCol=<span class="string">"quantiles"</span>)</span><br><span class="line"></span><br><span class="line">model = aft.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the coefficients, intercept and scale parameter for AFT survival regression</span></span><br><span class="line">print(<span class="string">"Coefficients: "</span> + str(model.coefficients))</span><br><span class="line">print(<span class="string">"Intercept: "</span> + str(model.intercept))</span><br><span class="line">print(<span class="string">"Scale: "</span> + str(model.scale))</span><br><span class="line">model.transform(training).show(truncate=<span class="keyword">False</span>)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>output:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Coefficients: [<span class="number">-0.496304411053</span>,<span class="number">0.198452172529</span>]</span><br><span class="line">Intercept: <span class="number">2.638089896305637</span></span><br><span class="line">Scale: <span class="number">1.5472363533632303</span></span><br><span class="line">+-----+------+--------------+------------------+---------------------------------------+</span><br><span class="line">|label|censor|features      |prediction        |quantiles                              |</span><br><span class="line">+-----+------+--------------+------------------+---------------------------------------+</span><br><span class="line">|<span class="number">1.218</span>|<span class="number">1.0</span>   |[<span class="number">1.56</span>,<span class="number">-0.605</span>] |<span class="number">5.718985621018948</span> |[<span class="number">1.160322990805951</span>,<span class="number">4.99546058340675</span>]   |</span><br><span class="line">|<span class="number">2.949</span>|<span class="number">0.0</span>   |[<span class="number">0.346</span>,<span class="number">2.158</span>] |<span class="number">18.07678210850554</span> |[<span class="number">3.6675919944963185</span>,<span class="number">15.789837303662035</span>]|</span><br><span class="line">|<span class="number">3.627</span>|<span class="number">0.0</span>   |[<span class="number">1.38</span>,<span class="number">0.231</span>]  |<span class="number">7.381908879359957</span> |[<span class="number">1.4977129086101564</span>,<span class="number">6.448002719505488</span>] |</span><br><span class="line">|<span class="number">0.273</span>|<span class="number">1.0</span>   |[<span class="number">0.52</span>,<span class="number">1.151</span>]  |<span class="number">13.577717814884515</span>|[<span class="number">2.754778414791514</span>,<span class="number">11.859962351993207</span>] |</span><br><span class="line">|<span class="number">4.199</span>|<span class="number">0.0</span>   |[<span class="number">0.795</span>,<span class="number">-0.226</span>]|<span class="number">9.013087597344821</span> |[<span class="number">1.82866218773319</span>,<span class="number">7.8728164067854935</span>]  |</span><br><span class="line">+-----+------+--------------+------------------+---------------------------------------+</span><br></pre></td></tr></table></figure></p>
+<p>Find full example code at “examples/src/main/python/ml/aft_survival_regression.py” in the Spark repo.</p>
+<h3 id="Isotonic-regression"><a href="#Isotonic-regression" class="headerlink" title="Isotonic regression"></a>Isotonic regression</h3><p><code>保序回归</code>是回归算法的一种。保序回归给定一个有限的实数集合(Y=y1,y2,…,yn)代表观察到的响应,以及(X=x1,x2,…,xn)代表未知的响应值，训练一个模型来最小化下列方程：<br><code>f(x) = ∑ωi(yi-xi)²</code>,其中wi为权重是正值，其结果方程称为保序回归，而且其解是唯一的。它可以被视为有顺序约束下的最小二乘法问题。实际上保序回归在拟合原始数据点时是一个单调函数。我们实现池旁者算法，它使用并行保序回归。训练数据是DataFrame格式，包含标签、特征值以及权重三列。另外保序算法还有一个参数名为isotonic，其默认值为真，它指定保序回归为保序（单调递增）或者反序（单调递减）。 </p>
+<p>训练返回一个保序回归模型，可以被用于来预测已知或者未知特征值的标签。保序回归的结果是分段线性函数，预测规则如下：</p>
+<ol>
+<li><p>如果预测输入与训练中的特征值完全匹配，则返回相应标签。如果一个特征值对应多个预测标签值，则返回其中一个，具体是哪一个未指定。</p>
+</li>
+<li><p>如果预测输入比训练中的特征值都高（或者都低），则相应返回最高特征值或者最低特征值对应标签。如果一个特征值对应多个预测标签值，则相应返回最高值或者最低值。</p>
+</li>
+<li><p>如果预测输入落入两个特征值之间，则预测将会是一个分段线性函数，其值由两个最近的特征值的预测值计算得到。如果一个特征值对应多个预测标签值，则使用上述两种情况中的处理方式解决。</p>
+</li>
+</ol>
+<ul>
+<li>Examples</li>
+</ul>
+<p>有关API的更多详细信息，请参阅<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.IsotonicRegression" target="_blank" rel="noopener">IsotonicRegressionPython文档</a>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark.ml.regression <span class="keyword">import</span> IsotonicRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"IsotonicRegressionExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Loads data.</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>)\</span><br><span class="line">    .load(<span class="string">"data/mllib/sample_isotonic_regression_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trains an isotonic regression model.</span></span><br><span class="line">model = IsotonicRegression().fit(dataset)</span><br><span class="line">print(<span class="string">"Boundaries in increasing order: %s\n"</span> % str(model.boundaries))</span><br><span class="line">print(<span class="string">"Predictions associated with the boundaries: %s\n"</span> % str(model.predictions))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Makes predictions.</span></span><br><span class="line">model.transform(dataset).show()</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure></p>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Boundaries <span class="keyword">in</span> increasing order: [<span class="number">0.01</span>,<span class="number">0.17</span>,<span class="number">0.18</span>,<span class="number">0.27</span>,<span class="number">0.28</span>,<span class="number">0.29</span>,<span class="number">0.3</span>,<span class="number">0.31</span>,<span class="number">0.34</span>,<span class="number">0.35</span>,<span class="number">0.36</span>,<span class="number">0.41</span>,<span class="number">0.42</span>,<span class="number">0.71</span>,<span class="number">0.72</span>,<span class="number">0.74</span>,<span class="number">0.75</span>,<span class="number">0.76</span>,<span class="number">0.77</span>,<span class="number">0.78</span>,<span class="number">0.79</span>,<span class="number">0.8</span>,<span class="number">0.81</span>,<span class="number">0.82</span>,<span class="number">0.83</span>,<span class="number">0.84</span>,<span class="number">0.85</span>,<span class="number">0.86</span>,<span class="number">0.87</span>,<span class="number">0.88</span>,<span class="number">0.89</span>,<span class="number">1.0</span>]</span><br><span class="line"></span><br><span class="line">Predictions associated <span class="keyword">with</span> the boundaries: [<span class="number">0.157152712941</span>,<span class="number">0.157152712941</span>,<span class="number">0.189138196</span>,<span class="number">0.189138196</span>,<span class="number">0.20040796</span>,<span class="number">0.29576747</span>,<span class="number">0.43396226</span>,<span class="number">0.5081591025</span>,<span class="number">0.5081591025</span>,<span class="number">0.54156043</span>,<span class="number">0.550484446667</span>,<span class="number">0.550484446667</span>,<span class="number">0.563929967</span>,<span class="number">0.563929967</span>,<span class="number">0.566037736667</span>,<span class="number">0.566037736667</span>,<span class="number">0.56603774</span>,<span class="number">0.57929628</span>,<span class="number">0.64762876</span>,<span class="number">0.66241713</span>,<span class="number">0.67210607</span>,<span class="number">0.67210607</span>,<span class="number">0.674655785</span>,<span class="number">0.674655785</span>,<span class="number">0.73890872</span>,<span class="number">0.73992861</span>,<span class="number">0.84242733</span>,<span class="number">0.89673636</span>,<span class="number">0.89673636</span>,<span class="number">0.90719021</span>,<span class="number">0.9272055075</span>,<span class="number">0.9272055075</span>]</span><br><span class="line"></span><br><span class="line">+----------+--------------+-------------------+</span><br><span class="line">|     label|      features|         prediction|</span><br><span class="line">+----------+--------------+-------------------+</span><br><span class="line">|<span class="number">0.24579296</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.01</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.28505864</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.02</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.31208567</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.03</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.35900051</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.04</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.35747068</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.05</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.16675166</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.06</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.17491076</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.07</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">| <span class="number">0.0418154</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.08</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.04793473</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.09</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.03926568</span>| (<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.1</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.12952575</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.11</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|       <span class="number">0.0</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.12</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.01376849</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.13</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.13105558</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.14</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.08873024</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.15</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.12595614</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.16</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.15247323</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.17</span>])|<span class="number">0.15715271294117644</span>|</span><br><span class="line">|<span class="number">0.25956145</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.18</span>])|        <span class="number">0.189138196</span>|</span><br><span class="line">|<span class="number">0.20040796</span>|(<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.19</span>])|        <span class="number">0.189138196</span>|</span><br><span class="line">|<span class="number">0.19581846</span>| (<span class="number">1</span>,[<span class="number">0</span>],[<span class="number">0.2</span>])|        <span class="number">0.189138196</span>|</span><br><span class="line">+----------+--------------+-------------------+</span><br><span class="line">only showing top <span class="number">20</span> rows</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/isotonic_regression_example.py” in the Spark repo.</p>
+<p><strong>更多请查阅<a href="https://spark.apache.org/docs/latest/ml-classification-regression.html" target="_blank" rel="noopener">spark.ml-classification-regression</a></strong></p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #8959a8;font-size:20px;">-------------阅读完毕<i class="fa fa-paw"></i>吐槽一番吧~-------------</div>
+    
+</div>
+    
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/逻辑回归/" rel="tag"><i class="fa fa-tag"></i> 逻辑回归</a>
+          
+            <a href="/tags/决策树/" rel="tag"><i class="fa fa-tag"></i> 决策树</a>
+          
+            <a href="/tags/GBDT/" rel="tag"><i class="fa fa-tag"></i> GBDT</a>
+          
+            <a href="/tags/Naive-Bayes/" rel="tag"><i class="fa fa-tag"></i> Naive Bayes</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div>
+          <div class="recommended_posts">
+    
+    
+    <div class="note primary">
+        <h4>推荐文章 </h4>
+            <ul>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Collaborative-Filtering/">SparkMLlib-Collaborative-Filtering</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/">SparkMLlib-Clustering</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/21/sparkmllib-working-with-features/">SparkMLlib-Working-with-Features</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/">SparkMLlib-Pipeline</a></li>
+                
+            </ul>
+    </div>
+     
+</div>
+        </div>
+      
+
+      <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/22/SparkMLlib-Classification-and-Regression/">SparkMLlib-Classification-and-Regression</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cgDeepLearn 的个人博客">cgDeepLearn</a></p>
+  <p><span>发布时间:</span>2018年01月22日 - 10:01</p>
+  <p><span>最后更新:</span>2018年03月01日 - 17:03</p>
+  <p><span>原始链接:</span><a href="/2018/01/22/SparkMLlib-Classification-and-Regression/" title="SparkMLlib-Classification-and-Regression">https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+        
+      </div>
+      
+      
+
+      
+        <div>
+          <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="cgDeepLearn 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+        </div>
+      
+
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/22/SparkMLlib-Clustering/" rel="prev" title="SparkMLlib-Clustering">
+                <i class="fa fa-chevron-left"></i> SparkMLlib-Clustering
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/21/sparkmllib-working-with-features/" rel="next" title="SparkMLlib-Working-with-Features">
+                SparkMLlib-Working-with-Features <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    
+    </footer>
+
+    
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/images/avatar.gif"
+                alt="cgDeepLearn" />
+              </a>
+            
+              <p class="site-author-name" itemprop="name">cgDeepLearn</p>
+              <p class="site-description motion-element" itemprop="description">Code Rocks!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgDeepLearn" target="_blank" title="Github">
+                      
+                        <i class="fa fa-fw fa-github"></i>Github</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=36485986" target="_blank" title="网易云音乐">
+                      
+                        <i class="fa fa-fw fa-music"></i>网易云音乐</a>
+                  </span>
+                
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                链链看
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://writeathink.cn/" title="😆 writeathink 😆" target="_blank" rel="external nofollow">😆 writeathink 😆</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cgdeeplearn.github.io/about/" title="关于此博客" target="_blank" rel="external nofollow">关于此博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Classfication"><span class="nav-number">1.</span> <span class="nav-text">Classfication</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistic-Regression"><span class="nav-number">1.1.</span> <span class="nav-text">Logistic Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Binomial-Logistic-Regression"><span class="nav-number">1.1.1.</span> <span class="nav-text">Binomial Logistic Regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multinomial-Logistic-Regression"><span class="nav-number">1.1.2.</span> <span class="nav-text">Multinomial Logistic Regression</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decision-Tree-Classifier"><span class="nav-number">2.</span> <span class="nav-text">Decision Tree Classifier</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Forest-Classifier"><span class="nav-number">2.1.</span> <span class="nav-text">Random Forest Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Boosted-Tree-Classifier"><span class="nav-number">2.2.</span> <span class="nav-text">Gradient-Boosted Tree Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multilayer-Perception-Classifier"><span class="nav-number">2.3.</span> <span class="nav-text">Multilayer Perception Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-Support-Vector-Machine"><span class="nav-number">2.4.</span> <span class="nav-text">Linear Support Vector Machine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#One-vs-Rest-Classifier-又叫-One-vs-All"><span class="nav-number">2.5.</span> <span class="nav-text">One-vs-Rest Classifier(又叫 One-vs-All)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Naive-Bayes"><span class="nav-number">2.6.</span> <span class="nav-text">Naive Bayes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regression"><span class="nav-number">3.</span> <span class="nav-text">Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-regression"><span class="nav-number">3.1.</span> <span class="nav-text">Linear regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generalized-linear-regression"><span class="nav-number">3.2.</span> <span class="nav-text">Generalized linear regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-tree-regression"><span class="nav-number">3.3.</span> <span class="nav-text">Decision tree regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-forest-regression"><span class="nav-number">3.4.</span> <span class="nav-text">Random forest regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-boosted-tree-regression"><span class="nav-number">3.5.</span> <span class="nav-text">Gradient-boosted tree regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Survival-regression"><span class="nav-number">3.6.</span> <span class="nav-text">Survival regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Isotonic-regression"><span class="nav-number">3.7.</span> <span class="nav-text">Isotonic regression</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">4.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cgDeepLearn</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">别扫我~</div>
+    </div>
+  </div>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user-circle-o"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      <i class="fa fa-eye"></i>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz',
+        appKey: 'FrwRKt14p639teOiqUuU7D6j',
+        placeholder: 'ヾ(✿ﾟ▽ﾟ)ノ 来呀，快活呀!',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz", "FrwRKt14p639teOiqUuU7D6j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 9269,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+
+  <!-- 
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+ -->
+
+  <!-- 页面点击小红心 
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!-- keywords -->
+  <script type="text/javascript" src="/js/src/keywords.js"></script>
+
+
+</body>
+</html>

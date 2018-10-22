@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="D5-qRqseoFKaMoLLpwgLLeyygQcyL2YH5spNiQ4g9gE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="http://fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="KMeans,LDA,Bisecting KMeans,GMM," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cgDeepLearn" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="聚类算法   本节介绍MLlib中的聚类算法(KMeans, LDA, GMM)。在基于RDD-API聚类指南里还提供了有关这些算法的相关信息。">
+<meta name="keywords" content="KMeans,LDA,Bisecting KMeans,GMM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparkMLlib-Clustering">
+<meta property="og:url" content="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/index.html">
+<meta property="og:site_name" content="cgDeepLearn">
+<meta property="og:description" content="聚类算法   本节介绍MLlib中的聚类算法(KMeans, LDA, GMM)。在基于RDD-API聚类指南里还提供了有关这些算法的相关信息。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T09:36:26.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SparkMLlib-Clustering">
+<meta name="twitter:description" content="聚类算法   本节介绍MLlib中的聚类算法(KMeans, LDA, GMM)。在基于RDD-API聚类指南里还提供了有关这些算法的相关信息。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '5IB1N2USIP',
+      apiKey: '2acaab00a79e34bd9030a923f014cdcb',
+      indexName: 'my_github.io_search',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} ， 共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/"/>
+
+
+
+
+
+  <title>SparkMLlib-Clustering | cgDeepLearn</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11315781-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--forkmeon github
+    <a href="https://github.com/cgDeepLearn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cgDeepLearn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">More than code</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            最热
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cgDeepLearn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cgDeepLearn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SparkMLlib-Clustering</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T11:09:09+08:00">
+                2018-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+                  >
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/MLlib/" itemprop="url" rel="index">
+                    <span itemprop="name">MLlib</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/22/SparkMLlib-Clustering/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/22/SparkMLlib-Clustering/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/22/SparkMLlib-Clustering/" class="leancloud_visitors" data-flag-title="SparkMLlib-Clustering">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,301
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><p class="description">聚类算法<br></p>
+
+<p><img src="" alt="" style="width:100%"></p>
+<p>本节介绍MLlib中的聚类算法(<code>KMeans</code>, <code>LDA</code>, <code>GMM</code>)。在<a href="https://spark.apache.org/docs/latest/mllib-clustering.html" target="_blank" rel="noopener">基于RDD-API聚类指南</a>里还提供了有关这些算法的相关信息。</p>
+<a id="more"></a>
+<h2 id="K-means"><a href="#K-means" class="headerlink" title="K-means"></a>K-means</h2><p><code>K-means</code>是一个常用的聚类算法来将数据点按预定的簇数进行聚集。K-means算法的基本思想是：以空间中k个点为中心进行聚类，对最靠近他们的对象归类。通过迭代的方法，逐次更新各聚类中心的值，直至得到最好的聚类结果。</p>
+<p>假设要把样本集分为c个类别，算法描述如下：</p>
+<p>（1）适当选择c个类的初始中心；</p>
+<p>（2）在第k次迭代中，对任意一个样本，求其到c个中心的距离，将该样本归到距离最短的中心所在的类；</p>
+<p>（3）利用均值等方法更新该类的中心值；</p>
+<p>（4）对于所有的c个聚类中心，如果利用（2）（3）的迭代法更新后，值保持不变，则迭代结束，否则继续迭代。</p>
+<p>MLlib工具包含并行的K-means++算法，称为kmeans||。Kmeans是一个Estimator，它在基础模型之上产生一个KMeansModel。</p>
+<ul>
+<li><strong>Input Columns(输入列)</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Param name(参数名称)</th>
+<th>Type(s)(类型)</th>
+<th>Default(默认)</th>
+<th>Description(描述)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>featuresCol</td>
+<td>Vector</td>
+<td>“features”</td>
+<td>Feature vector(特征向量)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Output Columns(输出列)</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Param name(参数名称)</th>
+<th>Type(s)(类型)</th>
+<th>Default(默认)</th>
+<th>Description(描述)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>predictionCol</td>
+<td>Int</td>
+<td>“prediction”</td>
+<td>Predicted cluster center(预测的聚类中心)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.clustering <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"ClusterExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Loads data.</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_kmeans_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trains a k-means model.</span></span><br><span class="line">kmeans = KMeans().setK(<span class="number">2</span>).setSeed(<span class="number">1</span>)</span><br><span class="line">model = kmeans.fit(dataset)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Evaluate clustering by computing Within Set Sum of Squared Errors.</span></span><br><span class="line">wssse = model.computeCost(dataset)</span><br><span class="line">print(<span class="string">"Within Set Sum of Squared Errors = "</span> + str(wssse))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Shows the result.</span></span><br><span class="line">centers = model.clusterCenters()</span><br><span class="line">print(<span class="string">"Cluster Centers: "</span>)</span><br><span class="line"><span class="keyword">for</span> center <span class="keyword">in</span> centers:</span><br><span class="line">    print(center)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Within Set Sum of Squared Errors = <span class="number">0.11999999999994547</span></span><br><span class="line">Cluster Centers: </span><br><span class="line">[ <span class="number">0.1</span>  <span class="number">0.1</span>  <span class="number">0.1</span>]</span><br><span class="line">[ <span class="number">9.1</span>  <span class="number">9.1</span>  <span class="number">9.1</span>]</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/kmeans_example.py” in the Spark repo.</p>
+<h2 id="Latent-Dirichlet-allocation-LDA"><a href="#Latent-Dirichlet-allocation-LDA" class="headerlink" title="Latent Dirichlet allocation(LDA)"></a>Latent Dirichlet allocation(LDA)</h2><p><code>LDA</code>（Latent Dirichlet Allocation）是一种文档主题生成模型，也称为一个三层贝叶斯概率模型，包含词、主题和文档三层结构。所谓生成模型，就是说，我们认为一篇文章的每个词都是通过“以一定概率选择了某个主题，并从这个主题中以一定概率选择某个词语”这样一个过程得到。文档到主题服从多项式分布，主题到词服从多项式分布。</p>
+<p>LDA是一种非监督机器学习技术，可以用来识别大规模文档集（document collection）或语料库（corpus）中潜藏的主题信息。它采用了词袋（bag of words）的方法，这种方法将每一篇文档视为一个词频向量，从而将文本信息转化为了易于建模的数字信息。但是词袋方法没有考虑词与词之间的顺序，这简化了问题的复杂性，同时也为模型的改进提供了契机。每一篇文档代表了一些主题所构成的一个概率分布，而每一个主题又代表了很多单词所构成的一个概率分布。</p>
+<p>LDA被实现为一个Estimator,既支持EMLDAOptimizer和OnlineLDAOptimizer，并生成一个LDAModel作为基础模型。如果需要的话，专家用户可以将EMLDAOptimizer生成的LDAModel映射到一个DistributedLDAModel</p>
+<h3 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples"></a>Examples</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.clustering <span class="keyword">import</span> LDA</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"LDAExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Loads data.</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_lda_libsvm_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trains a LDA model.</span></span><br><span class="line">lda = LDA(k=<span class="number">10</span>, maxIter=<span class="number">10</span>)</span><br><span class="line">model = lda.fit(dataset)</span><br><span class="line"></span><br><span class="line">ll = model.logLikelihood(dataset)</span><br><span class="line">lp = model.logPerplexity(dataset)</span><br><span class="line">print(<span class="string">"The lower bound on the log likelihood of the entire corpus: "</span> + str(ll))</span><br><span class="line">print(<span class="string">"The upper bound on perplexity: "</span> + str(lp))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe topics.</span></span><br><span class="line">topics = model.describeTopics(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">"The topics described by their top-weighted terms:"</span>)</span><br><span class="line">topics.show(truncate=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Shows the result</span></span><br><span class="line">transformed = model.transform(dataset)</span><br><span class="line">transformed.show(truncate=<span class="keyword">False</span>)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">The lower bound on the log likelihood of the entire corpus: <span class="number">-797.8018456907539</span></span><br><span class="line">The upper bound on perplexity: <span class="number">3.068468635551357</span></span><br><span class="line">The topics described by their top-weighted terms:</span><br><span class="line">+-----+-----------+---------------------------------------------------------------+</span><br><span class="line">|topic|termIndices|termWeights                                                    |</span><br><span class="line">+-----+-----------+---------------------------------------------------------------+</span><br><span class="line">|<span class="number">0</span>    |[<span class="number">0</span>, <span class="number">4</span>, <span class="number">7</span>]  |[<span class="number">0.13939487929625935</span>, <span class="number">0.13346874874963285</span>, <span class="number">0.11911498796394984</span>]|</span><br><span class="line">|<span class="number">1</span>    |[<span class="number">8</span>, <span class="number">6</span>, <span class="number">0</span>]  |[<span class="number">0.09761719173430919</span>, <span class="number">0.09664530483154511</span>, <span class="number">0.0959033498887414</span>] |</span><br><span class="line">|<span class="number">2</span>    |[<span class="number">5</span>, <span class="number">9</span>, <span class="number">1</span>]  |[<span class="number">0.09763288175177705</span>, <span class="number">0.0967699480930826</span>, <span class="number">0.09474971437446654</span>] |</span><br><span class="line">|<span class="number">3</span>    |[<span class="number">6</span>, <span class="number">2</span>, <span class="number">5</span>]  |[<span class="number">0.09993087551790403</span>, <span class="number">0.09802667103524504</span>, <span class="number">0.09669791743434605</span>]|</span><br><span class="line">|<span class="number">4</span>    |[<span class="number">10</span>, <span class="number">5</span>, <span class="number">8</span>] |[<span class="number">0.10838084105098059</span>, <span class="number">0.1065719519796393</span>, <span class="number">0.10564271921581836</span>] |</span><br><span class="line">|<span class="number">5</span>    |[<span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>]  |[<span class="number">0.09975664174839147</span>, <span class="number">0.09917147147531298</span>, <span class="number">0.09482946730767593</span>]|</span><br><span class="line">|<span class="number">6</span>    |[<span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>]  |[<span class="number">0.1025918379349122</span>, <span class="number">0.09670884980694468</span>, <span class="number">0.09661321616852961</span>] |</span><br><span class="line">|<span class="number">7</span>    |[<span class="number">3</span>, <span class="number">10</span>, <span class="number">6</span>] |[<span class="number">0.18074276445784626</span>, <span class="number">0.17140880975201497</span>, <span class="number">0.11846617165050731</span>]|</span><br><span class="line">|<span class="number">8</span>    |[<span class="number">7</span>, <span class="number">9</span>, <span class="number">1</span>]  |[<span class="number">0.10376667278659339</span>, <span class="number">0.10266984655859988</span>, <span class="number">0.10261491999135175</span>]|</span><br><span class="line">|<span class="number">9</span>    |[<span class="number">5</span>, <span class="number">9</span>, <span class="number">4</span>]  |[<span class="number">0.17217259005160918</span>, <span class="number">0.11130983487715354</span>, <span class="number">0.10625585388024414</span>]|</span><br><span class="line">+-----+-----------+---------------------------------------------------------------+</span><br><span class="line"></span><br><span class="line">+-----+---------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">|label|features                                                       |topicDistribution                                                                                                                                                                                                      |</span><br><span class="line">+-----+---------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">|<span class="number">0.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">10</span>],[<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">6.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>])      |[<span class="number">0.004834482522877391</span>,<span class="number">0.004775061546874506</span>,<span class="number">0.0047750850624618665</span>,<span class="number">0.00477508209536724</span>,<span class="number">0.004775110752126829</span>,<span class="number">0.0047751198765325934</span>,<span class="number">0.0047750802565546275</span>,<span class="number">0.44999380128294686</span>,<span class="number">0.004775119757841731</span>,<span class="number">0.5117460568464164</span>]     |</span><br><span class="line">|<span class="number">1.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">10</span>],[<span class="number">1.0</span>,<span class="number">3.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>,<span class="number">2.0</span>,<span class="number">1.0</span>])                  |[<span class="number">0.9268994208923648</span>,<span class="number">0.007965511763080765</span>,<span class="number">0.007965521320089061</span>,<span class="number">0.007965447383722308</span>,<span class="number">0.007965587789582014</span>,<span class="number">0.007965461329343004</span>,<span class="number">0.00796558757403698</span>,<span class="number">0.009276986136774072</span>,<span class="number">0.007965614108681227</span>,<span class="number">0.008064861702326028</span>]       |</span><br><span class="line">|<span class="number">2.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>],[<span class="number">1.0</span>,<span class="number">4.0</span>,<span class="number">1.0</span>,<span class="number">4.0</span>,<span class="number">9.0</span>,<span class="number">1.0</span>,<span class="number">2.0</span>])             |[<span class="number">0.004202815262490896</span>,<span class="number">0.004151229704235803</span>,<span class="number">0.004151279248440336</span>,<span class="number">0.004151250849060332</span>,<span class="number">0.004151298320120848</span>,<span class="number">0.004151248811452763</span>,<span class="number">0.004151213592542253</span>,<span class="number">0.6501025149437936</span>,<span class="number">0.00415114952939257</span>,<span class="number">0.3166359997384707</span>]         |</span><br><span class="line">|<span class="number">3.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>,<span class="number">5.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">9.0</span>])            |[<span class="number">0.0037170513237456872</span>,<span class="number">0.0036715329471578005</span>,<span class="number">0.0036715360552429213</span>,<span class="number">0.003671511493261907</span>,<span class="number">0.003671797370463146</span>,<span class="number">0.0036715102318871204</span>,<span class="number">0.0036715134308361727</span>,<span class="number">0.9668647838101413</span>,<span class="number">0.003671504403863317</span>,<span class="number">0.003717258933400576</span>] |</span><br><span class="line">|<span class="number">4.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">3.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">9.0</span>,<span class="number">3.0</span>,<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>])      |[<span class="number">0.004027376743557338</span>,<span class="number">0.003977866599137274</span>,<span class="number">0.003977850254362953</span>,<span class="number">0.003977835428829377</span>,<span class="number">0.0039778820932092175</span>,<span class="number">0.003977853048840427</span>,<span class="number">0.003977852184563374</span>,<span class="number">0.9641001717255747</span>,<span class="number">0.0039778458818949</span>,<span class="number">0.004027466040030248</span>]       |</span><br><span class="line">|<span class="number">5.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>],[<span class="number">4.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>,<span class="number">5.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">4.0</span>]) |[<span class="number">0.003717509832713523</span>,<span class="number">0.0036716615407946934</span>,<span class="number">0.0036716846624067615</span>,<span class="number">0.0036716395255962085</span>,<span class="number">0.0036717149575019995</span>,<span class="number">0.0036716664005927474</span>,<span class="number">0.0036716667567801204</span>,<span class="number">0.27461258177043146</span>,<span class="number">0.0036716647781321666</span>,<span class="number">0.6959682097750503</span>]|</span><br><span class="line">|<span class="number">6.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>,<span class="number">5.0</span>,<span class="number">2.0</span>,<span class="number">2.0</span>,<span class="number">9.0</span>])            |[<span class="number">0.0038659082828356533</span>,<span class="number">0.003818570338009387</span>,<span class="number">0.0038185658000222077</span>,<span class="number">0.0038185390646671936</span>,<span class="number">0.003818726199778954</span>,<span class="number">0.0038185379956121677</span>,<span class="number">0.003818554784511252</span>,<span class="number">0.9655379642100607</span>,<span class="number">0.003818526437489602</span>,<span class="number">0.003866106887012979</span>]  |</span><br><span class="line">|<span class="number">7.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">9.0</span>,<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>])|[<span class="number">0.004394125793389081</span>,<span class="number">0.004340066102223131</span>,<span class="number">0.004340117929521572</span>,<span class="number">0.004340091402319875</span>,<span class="number">0.004340183500883856</span>,<span class="number">0.004340117374988447</span>,<span class="number">0.004340096103563213</span>,<span class="number">0.9608305723851966</span>,<span class="number">0.004340058125232322</span>,<span class="number">0.004394571282681922</span>]      |</span><br><span class="line">|<span class="number">8.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>],[<span class="number">4.0</span>,<span class="number">4.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>,<span class="number">2.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>])             |[<span class="number">0.9601715212707249</span>,<span class="number">0.0043400767428901635</span>,<span class="number">0.004340086711133699</span>,<span class="number">0.004340041546373581</span>,<span class="number">0.004340093118553618</span>,<span class="number">0.004340077924408194</span>,<span class="number">0.004340099543124161</span>,<span class="number">0.005053547015193133</span>,<span class="number">0.004340064942938327</span>,<span class="number">0.004394391184660286</span>]     |</span><br><span class="line">|<span class="number">9.0</span>  |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">2.0</span>,<span class="number">8.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">2.0</span>,<span class="number">2.0</span>,<span class="number">7.0</span>,<span class="number">2.0</span>])      |[<span class="number">0.003332384443784424</span>,<span class="number">0.0032914608990001755</span>,<span class="number">0.003291474583522146</span>,<span class="number">0.003291442358715674</span>,<span class="number">0.003291502923651029</span>,<span class="number">0.0032914477446806248</span>,<span class="number">0.003291451230227242</span>,<span class="number">0.9702948142666302</span>,<span class="number">0.0032914840138979083</span>,<span class="number">0.0033325375358905047</span>]  |</span><br><span class="line">|<span class="number">10.0</span> |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">10</span>],[<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">9.0</span>,<span class="number">2.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">3.0</span>])      |[<span class="number">0.004202933475197545</span>,<span class="number">0.004151218860618786</span>,<span class="number">0.004151338270182237</span>,<span class="number">0.004151288340705789</span>,<span class="number">0.004151431515312671</span>,<span class="number">0.004151332888945593</span>,<span class="number">0.00415129142785515</span>,<span class="number">0.9625342071313459</span>,<span class="number">0.0041512327632204984</span>,<span class="number">0.004203725326615945</span>]      |</span><br><span class="line">|<span class="number">11.0</span> |(<span class="number">11</span>,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>],[<span class="number">4.0</span>,<span class="number">1.0</span>,<span class="number">4.0</span>,<span class="number">5.0</span>,<span class="number">1.0</span>,<span class="number">3.0</span>,<span class="number">1.0</span>])             |[<span class="number">0.5794463100207559</span>,<span class="number">0.004774699657046339</span>,<span class="number">0.004774740812070836</span>,<span class="number">0.0047746922036681246</span>,<span class="number">0.004774755044701768</span>,<span class="number">0.004774721978296648</span>,<span class="number">0.0047747158288502884</span>,<span class="number">0.0055583559655138</span>,<span class="number">0.004774694223725667</span>,<span class="number">0.38157231426537064</span>]       |</span><br><span class="line">+-----+---------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/lda_example.py” in the Spark repo.</p>
+<h2 id="Bisecting-k-means"><a href="#Bisecting-k-means" class="headerlink" title="Bisecting k-means"></a>Bisecting k-means</h2><p><code>二分K均值</code>算法是一种<code>层次聚类算法</code>，使用自顶向下的逼近：所有的观察值开始是一个簇，递归地向下一个层级分裂。分裂依据为选择能最大程度降低聚类代价函数（也就是误差平方和）的簇划分为两个簇。以此进行下去，直到簇的数目等于用户给定的数目k为止。二分K均值常常比传统K均值算法有更快的计算速度，但产生的簇群与传统K均值算法往往也是不同的。</p>
+<p>BisectingKMeans是一个Estimator，在基础模型上训练得到BisectingKMeansModel。</p>
+<h3 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples"></a>Examples</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.clustering <span class="keyword">import</span> BisectingKMeans</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"BisectingKMeansExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Loads data.</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_kmeans_data.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trains a bisecting k-means model.</span></span><br><span class="line">bkm = BisectingKMeans().setK(<span class="number">2</span>).setSeed(<span class="number">1</span>)</span><br><span class="line">model = bkm.fit(dataset)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Evaluate clustering.</span></span><br><span class="line">cost = model.computeCost(dataset)</span><br><span class="line">print(<span class="string">"Within Set Sum of Squared Errors = "</span> + str(cost))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Shows the result.</span></span><br><span class="line">print(<span class="string">"Cluster Centers: "</span>)</span><br><span class="line">centers = model.clusterCenters()</span><br><span class="line"><span class="keyword">for</span> center <span class="keyword">in</span> centers:</span><br><span class="line">    print(center)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Within Set Sum of Squared Errors = <span class="number">0.11999999999994547</span></span><br><span class="line">Cluster Centers: </span><br><span class="line">[ <span class="number">0.1</span>  <span class="number">0.1</span>  <span class="number">0.1</span>]</span><br><span class="line">[ <span class="number">9.1</span>  <span class="number">9.1</span>  <span class="number">9.1</span>]</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/bisecting_k_means_example.py” in the Spark repo.</p>
+<h2 id="Gaussian-Mixture-Model-GMM"><a href="#Gaussian-Mixture-Model-GMM" class="headerlink" title="Gaussian Mixture Model(GMM)"></a>Gaussian Mixture Model(GMM)</h2><p><code>混合高斯模型</code>描述数据点以一定的概率服从k种高斯子分布的一种混合分布。Spark.ml使用EM算法给出一组样本的极大似然模型。</p>
+<p>GaussianMixture被实现为一个Estimator,并生成一个GaussianMixtureModel基本模型。</p>
+<ul>
+<li><strong>Input Columns</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Param name</th>
+<th>Type(s)</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>featuresCol</td>
+<td>Vector</td>
+<td>“features”</td>
+<td>Feature vector</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Output Columns</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Param name</th>
+<th>Type(s)</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>predictionCol</td>
+<td>Int</td>
+<td>“prediction”</td>
+<td>Predicted cluster center</td>
+</tr>
+<tr>
+<td>probabilityCol</td>
+<td>Vector</td>
+<td>“probability”</td>
+<td>Probability of each cluster</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples"></a>Examples</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.clustering <span class="keyword">import</span> GaussianMixture</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"GaussianMixtureExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># loads data</span></span><br><span class="line">dataset = spark.read.format(<span class="string">"libsvm"</span>).load(<span class="string">"data/mllib/sample_kmeans_data.txt"</span>)</span><br><span class="line"></span><br><span class="line">gmm = GaussianMixture().setK(<span class="number">2</span>).setSeed(<span class="number">538009335</span>)</span><br><span class="line">model = gmm.fit(dataset)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Gaussians shown as a DataFrame: "</span>)</span><br><span class="line">model.gaussiansDF.show(truncate=<span class="keyword">False</span>)</span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Gaussians shown <span class="keyword">as</span> a DataFrame: </span><br><span class="line">+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">|mean                                                         |cov                                                                                                                                                                                                     |</span><br><span class="line">+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">|[<span class="number">0.10000000000001552</span>,<span class="number">0.10000000000001552</span>,<span class="number">0.10000000000001552</span>]|<span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  </span><br><span class="line"><span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  </span><br><span class="line"><span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  <span class="number">0.006666666666806454</span>  |</span><br><span class="line">|[<span class="number">9.099999999999984</span>,<span class="number">9.099999999999984</span>,<span class="number">9.099999999999984</span>]      |<span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  </span><br><span class="line"><span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  </span><br><span class="line"><span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  <span class="number">0.006666666666812185</span>  |</span><br><span class="line">+-------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/gaussian_mixture_example.py” in the Spark repo.</p>
+<p><strong>更多相关信息请查阅<a href="https://spark.apache.org/docs/latest/ml-clustering.html" target="_blank" rel="noopener">Spark Clustering文档</a></strong></p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #8959a8;font-size:20px;">-------------阅读完毕<i class="fa fa-paw"></i>吐槽一番吧~-------------</div>
+    
+</div>
+    
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/KMeans/" rel="tag"><i class="fa fa-tag"></i> KMeans</a>
+          
+            <a href="/tags/LDA/" rel="tag"><i class="fa fa-tag"></i> LDA</a>
+          
+            <a href="/tags/Bisecting-KMeans/" rel="tag"><i class="fa fa-tag"></i> Bisecting KMeans</a>
+          
+            <a href="/tags/GMM/" rel="tag"><i class="fa fa-tag"></i> GMM</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div>
+          <div class="recommended_posts">
+    
+    
+    <div class="note primary">
+        <h4>推荐文章 </h4>
+            <ul>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/23/SparkMLlib-Frequent-Pattern-Mining/">SparkMLlib-Frequent-Pattern-Mining</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Collaborative-Filtering/">SparkMLlib-Collaborative-Filtering</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/">SparkMLlib-Classification-and-Regression</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/21/sparkmllib-working-with-features/">SparkMLlib-Working-with-Features</a></li>
+                
+            </ul>
+    </div>
+     
+</div>
+        </div>
+      
+
+      <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/22/SparkMLlib-Clustering/">SparkMLlib-Clustering</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cgDeepLearn 的个人博客">cgDeepLearn</a></p>
+  <p><span>发布时间:</span>2018年01月22日 - 11:01</p>
+  <p><span>最后更新:</span>2018年03月01日 - 17:03</p>
+  <p><span>原始链接:</span><a href="/2018/01/22/SparkMLlib-Clustering/" title="SparkMLlib-Clustering">https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+        
+      </div>
+      
+      
+
+      
+        <div>
+          <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="cgDeepLearn 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+        </div>
+      
+
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/22/SparkMLlib-Collaborative-Filtering/" rel="prev" title="SparkMLlib-Collaborative-Filtering">
+                <i class="fa fa-chevron-left"></i> SparkMLlib-Collaborative-Filtering
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/22/SparkMLlib-Classification-and-Regression/" rel="next" title="SparkMLlib-Classification-and-Regression">
+                SparkMLlib-Classification-and-Regression <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    
+    </footer>
+
+    
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/images/avatar.gif"
+                alt="cgDeepLearn" />
+              </a>
+            
+              <p class="site-author-name" itemprop="name">cgDeepLearn</p>
+              <p class="site-description motion-element" itemprop="description">Code Rocks!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgDeepLearn" target="_blank" title="Github">
+                      
+                        <i class="fa fa-fw fa-github"></i>Github</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=36485986" target="_blank" title="网易云音乐">
+                      
+                        <i class="fa fa-fw fa-music"></i>网易云音乐</a>
+                  </span>
+                
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                链链看
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://writeathink.cn/" title="😆 writeathink 😆" target="_blank" rel="external nofollow">😆 writeathink 😆</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cgdeeplearn.github.io/about/" title="关于此博客" target="_blank" rel="external nofollow">关于此博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-means"><span class="nav-number">1.</span> <span class="nav-text">K-means</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples"><span class="nav-number">1.1.</span> <span class="nav-text">Examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Latent-Dirichlet-allocation-LDA"><span class="nav-number">2.</span> <span class="nav-text">Latent Dirichlet allocation(LDA)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples-1"><span class="nav-number">2.1.</span> <span class="nav-text">Examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bisecting-k-means"><span class="nav-number">3.</span> <span class="nav-text">Bisecting k-means</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples-2"><span class="nav-number">3.1.</span> <span class="nav-text">Examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gaussian-Mixture-Model-GMM"><span class="nav-number">4.</span> <span class="nav-text">Gaussian Mixture Model(GMM)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Examples-3"><span class="nav-number">4.1.</span> <span class="nav-text">Examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">5.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cgDeepLearn</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">别扫我~</div>
+    </div>
+  </div>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user-circle-o"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      <i class="fa fa-eye"></i>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz',
+        appKey: 'FrwRKt14p639teOiqUuU7D6j',
+        placeholder: 'ヾ(✿ﾟ▽ﾟ)ノ 来呀，快活呀!',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz", "FrwRKt14p639teOiqUuU7D6j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 9269,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+
+  <!-- 
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+ -->
+
+  <!-- 页面点击小红心 
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!-- keywords -->
+  <script type="text/javascript" src="/js/src/keywords.js"></script>
+
+
+</body>
+</html>

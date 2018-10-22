@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="D5-qRqseoFKaMoLLpwgLLeyygQcyL2YH5spNiQ4g9gE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="http://fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="concurrent.futures,ProcessPoolExecutor,ThreadPoolExecutor,multiprocessing," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cgDeepLearn" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="考虑用concurrent.futures来实现平行计算或并发处理   导读编写Python程序时,我们可以利用CPU的多核心通过平行计算来提升计算任务的速度。很遗憾，Python的全局解释器(GIL)的存在使得我们没有办法用线程实现真正的平行计算。 为了实现平行计算，我们可以考虑用C语言扩展或者使用诸如Cython和Numba等开源工具迁移到C语言。但是这样做大幅增加了测试量和风险。于是我们思考">
+<meta name="keywords" content="concurrent.futures,ProcessPoolExecutor,ThreadPoolExecutor,multiprocessing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 并发 concurrent.futures">
+<meta property="og:url" content="https://blog.writeathink.cn/2018/02/06/concurrent-futures/index.html">
+<meta property="og:site_name" content="cgDeepLearn">
+<meta property="og:description" content="考虑用concurrent.futures来实现平行计算或并发处理   导读编写Python程序时,我们可以利用CPU的多核心通过平行计算来提升计算任务的速度。很遗憾，Python的全局解释器(GIL)的存在使得我们没有办法用线程实现真正的平行计算。 为了实现平行计算，我们可以考虑用C语言扩展或者使用诸如Cython和Numba等开源工具迁移到C语言。但是这样做大幅增加了测试量和风险。于是我们思考">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-12T02:09:49.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 并发 concurrent.futures">
+<meta name="twitter:description" content="考虑用concurrent.futures来实现平行计算或并发处理   导读编写Python程序时,我们可以利用CPU的多核心通过平行计算来提升计算任务的速度。很遗憾，Python的全局解释器(GIL)的存在使得我们没有办法用线程实现真正的平行计算。 为了实现平行计算，我们可以考虑用C语言扩展或者使用诸如Cython和Numba等开源工具迁移到C语言。但是这样做大幅增加了测试量和风险。于是我们思考">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '5IB1N2USIP',
+      apiKey: '2acaab00a79e34bd9030a923f014cdcb',
+      indexName: 'my_github.io_search',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} ， 共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.writeathink.cn/2018/02/06/concurrent-futures/"/>
+
+
+
+
+
+  <title>Python 并发 concurrent.futures | cgDeepLearn</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11315781-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--forkmeon github
+    <a href="https://github.com/cgDeepLearn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cgDeepLearn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">More than code</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            最热
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.writeathink.cn/2018/02/06/concurrent-futures/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cgDeepLearn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cgDeepLearn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python 并发 concurrent.futures</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T17:02:42+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  >
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/进程线程协程/" itemprop="url" rel="index">
+                    <span itemprop="name">进程线程协程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/06/concurrent-futures/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/02/06/concurrent-futures/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/02/06/concurrent-futures/" class="leancloud_visitors" data-flag-title="Python 并发 concurrent.futures">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,642
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><p class="description">考虑用concurrent.futures来实现平行计算或并发处理<br></p>
+
+<p><img src="" alt="" style="width:100%"></p>
+<h2 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h2><p><div class="note info"><p><br>编写Python程序时,我们可以利用CPU的多核心通过平行计算来提升计算任务的速度。很遗憾，Python的全局解释器(<code>GIL</code>)的存在使得我们没有办法用<code>线程</code>实现真正的平行计算。</p>
+<p>为了实现平行计算，我们可以考虑用C语言扩展或者使用诸如<code>Cython</code>和<code>Numba</code>等开源工具迁移到C语言。但是这样做大幅增加了测试量和风险。于是我们思考一下：有没有一种更好的方式，只需使用少量的Python代码，即可有效提升执行效率，并迅速解决复杂的计算问题。</p>
+<p>我们可以试着通过内置的<code>concurrent.futures</code>模块来利用内置的<code>multiprocessing</code>模块实现这种需求。这样的做法会以子进程的形式，平行运行多个解释器，从而利用多核心CPU来提升执行速度(子进程与主解释器相分离，所以它们的全局解释器锁也是相互独立的)。<br></p></div><br><a id="more"></a><br>我们可以通过下面的例子来看一下效果。</p>
+<h2 id="计算两数最大公约数"><a href="#计算两数最大公约数" class="headerlink" title="计算两数最大公约数"></a>计算两数最大公约数</h2><p>现在给出一个列表，列表里每个元素是一对数，求出每对数的最大公约数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = [(<span class="number">1963309</span>, <span class="number">2265973</span>), (<span class="number">2030677</span>, <span class="number">3814172</span>),</span><br><span class="line">            (<span class="number">1551645</span>, <span class="number">2229620</span>), (<span class="number">2039045</span>, <span class="number">2020802</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="没有做平行计算的版本"><a href="#没有做平行计算的版本" class="headerlink" title="没有做平行计算的版本"></a>没有做平行计算的版本</h3><figure class="highlight python"><figcaption><span>求最大公约数</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(pair)</span>:</span></span><br><span class="line">    a, b = pair</span><br><span class="line">    low = min(a, b)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(low, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">if</span> a % i == <span class="number">0</span> <span class="keyword">and</span> b % i == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
+<p>我们用map来试运行一下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">start = time.time()</span><br><span class="line">results = list(map(gcd, numbers))</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">'Took %.3f seconds'</span> % (end - start))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Took <span class="number">0.530</span> seconds</span><br></pre></td></tr></table></figure>
+<p>下面我们用conccurrent.futures来模拟多线程和多进程</p>
+<h3 id="使用concurretn-futures的ThreadPoolExecutor"><a href="#使用concurretn-futures的ThreadPoolExecutor" class="headerlink" title="使用concurretn.futures的ThreadPoolExecutor"></a>使用<code>concurretn.futures</code>的<code>ThreadPoolExecutor</code></h3><figure class="highlight python"><figcaption><span>使用ThreadPoolExecutor多线程</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line">start = time.time()</span><br><span class="line">pool = ThreadPoolExecutor(max_workers=<span class="number">2</span>) <span class="comment"># cpu核心数目个工作线程 </span></span><br><span class="line">results = list(pool.map(gcd, numbers))</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">'Took %.3f seconds'</span> % (end - start))</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Took <span class="number">0.535</span> seconds</span><br></pre></td></tr></table></figure>
+<p>两个线程用了和上面差不多的时间，而且比上面还慢一些，说明多线程并不能平行计算，而且开线程也有耗费。</p>
+<h3 id="使用concurrent-futures的ProcessPoollExecutor"><a href="#使用concurrent-futures的ProcessPoollExecutor" class="headerlink" title="使用concurrent.futures的ProcessPoollExecutor"></a>使用<code>concurrent.futures</code>的<code>ProcessPoollExecutor</code></h3><figure class="highlight python"><figcaption><span>将ThreadPoolExecutor换成ProcessPoolExecutor</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line">start = time.time()</span><br><span class="line">pool = ProcessPoolExecutor(max_workers=<span class="number">2</span>) <span class="comment"># cpu核心数目个工作进程 </span></span><br><span class="line">results = list(pool.map(gcd, numbers))</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">'Took %.3f seconds'</span> % (end - start))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line">Took <span class="number">0.287</span> seconds</span><br></pre></td></tr></table></figure>
+<p>在双核电脑上运行上面程序发现比之前两个版本运行快很多。这是因为<code>ProcessPoolExecutor</code>会利用<code>multiprocessing</code>模块所提供的的底层机制来逐步完成下列操作：</p>
+<ol>
+<li>把numbers列表中的每一项输入数据都传给map</li>
+<li>用pickle模块对数据进行序列化，将其变成二进制形式。</li>
+<li>通过本地套接字socket将序列化后的数据从主解释器所在的进程发送到子解释器所在的进程。</li>
+<li>接下来在子进程中，用pickle对二进制数据进行反序列化操作,将其还原为Python对象</li>
+<li>引入包含gcd函数的那个Python模块</li>
+<li>各条子进程平行地针对各自的输入数据，来运行gcd函数</li>
+<li>对运行结果进行序列化操作，将其变为字节</li>
+<li>将这些字节通过socket复制到主进程中</li>
+<li>主进程对这些字节执行反序列化操作，将其还原为Python对象。</li>
+<li>最后，把每条子进程所求出的计算结果合并到一份列表中，返回给调用者</li>
+</ol>
+<h3 id="编后语"><a href="#编后语" class="headerlink" title="编后语"></a>编后语</h3><p>为了实现平行计算，<code>multiprocessing</code>模块和<code>ProcessPoolExecutor</code>类在幕后做了大量的工作。如果改用其他的语言来写，那么开发者只需一把同步锁或一项原子操作，就可以把线程之间的通信过程协调好。而在Python中，我们却必须使用开销较高的<code>multiprocessing</code>模块,其开销之所以大，原因就在于主进程与子进程之间，必须进行序列化和反序列化操作，这些是导致大量开销的来源。</p>
+<p>对于某些较为孤立，且数据利用率高的任务来说，上述方案非常适合。如果执行的运算不符合上述特征，那么<code>multiprocessing</code>所产生的的开销可能并不能使程序加速。在这种情况下，可以求助multiprocessing所提供的的一些高级机制，如内存共享(<code>shared memory</code>)、跨进程锁定(<code>cross-process lock</code>)、队列(<code>queue</code>)和代理(<code>proxy</code>)等。</p>
+<h2 id="下载进度条显示"><a href="#下载进度条显示" class="headerlink" title="下载进度条显示"></a>下载进度条显示</h2><p>用<code>concurrent.futures</code>的<code>ThreadPoolExecutor</code>类处理对于大量I/O操作的并发任务的示例。非常值得参考的实现。</p>
+<p>flags_common.py是一些默认参数和函数接口以及argparse。<br>flags_sequential.py是单线程依序下载以及进度条显示实现。<br>flags_threadpool.py是利用concurrent.futures的多线程操作实现。</p>
+<ul>
+<li>flags_common.py</li>
+</ul>
+<figure class="highlight python"><figcaption><span>flags_common.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Utilities for second set of flag examples.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Result = namedtuple(<span class="string">'Result'</span>, <span class="string">'status data'</span>)</span><br><span class="line"></span><br><span class="line">HTTPStatus = Enum(<span class="string">'Status'</span>, <span class="string">'ok not_found error'</span>)</span><br><span class="line"></span><br><span class="line">POP20_CC = (<span class="string">'CN IN US ID BR PK NG BD RU JP '</span></span><br><span class="line">            <span class="string">'MX PH VN ET EG DE IR TR CD FR'</span>).split()</span><br><span class="line"></span><br><span class="line">DEFAULT_CONCUR_REQ = <span class="number">1</span></span><br><span class="line">MAX_CONCUR_REQ = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">SERVERS = &#123;</span><br><span class="line">    <span class="string">'REMOTE'</span>: <span class="string">'http://flupy.org/data/flags'</span>,</span><br><span class="line">    <span class="string">'LOCAL'</span>:  <span class="string">'http://localhost:8001/flags'</span>,</span><br><span class="line">    <span class="string">'DELAY'</span>:  <span class="string">'http://localhost:8002/flags'</span>,</span><br><span class="line">    <span class="string">'ERROR'</span>:  <span class="string">'http://localhost:8003/flags'</span>,</span><br><span class="line">&#125;</span><br><span class="line">DEFAULT_SERVER = <span class="string">'LOCAL'</span></span><br><span class="line"></span><br><span class="line">DEST_DIR = <span class="string">'downloads/'</span></span><br><span class="line">COUNTRY_CODES_FILE = <span class="string">'country_codes.txt'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_flag</span><span class="params">(img, filename)</span>:</span></span><br><span class="line">    path = os.path.join(DEST_DIR, filename)</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial_report</span><span class="params">(cc_list, actual_req, server_label)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(cc_list) &lt;= <span class="number">10</span>:</span><br><span class="line">        cc_msg = <span class="string">', '</span>.join(cc_list)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cc_msg = <span class="string">'from &#123;&#125; to &#123;&#125;'</span>.format(cc_list[<span class="number">0</span>], cc_list[<span class="number">-1</span>])</span><br><span class="line">    print(<span class="string">'&#123;&#125; site: &#123;&#125;'</span>.format(server_label, SERVERS[server_label]))</span><br><span class="line">    msg = <span class="string">'Searching for &#123;&#125; flag&#123;&#125;: &#123;&#125;'</span></span><br><span class="line">    plural = <span class="string">'s'</span> <span class="keyword">if</span> len(cc_list) != <span class="number">1</span> <span class="keyword">else</span> <span class="string">''</span></span><br><span class="line">    print(msg.format(len(cc_list), plural, cc_msg))</span><br><span class="line">    plural = <span class="string">'s'</span> <span class="keyword">if</span> actual_req != <span class="number">1</span> <span class="keyword">else</span> <span class="string">''</span></span><br><span class="line">    msg = <span class="string">'&#123;&#125; concurrent connection&#123;&#125; will be used.'</span></span><br><span class="line">    print(msg.format(actual_req, plural))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">final_report</span><span class="params">(cc_list, counter, start_time)</span>:</span></span><br><span class="line">    elapsed = time.time() - start_time</span><br><span class="line">    print(<span class="string">'-'</span> * <span class="number">20</span>)</span><br><span class="line">    msg = <span class="string">'&#123;&#125; flag&#123;&#125; downloaded.'</span></span><br><span class="line">    plural = <span class="string">'s'</span> <span class="keyword">if</span> counter[HTTPStatus.ok] != <span class="number">1</span> <span class="keyword">else</span> <span class="string">''</span></span><br><span class="line">    print(msg.format(counter[HTTPStatus.ok], plural))</span><br><span class="line">    <span class="keyword">if</span> counter[HTTPStatus.not_found]:</span><br><span class="line">        print(counter[HTTPStatus.not_found], <span class="string">'not found.'</span>)</span><br><span class="line">    <span class="keyword">if</span> counter[HTTPStatus.error]:</span><br><span class="line">        plural = <span class="string">'s'</span> <span class="keyword">if</span> counter[HTTPStatus.error] != <span class="number">1</span> <span class="keyword">else</span> <span class="string">''</span></span><br><span class="line">        print(<span class="string">'&#123;&#125; error&#123;&#125;.'</span>.format(counter[HTTPStatus.error], plural))</span><br><span class="line">    print(<span class="string">'Elapsed time: &#123;:.2f&#125;s'</span>.format(elapsed))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">expand_cc_args</span><span class="params">(every_cc, all_cc, cc_args, limit)</span>:</span></span><br><span class="line">    codes = set()</span><br><span class="line">    A_Z = string.ascii_uppercase</span><br><span class="line">    <span class="keyword">if</span> every_cc:</span><br><span class="line">        codes.update(a+b <span class="keyword">for</span> a <span class="keyword">in</span> A_Z <span class="keyword">for</span> b <span class="keyword">in</span> A_Z)</span><br><span class="line">    <span class="keyword">elif</span> all_cc:</span><br><span class="line">        <span class="keyword">with</span> open(COUNTRY_CODES_FILE) <span class="keyword">as</span> fp:</span><br><span class="line">            text = fp.read()</span><br><span class="line">        codes.update(text.split())</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> cc <span class="keyword">in</span> (c.upper() <span class="keyword">for</span> c <span class="keyword">in</span> cc_args):</span><br><span class="line">            <span class="keyword">if</span> len(cc) == <span class="number">1</span> <span class="keyword">and</span> cc <span class="keyword">in</span> A_Z:</span><br><span class="line">                codes.update(cc+c <span class="keyword">for</span> c <span class="keyword">in</span> A_Z)</span><br><span class="line">            <span class="keyword">elif</span> len(cc) == <span class="number">2</span> <span class="keyword">and</span> all(c <span class="keyword">in</span> A_Z <span class="keyword">for</span> c <span class="keyword">in</span> cc):</span><br><span class="line">                codes.add(cc)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                msg = <span class="string">'each CC argument must be A to Z or AA to ZZ.'</span></span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">'*** Usage error: '</span>+msg)</span><br><span class="line">    <span class="keyword">return</span> sorted(codes)[:limit]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_args</span><span class="params">(default_concur_req)</span>:</span></span><br><span class="line">    server_options = <span class="string">', '</span>.join(sorted(SERVERS))</span><br><span class="line">    parser = argparse.ArgumentParser(</span><br><span class="line">                description=<span class="string">'Download flags for country codes. '</span></span><br><span class="line">                <span class="string">'Default: top 20 countries by population.'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'cc'</span>, metavar=<span class="string">'CC'</span>, nargs=<span class="string">'*'</span>,</span><br><span class="line">                help=<span class="string">'country code or 1st letter (eg. B for BA...BZ)'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'-a'</span>, <span class="string">'--all'</span>, action=<span class="string">'store_true'</span>,</span><br><span class="line">                help=<span class="string">'get all available flags (AD to ZW)'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'-e'</span>, <span class="string">'--every'</span>, action=<span class="string">'store_true'</span>,</span><br><span class="line">                help=<span class="string">'get flags for every possible code (AA...ZZ)'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'-l'</span>, <span class="string">'--limit'</span>, metavar=<span class="string">'N'</span>, type=int,</span><br><span class="line">                help=<span class="string">'limit to N first codes'</span>, default=sys.maxsize)</span><br><span class="line">    parser.add_argument(<span class="string">'-m'</span>, <span class="string">'--max_req'</span>, metavar=<span class="string">'CONCURRENT'</span>, type=int,</span><br><span class="line">                default=default_concur_req,</span><br><span class="line">                help=<span class="string">'maximum concurrent requests (default=&#123;&#125;)'</span></span><br><span class="line">                      .format(default_concur_req))</span><br><span class="line">    parser.add_argument(<span class="string">'-s'</span>, <span class="string">'--server'</span>, metavar=<span class="string">'LABEL'</span>,</span><br><span class="line">                default=DEFAULT_SERVER,</span><br><span class="line">                help=<span class="string">'Server to hit; one of &#123;&#125; (default=&#123;&#125;)'</span></span><br><span class="line">                      .format(server_options, DEFAULT_SERVER))</span><br><span class="line">    parser.add_argument(<span class="string">'-v'</span>, <span class="string">'--verbose'</span>, action=<span class="string">'store_true'</span>,</span><br><span class="line">                help=<span class="string">'output detailed progress info'</span>)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    <span class="keyword">if</span> args.max_req &lt; <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'*** Usage error: --max_req CONCURRENT must be &gt;= 1'</span>)</span><br><span class="line">        parser.print_usage()</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> args.limit &lt; <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'*** Usage error: --limit N must be &gt;= 1'</span>)</span><br><span class="line">        parser.print_usage()</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    args.server = args.server.upper()</span><br><span class="line">    <span class="keyword">if</span> args.server <span class="keyword">not</span> <span class="keyword">in</span> SERVERS:</span><br><span class="line">        print(<span class="string">'*** Usage error: --server LABEL must be one of'</span>,</span><br><span class="line">              server_options)</span><br><span class="line">        parser.print_usage()</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        cc_list = expand_cc_args(args.every, args.all, args.cc, args.limit)</span><br><span class="line">    <span class="keyword">except</span> ValueError <span class="keyword">as</span> exc:</span><br><span class="line">        print(exc.args[<span class="number">0</span>])</span><br><span class="line">        parser.print_usage()</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> cc_list:</span><br><span class="line">        cc_list = sorted(POP20_CC)</span><br><span class="line">    <span class="keyword">return</span> args, cc_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(download_many, default_concur_req, max_concur_req)</span>:</span></span><br><span class="line">    args, cc_list = process_args(default_concur_req)</span><br><span class="line">    actual_req = min(args.max_req, max_concur_req, len(cc_list))</span><br><span class="line">    initial_report(cc_list, actual_req, args.server)</span><br><span class="line">    base_url = SERVERS[args.server]</span><br><span class="line">    t0 = time.time()</span><br><span class="line">    counter = download_many(cc_list, base_url, args.verbose, actual_req)</span><br><span class="line">    <span class="keyword">assert</span> sum(counter.values()) == len(cc_list), \</span><br><span class="line">        <span class="string">'some downloads are unaccounted for'</span></span><br><span class="line">    final_report(cc_list, counter, t0)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>falgs_sequential.py</li>
+</ul>
+<figure class="highlight python"><figcaption><span>flags_sequential.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Download flags of countries (with error handling).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Sequential version</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Sample run::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    $ python3 flags_sequential.py -s DELAY b</span></span><br><span class="line"><span class="string">    DELAY site: http://localhost:8002/flags</span></span><br><span class="line"><span class="string">    Searching for 26 flags: from BA to BZ</span></span><br><span class="line"><span class="string">    1 concurrent connection will be used.</span></span><br><span class="line"><span class="string">    --------------------</span></span><br><span class="line"><span class="string">    17 flags downloaded.</span></span><br><span class="line"><span class="string">    9 not found.</span></span><br><span class="line"><span class="string">    Elapsed time: 13.36s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flags_common <span class="keyword">import</span> main, save_flag, HTTPStatus, Result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DEFAULT_CONCUR_REQ = <span class="number">1</span></span><br><span class="line">MAX_CONCUR_REQ = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># BEGIN FLAGS2_BASIC_HTTP_FUNCTIONS</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_flag</span><span class="params">(base_url, cc)</span>:</span></span><br><span class="line">    url = <span class="string">'&#123;&#125;/&#123;cc&#125;/&#123;cc&#125;.gif'</span>.format(base_url, cc=cc.lower())</span><br><span class="line">    resp = requests.get(url)</span><br><span class="line">    <span class="keyword">if</span> resp.status_code != <span class="number">200</span>:  <span class="comment"># &lt;1&gt;</span></span><br><span class="line">        resp.raise_for_status()</span><br><span class="line">    <span class="keyword">return</span> resp.content</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_one</span><span class="params">(cc, base_url, verbose=False)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        image = get_flag(base_url, cc)</span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.HTTPError <span class="keyword">as</span> exc:  <span class="comment"># &lt;2&gt;</span></span><br><span class="line">        res = exc.response</span><br><span class="line">        <span class="keyword">if</span> res.status_code == <span class="number">404</span>:</span><br><span class="line">            status = HTTPStatus.not_found  <span class="comment"># &lt;3&gt;</span></span><br><span class="line">            msg = <span class="string">'not found'</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># &lt;4&gt;</span></span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        save_flag(image, cc.lower() + <span class="string">'.gif'</span>)</span><br><span class="line">        status = HTTPStatus.ok</span><br><span class="line">        msg = <span class="string">'OK'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> verbose:  <span class="comment"># &lt;5&gt;</span></span><br><span class="line">        print(cc, msg)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Result(status, cc)  <span class="comment"># &lt;6&gt;</span></span><br><span class="line"><span class="comment"># END FLAGS2_BASIC_HTTP_FUNCTIONS</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># BEGIN FLAGS2_DOWNLOAD_MANY_SEQUENTIAL</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_many</span><span class="params">(cc_list, base_url, verbose, max_req)</span>:</span></span><br><span class="line">    counter = collections.Counter()  <span class="comment"># &lt;1&gt;</span></span><br><span class="line">    cc_iter = sorted(cc_list)  <span class="comment"># &lt;2&gt;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> verbose:</span><br><span class="line">        cc_iter = tqdm.tqdm(cc_iter)  <span class="comment"># &lt;3&gt;</span></span><br><span class="line">    <span class="keyword">for</span> cc <span class="keyword">in</span> cc_iter:  <span class="comment"># &lt;4&gt;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            res = download_one(cc, base_url, verbose)  <span class="comment"># &lt;5&gt;</span></span><br><span class="line">        <span class="keyword">except</span> requests.exceptions.HTTPError <span class="keyword">as</span> exc:  <span class="comment"># &lt;6&gt;</span></span><br><span class="line">            error_msg = <span class="string">'HTTP error &#123;res.status_code&#125; - &#123;res.reason&#125;'</span></span><br><span class="line">            error_msg = error_msg.format(res=exc.response)</span><br><span class="line">        <span class="keyword">except</span> requests.exceptions.ConnectionError <span class="keyword">as</span> exc:  <span class="comment"># &lt;7&gt;</span></span><br><span class="line">            error_msg = <span class="string">'Connection error'</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># &lt;8&gt;</span></span><br><span class="line">            error_msg = <span class="string">''</span></span><br><span class="line">            status = res.status</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> error_msg:</span><br><span class="line">            status = HTTPStatus.error  <span class="comment"># &lt;9&gt;</span></span><br><span class="line">        counter[status] += <span class="number">1</span>  <span class="comment"># &lt;10&gt;</span></span><br><span class="line">        <span class="keyword">if</span> verbose <span class="keyword">and</span> error_msg: <span class="comment"># &lt;11&gt;</span></span><br><span class="line">            print(<span class="string">'*** Error for &#123;&#125;: &#123;&#125;'</span>.format(cc, error_msg))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> counter  <span class="comment"># &lt;12&gt;</span></span><br><span class="line"><span class="comment"># END FLAGS2_DOWNLOAD_MANY_SEQUENTIAL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(download_many, DEFAULT_CONCUR_REQ, MAX_CONCUR_REQ)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>flags_threadpool.py</li>
+</ul>
+<figure class="highlight python"><figcaption><span>flags_threadpool.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Download flags of countries (with error handling).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ThreadPool version</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Sample run::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    $ python3 flags_threadpool.py -s REMOTE -e</span></span><br><span class="line"><span class="string">    ERROR site: http://localhost:8003/flags</span></span><br><span class="line"><span class="string">    Searching for 676 flags: from AA to ZZ</span></span><br><span class="line"><span class="string">    30 concurrent connections will be used.</span></span><br><span class="line"><span class="string">    --------------------</span></span><br><span class="line"><span class="string">    150 flags downloaded.</span></span><br><span class="line"><span class="string">    361 not found.</span></span><br><span class="line"><span class="string">    165 errors.</span></span><br><span class="line"><span class="string">    Elapsed time: 7.46s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># BEGIN FLAGS2_THREADPOOL</span></span><br><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"><span class="keyword">from</span> concurrent <span class="keyword">import</span> futures</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> tqdm  <span class="comment"># &lt;1&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flags_common <span class="keyword">import</span> main, HTTPStatus  <span class="comment"># &lt;2&gt;</span></span><br><span class="line"><span class="keyword">from</span> flags_sequential <span class="keyword">import</span> download_one  <span class="comment"># &lt;3&gt;</span></span><br><span class="line"></span><br><span class="line">DEFAULT_CONCUR_REQ = <span class="number">30</span>  <span class="comment"># &lt;4&gt;</span></span><br><span class="line">MAX_CONCUR_REQ = <span class="number">1000</span>  <span class="comment"># &lt;5&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_many</span><span class="params">(cc_list, base_url, verbose, concur_req)</span>:</span></span><br><span class="line">    counter = collections.Counter()</span><br><span class="line">    <span class="keyword">with</span> futures.ThreadPoolExecutor(max_workers=concur_req) <span class="keyword">as</span> executor:  <span class="comment"># &lt;6&gt;</span></span><br><span class="line">        to_do_map = &#123;&#125;  <span class="comment"># &lt;7&gt;</span></span><br><span class="line">        <span class="keyword">for</span> cc <span class="keyword">in</span> sorted(cc_list):  <span class="comment"># &lt;8&gt;</span></span><br><span class="line">            future = executor.submit(download_one,</span><br><span class="line">                            cc, base_url, verbose)  <span class="comment"># &lt;9&gt;</span></span><br><span class="line">            to_do_map[future] = cc  <span class="comment"># &lt;10&gt;</span></span><br><span class="line">        done_iter = futures.as_completed(to_do_map)  <span class="comment"># &lt;11&gt;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> verbose:</span><br><span class="line">            done_iter = tqdm.tqdm(done_iter, total=len(cc_list))  <span class="comment"># &lt;12&gt;</span></span><br><span class="line">        <span class="keyword">for</span> future <span class="keyword">in</span> done_iter:  <span class="comment"># &lt;13&gt;</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                res = future.result()  <span class="comment"># &lt;14&gt;</span></span><br><span class="line">            <span class="keyword">except</span> requests.exceptions.HTTPError <span class="keyword">as</span> exc:  <span class="comment"># &lt;15&gt;</span></span><br><span class="line">                error_msg = <span class="string">'HTTP &#123;res.status_code&#125; - &#123;res.reason&#125;'</span></span><br><span class="line">                error_msg = error_msg.format(res=exc.response)</span><br><span class="line">            <span class="keyword">except</span> requests.exceptions.ConnectionError <span class="keyword">as</span> exc:</span><br><span class="line">                error_msg = <span class="string">'Connection error'</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                error_msg = <span class="string">''</span></span><br><span class="line">                status = res.status</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> error_msg:</span><br><span class="line">                status = HTTPStatus.error</span><br><span class="line">            counter[status] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> verbose <span class="keyword">and</span> error_msg:</span><br><span class="line">                cc = to_do_map[future]  <span class="comment"># &lt;16&gt;</span></span><br><span class="line">                print(<span class="string">'*** Error for &#123;&#125;: &#123;&#125;'</span>.format(cc, error_msg))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> counter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(download_many, DEFAULT_CONCUR_REQ, MAX_CONCUR_REQ)</span><br><span class="line"><span class="comment"># END FLAGS2_THREADPOOL</span></span><br></pre></td></tr></table></figure>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #8959a8;font-size:20px;">-------------阅读完毕<i class="fa fa-paw"></i>吐槽一番吧~-------------</div>
+    
+</div>
+    
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/concurrent-futures/" rel="tag"><i class="fa fa-tag"></i> concurrent.futures</a>
+          
+            <a href="/tags/ProcessPoolExecutor/" rel="tag"><i class="fa fa-tag"></i> ProcessPoolExecutor</a>
+          
+            <a href="/tags/ThreadPoolExecutor/" rel="tag"><i class="fa fa-tag"></i> ThreadPoolExecutor</a>
+          
+            <a href="/tags/multiprocessing/" rel="tag"><i class="fa fa-tag"></i> multiprocessing</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div>
+          <div class="recommended_posts">
+    
+    
+    <div class="note primary">
+        <h4>推荐文章 </h4>
+            <ul>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/03/19/Cookiecutter-Django/">使用Cookiecutter来初始化你的Django项目,Awesome!!!</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/03/12/asyncio/">Python协程的演化-从yield/send到async/await</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/30/coroutine/">Python协程-coroutine</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/23/SparkMLlib-Advanced-Topics/">SparkMLlib-Advanced-Topics</a></li>
+                
+            </ul>
+    </div>
+     
+</div>
+        </div>
+      
+
+      <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/02/06/concurrent-futures/">Python 并发 concurrent.futures</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cgDeepLearn 的个人博客">cgDeepLearn</a></p>
+  <p><span>发布时间:</span>2018年02月06日 - 17:02</p>
+  <p><span>最后更新:</span>2018年03月12日 - 10:03</p>
+  <p><span>原始链接:</span><a href="/2018/02/06/concurrent-futures/" title="Python 并发 concurrent.futures">https://blog.writeathink.cn/2018/02/06/concurrent-futures/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.writeathink.cn/2018/02/06/concurrent-futures/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+        
+      </div>
+      
+      
+
+      
+        <div>
+          <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="cgDeepLearn 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+        </div>
+      
+
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/12/asyncio/" rel="prev" title="Python协程的演化-从yield/send到async/await">
+                <i class="fa fa-chevron-left"></i> Python协程的演化-从yield/send到async/await
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/coroutine/" rel="next" title="Python协程-coroutine">
+                Python协程-coroutine <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    
+    </footer>
+
+    
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/images/avatar.gif"
+                alt="cgDeepLearn" />
+              </a>
+            
+              <p class="site-author-name" itemprop="name">cgDeepLearn</p>
+              <p class="site-description motion-element" itemprop="description">Code Rocks!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgDeepLearn" target="_blank" title="Github">
+                      
+                        <i class="fa fa-fw fa-github"></i>Github</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=36485986" target="_blank" title="网易云音乐">
+                      
+                        <i class="fa fa-fw fa-music"></i>网易云音乐</a>
+                  </span>
+                
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                链链看
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://writeathink.cn/" title="😆 writeathink 😆" target="_blank" rel="external nofollow">😆 writeathink 😆</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cgdeeplearn.github.io/about/" title="关于此博客" target="_blank" rel="external nofollow">关于此博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#导读"><span class="nav-number">1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算两数最大公约数"><span class="nav-number">2.</span> <span class="nav-text">计算两数最大公约数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#没有做平行计算的版本"><span class="nav-number">2.1.</span> <span class="nav-text">没有做平行计算的版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用concurretn-futures的ThreadPoolExecutor"><span class="nav-number">2.2.</span> <span class="nav-text">使用concurretn.futures的ThreadPoolExecutor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用concurrent-futures的ProcessPoollExecutor"><span class="nav-number">2.3.</span> <span class="nav-text">使用concurrent.futures的ProcessPoollExecutor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编后语"><span class="nav-number">2.4.</span> <span class="nav-text">编后语</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载进度条显示"><span class="nav-number">3.</span> <span class="nav-text">下载进度条显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">4.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cgDeepLearn</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">别扫我~</div>
+    </div>
+  </div>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user-circle-o"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      <i class="fa fa-eye"></i>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz',
+        appKey: 'FrwRKt14p639teOiqUuU7D6j',
+        placeholder: 'ヾ(✿ﾟ▽ﾟ)ノ 来呀，快活呀!',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz", "FrwRKt14p639teOiqUuU7D6j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 9269,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+
+  <!-- 
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+ -->
+
+  <!-- 页面点击小红心 
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!-- keywords -->
+  <script type="text/javascript" src="/js/src/keywords.js"></script>
+
+
+</body>
+</html>

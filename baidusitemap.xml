@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/10/22/gRPC/</loc>
+    <lastmod>2018-10-22T01:36:41.379Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC简介及其在Python中使用</title>
+        <pubTime>2018-10-22T01:10:35.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>RPC</tag>
+         
+        <tag>分布式</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/06/11/Mix-in-inherit/</loc>
+    <lastmod>2018-06-12T03:04:36.515Z</lastmod>
+    <data>
+        <display>
+        <title>只在使用 Mix-in 组件制作工具类时进行多重继承</title>
+        <pubTime>2018-06-11T08:37:57.000Z</pubTime>
+        
+        <tag>Mix-in</tag>
+         
+        <tag>inherit</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/05/10/start-gitlab/</loc>
+    <lastmod>2018-05-10T06:34:46.176Z</lastmod>
+    <data>
+        <display>
+        <title>Ubuntu下搭建个人gitlab服务器</title>
+        <pubTime>2018-05-10T06:21:22.000Z</pubTime>
+        
+        <tag>gitlab</tag>
+         
+        <tag>git</tag>
+         
+        <tag>Ubuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="https://blog.writeathink.cn/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/03/12/asyncio/</loc>
+    <lastmod>2018-03-19T08:29:15.938Z</lastmod>
+    <data>
+        <display>
+        <title>Python协程的演化-从yield/send到async/await</title>
+        <pubTime>2018-03-12T01:51:27.000Z</pubTime>
+        
+        <tag>yield/send</tag>
+         
+        <tag>yield from</tag>
+         
+        <tag>asyncio.coroutine</tag>
+         
+        <tag>async/await</tag>
+         
+        <tag>asyncio</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="进程线程协程" url="https://blog.writeathink.cn/categories/Python/%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/03/19/Cookiecutter-Django/</loc>
+    <lastmod>2018-03-19T07:16:19.598Z</lastmod>
+    <data>
+        <display>
+        <title>使用Cookiecutter来初始化你的Django项目,Awesome!!!</title>
+        <pubTime>2018-03-19T06:53:10.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>django</tag>
+         
+        <tag>cookiecutter</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="Django" url="https://blog.writeathink.cn/categories/Python/Django/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/02/06/concurrent-futures/</loc>
+    <lastmod>2018-03-12T02:09:49.015Z</lastmod>
+    <data>
+        <display>
+        <title>Python 并发 concurrent.futures</title>
+        <pubTime>2018-02-06T09:02:42.000Z</pubTime>
+        
+        <tag>concurrent.futures</tag>
+         
+        <tag>ProcessPoolExecutor</tag>
+         
+        <tag>ThreadPoolExecutor</tag>
+         
+        <tag>multiprocessing</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="进程线程协程" url="https://blog.writeathink.cn/categories/Python/%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/18/threading/</loc>
+    <lastmod>2018-03-01T09:37:59.896Z</lastmod>
+    <data>
+        <display>
+        <title>Python进程线程 - threading</title>
+        <pubTime>2018-01-18T08:17:48.000Z</pubTime>
+        
+        <tag>Thread</tag>
+         
+        <tag>Queue</tag>
+         
+        <tag>Producer_Consumer</tag>
+         
+        <tag>Pipeline</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="进程线程协程" url="https://blog.writeathink.cn/categories/Python/%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/18/subprocess/</loc>
+    <lastmod>2018-03-01T09:37:46.168Z</lastmod>
+    <data>
+        <display>
+        <title>Python进程线程 - subprocess</title>
+        <pubTime>2018-01-18T08:06:40.000Z</pubTime>
+        
+        <tag>subprocess</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="进程线程协程" url="https://blog.writeathink.cn/categories/Python/%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/21/sparkmllib-working-with-features/</loc>
+    <lastmod>2018-03-01T09:37:32.859Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Working-with-Features</title>
+        <pubTime>2018-01-21T09:17:09.000Z</pubTime>
+        
+        <tag>TF-IDF</tag>
+         
+        <tag>Word2Vec</tag>
+         
+        <tag>OneHotEncoding</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/</loc>
+    <lastmod>2018-03-01T09:37:17.598Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Pipeline</title>
+        <pubTime>2018-01-19T09:03:04.000Z</pubTime>
+        
+        <tag>pipeline</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/23/SparkMLlib-ML-Tuning/</loc>
+    <lastmod>2018-03-01T09:37:05.697Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-ML-Tuning</title>
+        <pubTime>2018-01-23T02:29:01.000Z</pubTime>
+        
+        <tag>模型选择</tag>
+         
+        <tag>交叉验证</tag>
+         
+        <tag>训练-验证集划分</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/23/SparkMLlib-Frequent-Pattern-Mining/</loc>
+    <lastmod>2018-03-01T09:36:53.828Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Frequent-Pattern-Mining</title>
+        <pubTime>2018-01-23T02:02:05.000Z</pubTime>
+        
+        <tag>数据挖掘</tag>
+         
+        <tag>频繁项集</tag>
+         
+        <tag>关联规则</tag>
+         
+        <tag>FP-Growth</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/22/SparkMLlib-Collaborative-Filtering/</loc>
+    <lastmod>2018-03-01T09:36:37.827Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Collaborative-Filtering</title>
+        <pubTime>2018-01-22T03:36:52.000Z</pubTime>
+        
+        <tag>协同过滤</tag>
+         
+        <tag>推荐系统</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/22/SparkMLlib-Clustering/</loc>
+    <lastmod>2018-03-01T09:36:26.302Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Clustering</title>
+        <pubTime>2018-01-22T03:09:09.000Z</pubTime>
+        
+        <tag>KMeans</tag>
+         
+        <tag>LDA</tag>
+         
+        <tag>Bisecting KMeans</tag>
+         
+        <tag>GMM</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/</loc>
+    <lastmod>2018-03-01T09:36:14.503Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Classification-and-Regression</title>
+        <pubTime>2018-01-22T02:31:37.000Z</pubTime>
+        
+        <tag>逻辑回归</tag>
+         
+        <tag>决策树</tag>
+         
+        <tag>GBDT</tag>
+         
+        <tag>Naive Bayes</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/19/sparkmllib-basic/</loc>
+    <lastmod>2018-03-01T09:36:02.041Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Basic</title>
+        <pubTime>2018-01-19T08:49:21.000Z</pubTime>
+        
+        <tag>DataFrame</tag>
+         
+        <tag>RDD</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/23/SparkMLlib-Advanced-Topics/</loc>
+    <lastmod>2018-03-01T09:35:47.765Z</lastmod>
+    <data>
+        <display>
+        <title>SparkMLlib-Advanced-Topics</title>
+        <pubTime>2018-01-23T02:45:01.000Z</pubTime>
+        
+        <tag>线性方法的优化</tag>
+         
+        <tag>有限记忆BFGS</tag>
+         
+        <tag>用于加权最小二乘法的正态方程求解器</tag>
+         
+        <tag>迭代重新加权最小二乘</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spark" url="https://blog.writeathink.cn/categories/Spark/"/>
+          
+             
+              <breadCrumb title="MLlib" url="https://blog.writeathink.cn/categories/Spark/MLlib/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/19/hexo-music/</loc>
+    <lastmod>2018-03-01T09:35:36.316Z</lastmod>
+    <data>
+        <display>
+        <title>hexo-music</title>
+        <pubTime>2018-01-19T03:01:58.000Z</pubTime>
+        
+        <tag>music</tag>
+         
+        <tag>hexo-tag-aplayer</tag>
+         
+         
+           
+             
+              <breadCrumb title="hexo" url="https://blog.writeathink.cn/categories/hexo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/30/coroutine/</loc>
+    <lastmod>2018-03-01T09:35:10.701Z</lastmod>
+    <data>
+        <display>
+        <title>Python协程-coroutine</title>
+        <pubTime>2018-01-30T02:45:38.000Z</pubTime>
+        
+        <tag>yield from</tag>
+         
+        <tag>yield</tag>
+         
+        <tag>coroutine</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+             
+              <breadCrumb title="进程线程协程" url="https://blog.writeathink.cn/categories/Python/%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/12/deploy-hexo-next/</loc>
+    <lastmod>2018-01-27T09:16:31.492Z</lastmod>
+    <data>
+        <display>
+        <title>Github + hexo + Next 搭建免费个人博客</title>
+        <pubTime>2018-01-12T04:45:37.000Z</pubTime>
+        
+        <tag>github</tag>
+         
+        <tag>hexo</tag>
+         
+        <tag>next</tag>
+         
+         
+           
+             
+              <breadCrumb title="hexo" url="https://blog.writeathink.cn/categories/hexo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2018/01/10/hello-world/</loc>
+    <lastmod>2018-01-19T08:37:03.631Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2018-01-10T02:01:02.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>next</tag>
+         
+         
+           
+             
+              <breadCrumb title="hexo" url="https://blog.writeathink.cn/categories/hexo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+</urlset>

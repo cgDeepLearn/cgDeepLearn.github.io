@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="D5-qRqseoFKaMoLLpwgLLeyygQcyL2YH5spNiQ4g9gE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="http://fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="yield from,yield,coroutine," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cgDeepLearn" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="考虑用协程来并发的运行多个函数   前言我们可以用线程来运行多个函数，使这些函数看上去好像是在同一时间得到执行的。然而，线程有三个显著的缺点： 为了确保数据安全，我们必须使用特殊的工具(Lock, Queue等)来协调这些线程，这使得多线程的代码，要比单线程的过程式代码更加难懂。这些复杂的多线程代码，会逐渐令程序变得难以扩展和维护。 线程需要占用大量内存，每个正在执行的线程，大约占据8MB内存。如">
+<meta name="keywords" content="yield from,yield,coroutine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python协程-coroutine">
+<meta property="og:url" content="https://blog.writeathink.cn/2018/01/30/coroutine/index.html">
+<meta property="og:site_name" content="cgDeepLearn">
+<meta property="og:description" content="考虑用协程来并发的运行多个函数   前言我们可以用线程来运行多个函数，使这些函数看上去好像是在同一时间得到执行的。然而，线程有三个显著的缺点： 为了确保数据安全，我们必须使用特殊的工具(Lock, Queue等)来协调这些线程，这使得多线程的代码，要比单线程的过程式代码更加难懂。这些复杂的多线程代码，会逐渐令程序变得难以扩展和维护。 线程需要占用大量内存，每个正在执行的线程，大约占据8MB内存。如">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T09:35:10.701Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python协程-coroutine">
+<meta name="twitter:description" content="考虑用协程来并发的运行多个函数   前言我们可以用线程来运行多个函数，使这些函数看上去好像是在同一时间得到执行的。然而，线程有三个显著的缺点： 为了确保数据安全，我们必须使用特殊的工具(Lock, Queue等)来协调这些线程，这使得多线程的代码，要比单线程的过程式代码更加难懂。这些复杂的多线程代码，会逐渐令程序变得难以扩展和维护。 线程需要占用大量内存，每个正在执行的线程，大约占据8MB内存。如">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '5IB1N2USIP',
+      apiKey: '2acaab00a79e34bd9030a923f014cdcb',
+      indexName: 'my_github.io_search',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} ， 共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.writeathink.cn/2018/01/30/coroutine/"/>
+
+
+
+
+
+  <title>Python协程-coroutine | cgDeepLearn</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11315781-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--forkmeon github
+    <a href="https://github.com/cgDeepLearn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cgDeepLearn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">More than code</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            最热
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.writeathink.cn/2018/01/30/coroutine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cgDeepLearn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cgDeepLearn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python协程-coroutine</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T10:45:38+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  >
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/进程线程协程/" itemprop="url" rel="index">
+                    <span itemprop="name">进程线程协程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/coroutine/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/30/coroutine/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/30/coroutine/" class="leancloud_visitors" data-flag-title="Python协程-coroutine">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,877
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><p class="description">考虑用协程来并发的运行多个函数<br></p>
+
+<p><img src="" alt="" style="width:100%"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div class="note primary"><p><br>我们可以用线程来运行多个函数，使这些函数看上去好像是在同一时间得到执行的。然而，线程有<code>三</code>个显著的缺点：<br><ul><br><li><i class="fa fa-minus-square"></i> 为了确保数据安全，我们必须使用特殊的工具(<code>Lock</code>, <code>Queue</code>等)来协调这些线程，这使得多线程的代码，要比单线程的过程式代码更加难懂。这些复杂的多线程代码，会逐渐令程序变得难以扩展和维护。</li><br><li><i class="fa fa-minus-square"></i> 线程需要<code>占用大量内存</code>，每个正在执行的线程，大约占据<code>8MB</code>内存。如果只开十几个线程，多数计算机还是可以承受的。</li><br><li><i class="fa fa-minus-square"></i> 线程<code>启动的开销比较大</code>。如果程序不停地依靠创建新线程来同时执行多个函数，并等待这些线程结束，那么使用线程所引发的开销，就会拖慢整个程序的速度。</li><br></ul></p></div>
+
+<a id="more"></a>
+<p>Python的<code>协程(coroutine)</code>可以避免上述问题，它使得Python程序看上去好像是在同时运行多个函数。协程的实现方式，实际上是对生成器的一种扩展。启动生成器协程所需的开销，与调用函数的开销相仿。处于活跃状态的协程，在其耗尽之前，只会占用不到<code>1KB</code>的内存。</p>
+<h2 id="协程的工作原理"><a href="#协程的工作原理" class="headerlink" title="协程的工作原理"></a>协程的工作原理</h2><p>每当生成器函数执行到<code>yield</code>表达式的时候，消耗生成器的那段代码，就通过<code>send</code>方法给生成器回传一个值。而生成器在手熬了经由send函数所传进来的这个值后，这个值会绑定给<code>yield</code>关键字左边的变量；如果<code>yield</code>关键字右边有表达式，那么<code>yield</code>表达式右侧的内容会当成send方法的返回值(没有的话其实返回的是<code>None</code>)，返回给外界(调用方).关键的一点是，协程在 <code>yield</code> 关键字所在的位置暂停执行。在赋值语句中， <code>=</code> 右边的代码在赋值之前执行。下面我们结合两个例子来看看。</p>
+<h3 id="简单的协程示例"><a href="#简单的协程示例" class="headerlink" title="简单的协程示例"></a>简单的协程示例</h3><figure class="highlight python"><figcaption><span>简单协程示例</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_coroutine</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        received = <span class="keyword">yield</span></span><br><span class="line">        print(<span class="string">'Received:'</span>, received)</span><br><span class="line"></span><br><span class="line">it = my_coroutine()</span><br><span class="line">next(it)  <span class="comment"># 1</span></span><br><span class="line">it.send(<span class="string">'First'</span>)  <span class="comment"># 2</span></span><br><span class="line">it.send(<span class="string">'Second'</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Received: First</span><br><span class="line">Received: Second</span><br></pre></td></tr></table></figure>
+<p><i class="fa fa-pencil"></i>注1: 在生成器上面调用<code>send</code>方法，我们要先调用next函数(这叫<code>预激协程</code>)，以便将生成器推进到第一条<code>yield</code>表达式那里</p>
+<h3 id="协程产出值"><a href="#协程产出值" class="headerlink" title="协程产出值"></a>协程产出值</h3><p>该示例在协程每收到一个数值，就会产出当前所统计到的最大值</p>
+<figure class="highlight python"><figcaption><span>协程产出值</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maximize</span><span class="params">()</span>:</span></span><br><span class="line">    current = <span class="keyword">yield</span>  <span class="comment"># 1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        value = <span class="keyword">yield</span> current  <span class="comment"># 2</span></span><br><span class="line">        current = max(value, current)  <span class="comment"># 3</span></span><br><span class="line"></span><br><span class="line">it = maximize()</span><br><span class="line">next(it)  <span class="comment"># 预激协程，执行到第一个yield处</span></span><br><span class="line">print(it.send(<span class="number">10</span>)) <span class="comment"># 执行到#2处产出current值，等待接收值</span></span><br><span class="line">print(it.send(<span class="number">12</span>)) <span class="comment"># 绑定12给value，计算current，执行到#2处产出current值，等待接收值</span></span><br><span class="line">print(it.send(<span class="number">4</span>))  <span class="comment"># 同上，即执行到yield表达式右边，等待左边输入绑定</span></span><br><span class="line">print(it.send(<span class="number">22</span>))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">22</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码范例中，第一条<code>yield</code>语句中的<code>yield</code>关键字后面没有跟随内容，其意思是，把外面传进来的首个值，当成目前的最大值。<br>此后生成器会屡次执行while循环中的那条<code>yield</code>语句，以便将当前统计到的最大值告诉外界，同时等候外界传入下一个待考察的值。</p>
+<div class="note info"><p>协程在yield关键字所在的位置暂停执行。在赋值语句中， = 右边的代码在赋值之前执行。即各个阶段都在yield表达式中结束，先产出值然后在yield出暂停，等待外界传入值。下一个阶段都从那一行代码开始</p></div>
+
+<h2 id="yield-from"><a href="#yield-from" class="headerlink" title="yield from"></a>yield from</h2><p>协程可以通过yield的输出值来推进其他的生成器函数，使得那些生成器函数也执行到它们各自的下一条yield比到时处。接连推进多个独立的生成器，即可模拟出Python线程的并发行为，令程序看上去好像是在同时运行多个函数</p>
+<h3 id="使用yield-from计算平均值并输出统计报告"><a href="#使用yield-from计算平均值并输出统计报告" class="headerlink" title="使用yield from计算平均值并输出统计报告"></a>使用yield from计算平均值并输出统计报告</h3><p>从一个字典中读取虚构的七年级男女学生的体重和身高。例如，’boys;m’ 键对应于 9 个男学生的身高（单位是米）， ‘girls;kg’ 键对应于 10 个女学生的体重（单位是千克）。这个脚本把各组数据传给前面定义的 averager 协程，然后生成一个报告。</p>
+<figure class="highlight python"><figcaption><span>使用yield from计算平均值并输出统计报告</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""使用yield from计算平均值并输出统计报告"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">Result = namedtuple(<span class="string">'Result'</span>, <span class="string">'count average'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 子生成器</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">averager</span><span class="params">()</span>:</span>  <span class="comment"># 1</span></span><br><span class="line">    total = <span class="number">0.0</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    average = <span class="keyword">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span>  <span class="comment"># 2</span></span><br><span class="line">        <span class="keyword">if</span> term <span class="keyword">is</span> <span class="keyword">None</span>:  <span class="comment"># 3</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line">    <span class="keyword">return</span> Result(count, average)  <span class="comment"># 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 委派生成器</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">grouper</span><span class="params">(results, key)</span>:</span>  <span class="comment"># 5</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:  <span class="comment"># 6</span></span><br><span class="line">        results[key] = <span class="keyword">yield</span> <span class="keyword">from</span> averager()  <span class="comment"># 7</span></span><br><span class="line"><span class="comment"># 客户端代码，即调用方</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(data)</span>:</span>  <span class="comment"># 8</span></span><br><span class="line">    results = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> key, values <span class="keyword">in</span> data.items():</span><br><span class="line">        group = grouper(results, key)  <span class="comment"># 9</span></span><br><span class="line">        next(group)  <span class="comment"># 10</span></span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> values:</span><br><span class="line">            group.send(value)  <span class="comment"># 11</span></span><br><span class="line">        group.send(<span class="keyword">None</span>)  <span class="comment"># 重要！ 12</span></span><br><span class="line">    print(results)  <span class="comment"># 如果要调试，去掉注释</span></span><br><span class="line">    report(results)</span><br><span class="line"><span class="comment"># 输出报告</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">report</span><span class="params">(results)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> key, result <span class="keyword">in</span> sorted(results.items()):</span><br><span class="line">        group, unit = key.split(<span class="string">';'</span>)</span><br><span class="line">        print(<span class="string">'&#123;:2&#125; &#123;:5&#125; averaging &#123;:.2f&#125;&#123;&#125;'</span>.format(</span><br><span class="line">            result.count, group, result.average, unit))</span><br><span class="line"></span><br><span class="line">DATA = &#123;</span><br><span class="line">    <span class="string">'girls;kg'</span>: [<span class="number">40.9</span>, <span class="number">38.5</span>, <span class="number">44.3</span>, <span class="number">42.2</span>, <span class="number">45.2</span>, <span class="number">41.7</span>, <span class="number">44.5</span>, <span class="number">38.0</span>, <span class="number">40.6</span>, <span class="number">44.5</span>],</span><br><span class="line">    <span class="string">'girls;m'</span>: [<span class="number">1.6</span>, <span class="number">1.51</span>, <span class="number">1.4</span>, <span class="number">1.3</span>, <span class="number">1.41</span>, <span class="number">1.39</span>, <span class="number">1.33</span>, <span class="number">1.46</span>, <span class="number">1.45</span>, <span class="number">1.43</span>],</span><br><span class="line">    <span class="string">'boys;kg'</span>: [<span class="number">39.0</span>, <span class="number">40.8</span>, <span class="number">43.2</span>, <span class="number">40.8</span>, <span class="number">43.1</span>, <span class="number">38.6</span>, <span class="number">41.4</span>, <span class="number">40.6</span>, <span class="number">36.3</span>],</span><br><span class="line">    <span class="string">'boys;m'</span>: [<span class="number">1.38</span>, <span class="number">1.5</span>, <span class="number">1.32</span>, <span class="number">1.25</span>, <span class="number">1.37</span>, <span class="number">1.48</span>, <span class="number">1.25</span>, <span class="number">1.49</span>, <span class="number">1.46</span>],</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(DATA)</span><br></pre></td></tr></table></figure>
+<div class="note info"><p><br>1-  与示例 16-13 中的 averager 协程一样。这里作为子生成器使用。<br>2-  main 函数中的客户代码发送的各个值绑定到这里的 term 变量上。<br>3-  至关重要的终止条件。如果不这么做，使用 yield from 调用这个协程的生成器会永<br>远阻塞。<br>4- 返回的 Result 会成为 grouper 函数中 yield from 表达式的值。<br>5-  grouper 是委派生成器。<br>6-  这个循环每次迭代时会新建一个 averager 实例；每个实例都是作为协程使用的生成器对象。<br>7-  grouper 发送的每个值都会经由 yield from 处理，通过管道传给 averager 实例。 grouper 会在 yield from 表达式处暂停，等待 averager 实例处理客户端发来的值。 averager 实例运行完毕后，返回的值绑定到 results[key] 上。 while 循环会不断创建 averager 实例，处理更多的值。<br>8- main 函数是客户端代码，用 PEP 380 定义的术语来说，是“调用方”。这是驱动一切的函数<br>9- group 是调用 grouper 函数得到的生成器对象，传给 grouper 函数的第一个参数是results，用于收集结果；第二个参数是某个键。 group 作为协程使用。<br>10- 预激 group 协程。<br>11- 把各个 value 传给 grouper。传入的值最终到达 averager 函数中 term = yield 那一行； grouper 永远不知道传入的值是什么。<br>12- 把 None 传入 grouper，导致当前的 averager 实例终止，也让 grouper 继续运行，再创建一个 averager 实例，处理下一组值。<br></p></div>
+
+<h2 id="生命游戏：演示协程的协同运作效果。"><a href="#生命游戏：演示协程的协同运作效果。" class="headerlink" title="生命游戏：演示协程的协同运作效果。"></a>生命游戏：演示协程的协同运作效果。</h2><h3 id="游戏规则"><a href="#游戏规则" class="headerlink" title="游戏规则"></a>游戏规则</h3><ul>
+<li>在一个任意尺寸的二维网格中，每个细胞(即每个单元格)都处于<code>生存(alive,用*表示)</code>或<code>空白(empty,用-表示)</code>状态。</li>
+<li>时钟每走一步，生命游戏就向前进一步。向前推进时，我们要点算每个细胞周边的那八个单元格，看看该细胞附近有多少个存活的细胞。然后根据存活的数量来判断自己下一轮是继续存活、死亡还是再生。</li>
+<li>具体判断规则<ul>
+<li>若本细胞存活，且周围存活者不足两个，则本细胞下一轮死亡。</li>
+<li>若本细胞存活，且周围的存活者多于3个，则本细胞下一轮死亡。</li>
+<li>若本细胞死亡，且周围的存活者恰有3个，则本细胞下一轮再生。</li>
+</ul>
+</li>
+</ul>
+<h3 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h3><p>基于规则我们可以将整个程序分成三个阶段:<code>count_neighbors</code>, <code>step_cell</code>, <code>display</code></p>
+<ul>
+<li>count_neighbors: 计算每个细胞附近8个细胞存活的数目</li>
+<li>step_cell: 根据细胞本轮状态和计算得到周围的细胞数量生成下一轮的状态</li>
+<li>根据每轮的结果显示细胞状态</li>
+</ul>
+<h4 id="count-neighbors"><a href="#count-neighbors" class="headerlink" title="count_neighbors"></a>count_neighbors</h4><p>我们定义一个协程来获取周围细胞的生存状态。协程会产生一个自定义的<code>Query</code>对象，每个<code>yield</code>表达式的结果，要么是<code>ALIVE</code>，要么是<code>EMPTY</code>。其后count_neighbors生成器会根据相邻细胞的状态，来返回本细胞周围的存活细胞数(生成器return语句在python3中才可用，实际是把结果作为StopIteration异常的value属性传给了调用者)</p>
+<figure class="highlight python"><figcaption><span>count_neighbors协程计算细胞周围的存活数目</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">ALIVE = <span class="string">'*'</span></span><br><span class="line">EMPTY = <span class="string">'-'</span></span><br><span class="line"></span><br><span class="line">Query = namedtuple(<span class="string">'Query'</span>, (<span class="string">'y'</span>, <span class="string">'x'</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_neighbors</span><span class="params">(y, x)</span>:</span></span><br><span class="line">    n_ = <span class="keyword">yield</span> Query(y + <span class="number">1</span>, x + <span class="number">0</span>)  <span class="comment"># North</span></span><br><span class="line">    ne = <span class="keyword">yield</span> Query(y + <span class="number">1</span>, x + <span class="number">1</span>)  <span class="comment"># Northeast</span></span><br><span class="line">    e_ = <span class="keyword">yield</span> Query(y + <span class="number">0</span>, x + <span class="number">1</span>)  <span class="comment"># East</span></span><br><span class="line">    se = <span class="keyword">yield</span> Query(y - <span class="number">1</span>, x + <span class="number">1</span>)  <span class="comment"># Southeast</span></span><br><span class="line">    s_ = <span class="keyword">yield</span> Query(y - <span class="number">1</span>, x + <span class="number">0</span>)  <span class="comment"># South</span></span><br><span class="line">    sw = <span class="keyword">yield</span> Query(y - <span class="number">1</span>, x - <span class="number">1</span>)  <span class="comment"># Southwest</span></span><br><span class="line">    w_ = <span class="keyword">yield</span> Query(y + <span class="number">0</span>, x - <span class="number">1</span>)  <span class="comment"># West</span></span><br><span class="line">    nw = <span class="keyword">yield</span> Query(y + <span class="number">1</span>, x - <span class="number">1</span>)  <span class="comment"># Northwest</span></span><br><span class="line">    neighbor_states = [n_, ne, e_, se, s_, sw, w_, nw]</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> state <span class="keyword">in</span> neighbor_states:</span><br><span class="line">        <span class="keyword">if</span> state == ALIVE:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
+<p>我们用虚构的数据来测试一下这个count_neighbors协程.<br>下面这段代码，会针对本细胞的每个相邻细胞，向生成器索要一个<code>Query</code>对象，并产出<code>Query namedtuple</code>。然后通过<code>send</code>方法把状态发给协程，使<code>count_neighbors</code>协程可以收到上一个<code>Query</code>对象所对应的状态(注意我们上文提到的<code>yield</code>表达式一行执行顺序–先右再左)</p>
+<figure class="highlight python"><figcaption><span>测试count_neighbors协程</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = count_neighbors(<span class="number">10</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(it)  <span class="comment"># Get the first query, for q1</span></span><br><span class="line">Query(y=<span class="number">11</span>, x=<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.send(ALIVE)  <span class="comment"># Send q1 state, get q2</span></span><br><span class="line">Query(y=<span class="number">11</span>, x=<span class="number">6</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.send(ALIVE)  <span class="comment"># Send q2 state, get q3</span></span><br><span class="line">Query(y=<span class="number">10</span>, x=<span class="number">6</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span> <span class="comment"># Send q3 ... q7 states, get q4 ... q8</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[it.send(state) <span class="keyword">for</span> state <span class="keyword">in</span> (EMPTY)*<span class="number">5</span>]  <span class="comment"># doctest: +ELLIPSIS</span></span><br><span class="line">[Query(y=<span class="number">9</span>, x=<span class="number">6</span>), Query(y=<span class="number">9</span>, x=<span class="number">5</span>), ..., Query(y=<span class="number">11</span>, x=<span class="number">4</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>    it.send(EMPTY)  <span class="comment"># Send q8 state, drive coroutine to end</span></span><br><span class="line"><span class="meta">... </span><span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line"><span class="meta">... </span>    count = e.value  <span class="comment"># Value from return statement</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>count</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h4 id="step-cell"><a href="#step-cell" class="headerlink" title="step_cell"></a>step_cell</h4><p>计算出了细胞周围的存活数量，我们就需要根据这个数量来更新细胞的状态。并把得到的状态传给外部调用者。<br>这里我们自定义了一个<code>Transition</code>对象，它表示坐标位于(y,x)的细胞的下一轮的状态。</p>
+<figure class="highlight python"><figcaption><span>step_cell根据count_neighbors计算出来的存活状态数量产生下一轮的状态</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Transition = namedtuple(<span class="string">'Transition'</span>, (<span class="string">'y'</span>, <span class="string">'x'</span>, <span class="string">'state'</span>))  <span class="comment"># state即是下一轮的状态</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step_cell</span><span class="params">(y, x)</span>:</span></span><br><span class="line">    current_state = <span class="keyword">yield</span> Query(y, x) <span class="comment"># 获取当前状态</span></span><br><span class="line">    neighbors = <span class="keyword">yield</span> <span class="keyword">from</span> count_neighbors(y, x)  <span class="comment"># 委派给子生成器count_neighbors </span></span><br><span class="line">    next_state = game_logic(state, neighbors)  <span class="comment"># game_logic根据规则判断下一轮状态</span></span><br><span class="line">    <span class="keyword">yield</span> Transition(y, x, next_state)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">game_logic</span><span class="params">(state, neighbors)</span>:</span></span><br><span class="line">    <span class="comment"># 这里其实我们可以使用是否等于3来简化判断</span></span><br><span class="line">    <span class="keyword">if</span> state == ALIVE:</span><br><span class="line">        <span class="keyword">if</span> neighbors &lt; <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> EMPTY     <span class="comment"># Die: Too few</span></span><br><span class="line">        <span class="keyword">elif</span> neighbors &gt; <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">return</span> EMPTY     <span class="comment"># Die: Too many</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> neighbors == <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">return</span> ALIVE     <span class="comment"># Regenerate</span></span><br><span class="line">    <span class="keyword">return</span> state</span><br></pre></td></tr></table></figure>
+<p>下面我们用虚拟数据来测试一下<code>step_cell</code>协程：</p>
+<figure class="highlight python"><figcaption><span>测试step_cell协程</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = step_cell(<span class="number">10</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(it)  <span class="comment"># Initial location query</span></span><br><span class="line">Query(y=<span class="number">10</span>, x=<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[it.send(st) <span class="keyword">for</span> st <span class="keyword">in</span> (ALIVE)*<span class="number">5</span> + (EMPTY)*<span class="number">3</span>]   <span class="comment"># doctest: +ELLIPSIS</span></span><br><span class="line">[Query(y=<span class="number">11</span>, x=<span class="number">5</span>), Query(y=<span class="number">11</span>, x=<span class="number">6</span>), ... Query(y=<span class="number">11</span>, x=<span class="number">4</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.send(EMPTY)  <span class="comment"># Send q8 state, get game decision</span></span><br><span class="line">Transition(y=<span class="number">10</span>, x=<span class="number">5</span>, state=<span class="string">'-'</span>)</span><br></pre></td></tr></table></figure>
+<p>上面演示了在网格中一个细胞的一次前进。下面我们把<code>step_cell</code>组合到新的<code>simulate</code>协程之中。新的协程会多次通过yield from 表达式，来推进网格中的每一个细胞。把每个细胞处理完后，<code>simulate</code>协程会产生<code>TICK</code>对象，用以表示当前这一代的细胞已经全部迁移完毕。</p>
+<figure class="highlight python"><figcaption><span>simulate</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TICK = object()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simulate</span><span class="params">(height, width)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(height):</span><br><span class="line">            <span class="keyword">for</span> x <span class="keyword">in</span> range(width):</span><br><span class="line">                <span class="keyword">yield</span> <span class="keyword">from</span> step_cell(y, x)  <span class="comment"># 委派给子生成器step_cell</span></span><br><span class="line">        <span class="keyword">yield</span> TICK</span><br></pre></td></tr></table></figure>
+<h4 id="网格显示状态"><a href="#网格显示状态" class="headerlink" title="网格显示状态"></a>网格显示状态</h4><p>为了在真实环境中运行<code>simulate</code>，我们需要把网格中的每个细胞状态表示出来。我们定义一个Grid类，来代表整张网格：</p>
+<figure class="highlight python"><figcaption><span>Grid类显示网格和细胞状态</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Grid</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, height, width)</span>:</span></span><br><span class="line">        self.height = height</span><br><span class="line">        self.width = width</span><br><span class="line">        self.rows = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(self.height):</span><br><span class="line">            self.rows.append([EMPTY] * self.width)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        output = <span class="string">''</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> self.rows:</span><br><span class="line">            <span class="keyword">for</span> cell <span class="keyword">in</span> row:</span><br><span class="line">                output += cell</span><br><span class="line">            output += <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, position)</span>:</span></span><br><span class="line">        y, x = position</span><br><span class="line">        <span class="comment"># 如果传入的坐标值越界，我们用取余来自动折回</span></span><br><span class="line">        <span class="keyword">return</span> self.rows[y % self.height][x % self.width]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, position, state)</span>:</span></span><br><span class="line">        y, x = position</span><br><span class="line">        self.rows[y % self.height][x % self.width] = state</span><br></pre></td></tr></table></figure>
+<p>我们定义了<code>__getitem__</code>和<code>__setitem__</code>两个元方法来设置和获取<code>state</code>。下面我们看一下<code>Grid</code>的显示：</p>
+<figure class="highlight python"><figcaption><span>根据参数Grid生成网格和状态</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid = Grid(<span class="number">5</span>, <span class="number">9</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid[<span class="number">0</span>, <span class="number">3</span>] = ALIVE</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid[<span class="number">1</span>, <span class="number">4</span>] = ALIVE</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid[<span class="number">2</span>, <span class="number">2</span>] = ALIVE</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid[<span class="number">2</span>, <span class="number">3</span>] = ALIVE</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grid[<span class="number">2</span>, <span class="number">4</span>] = ALIVE</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(grid)</span><br><span class="line">---*-----</span><br><span class="line">----*----</span><br><span class="line">--***----</span><br><span class="line">---------</span><br><span class="line">---------</span><br></pre></td></tr></table></figure>
+<h4 id="live-a-generation"><a href="#live-a-generation" class="headerlink" title="live_a_generation"></a>live_a_generation</h4><p>这个函数把网格内的所有细胞都向前推进一步，待各细胞状态迁移完成后，这些细胞就构成了一张新的网格，该函数会把新的网格返回给调用者。</p>
+<figure class="highlight python"><figcaption><span>live_a_generation</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">live_a_generation</span><span class="params">(grid, sim)</span>:</span></span><br><span class="line">    <span class="comment"># grid: 现阶段网格对象；sim: simulate生成器对象</span></span><br><span class="line">    progeny = Grid(grid.height, grid.width)  <span class="comment"># 下一代网格对象 </span></span><br><span class="line">    item = next(sim)</span><br><span class="line">    <span class="keyword">while</span> item <span class="keyword">is</span> <span class="keyword">not</span> TICK:</span><br><span class="line">        <span class="keyword">if</span> isinstance(item, Query):  <span class="comment">#计算附近细胞</span></span><br><span class="line">            state = grid[item.y, item.x]</span><br><span class="line">            item = sim.send(state)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># Must be a Transition，附近细胞算完了,得到Transition对象</span></span><br><span class="line">            progeny[item.y, item.x] = item.state</span><br><span class="line">            item = next(sim) <span class="comment"># 生成器运行到下一个yield处，即simulate的下一个坐标处</span></span><br><span class="line">    <span class="keyword">return</span> progeny  <span class="comment">#返回下一轮的网格对象</span></span><br></pre></td></tr></table></figure>
+<p><code>live_a_generation</code>是将当前细胞向前推进一步，现在我们把每一代的结果都显示出来</p>
+<figure class="highlight python"><figcaption><span>ColumnPrinter</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ColumnPrinter</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.columns = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.columns.append(data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        row_count = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> data <span class="keyword">in</span> self.columns:</span><br><span class="line">            row_count = max(row_count, len(data.splitlines()) + <span class="number">1</span>)</span><br><span class="line">        rows = [<span class="string">''</span>] * row_count</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(row_count):</span><br><span class="line">            <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(self.columns):</span><br><span class="line">                line = data.splitlines()[max(<span class="number">0</span>, j - <span class="number">1</span>)]</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">                    rows[j] += str(i).center(len(line))</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    rows[j] += line</span><br><span class="line">                <span class="keyword">if</span> (i + <span class="number">1</span>) &lt; len(self.columns):</span><br><span class="line">                    rows[j] += <span class="string">' | '</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'\n'</span>.join(rows)</span><br></pre></td></tr></table></figure>
+<p>我们来看看效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>columns = ColumnPrinter()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sim = simulate(grid.height, grid.width)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line"><span class="meta">... </span>    columns.append(str(grid))</span><br><span class="line"><span class="meta">... </span>    grid = live_a_generation(grid, sim)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(columns)  <span class="comment"># doctest: +NORMALIZE_WHITESPACE</span></span><br><span class="line">    <span class="number">0</span>     |     <span class="number">1</span>     |     <span class="number">2</span>     |     <span class="number">3</span>     |     <span class="number">4</span></span><br><span class="line">---*----- | --------- | --------- | --------- | ---------</span><br><span class="line">----*---- | --*-*---- | ----*---- | ---*----- | ----*----</span><br><span class="line">--***---- | ---**---- | --*-*---- | ----**--- | -----*---</span><br><span class="line">--------- | ---*----- | ---**---- | ---**---- | ---***---</span><br><span class="line">--------- | --------- | --------- | --------- | ---------</span><br></pre></td></tr></table></figure>
+<p>上面这套的实现方式，其最大优势在于：开发者能够在不修改game_logic函数的前提下，更新该函数外围的那些代码。<br>上面这套范例代码，演示了如何用协程来分离程序中的各个关注点，而关注点的分离，正是一条重要的原则。</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #8959a8;font-size:20px;">-------------阅读完毕<i class="fa fa-paw"></i>吐槽一番吧~-------------</div>
+    
+</div>
+    
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/yield-from/" rel="tag"><i class="fa fa-tag"></i> yield from</a>
+          
+            <a href="/tags/yield/" rel="tag"><i class="fa fa-tag"></i> yield</a>
+          
+            <a href="/tags/coroutine/" rel="tag"><i class="fa fa-tag"></i> coroutine</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div>
+          <div class="recommended_posts">
+    
+    
+    <div class="note primary">
+        <h4>推荐文章 </h4>
+            <ul>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/03/12/asyncio/">Python协程的演化-从yield/send到async/await</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/02/06/concurrent-futures/">Python 并发 concurrent.futures</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/23/SparkMLlib-Advanced-Topics/">SparkMLlib-Advanced-Topics</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/23/SparkMLlib-ML-Tuning/">SparkMLlib-ML-Tuning</a></li>
+                
+            </ul>
+    </div>
+     
+</div>
+        </div>
+      
+
+      <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/30/coroutine/">Python协程-coroutine</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cgDeepLearn 的个人博客">cgDeepLearn</a></p>
+  <p><span>发布时间:</span>2018年01月30日 - 10:01</p>
+  <p><span>最后更新:</span>2018年03月01日 - 17:03</p>
+  <p><span>原始链接:</span><a href="/2018/01/30/coroutine/" title="Python协程-coroutine">https://blog.writeathink.cn/2018/01/30/coroutine/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.writeathink.cn/2018/01/30/coroutine/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+        
+      </div>
+      
+      
+
+      
+        <div>
+          <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="cgDeepLearn 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+        </div>
+      
+
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/06/concurrent-futures/" rel="prev" title="Python 并发 concurrent.futures">
+                <i class="fa fa-chevron-left"></i> Python 并发 concurrent.futures
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/23/SparkMLlib-Advanced-Topics/" rel="next" title="SparkMLlib-Advanced-Topics">
+                SparkMLlib-Advanced-Topics <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    
+    </footer>
+
+    
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/images/avatar.gif"
+                alt="cgDeepLearn" />
+              </a>
+            
+              <p class="site-author-name" itemprop="name">cgDeepLearn</p>
+              <p class="site-description motion-element" itemprop="description">Code Rocks!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgDeepLearn" target="_blank" title="Github">
+                      
+                        <i class="fa fa-fw fa-github"></i>Github</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=36485986" target="_blank" title="网易云音乐">
+                      
+                        <i class="fa fa-fw fa-music"></i>网易云音乐</a>
+                  </span>
+                
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                链链看
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://writeathink.cn/" title="😆 writeathink 😆" target="_blank" rel="external nofollow">😆 writeathink 😆</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cgdeeplearn.github.io/about/" title="关于此博客" target="_blank" rel="external nofollow">关于此博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程的工作原理"><span class="nav-number">2.</span> <span class="nav-text">协程的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的协程示例"><span class="nav-number">2.1.</span> <span class="nav-text">简单的协程示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协程产出值"><span class="nav-number">2.2.</span> <span class="nav-text">协程产出值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yield-from"><span class="nav-number">3.</span> <span class="nav-text">yield from</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用yield-from计算平均值并输出统计报告"><span class="nav-number">3.1.</span> <span class="nav-text">使用yield from计算平均值并输出统计报告</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生命游戏：演示协程的协同运作效果。"><span class="nav-number">4.</span> <span class="nav-text">生命游戏：演示协程的协同运作效果。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#游戏规则"><span class="nav-number">4.1.</span> <span class="nav-text">游戏规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建模"><span class="nav-number">4.2.</span> <span class="nav-text">建模</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#count-neighbors"><span class="nav-number">4.2.1.</span> <span class="nav-text">count_neighbors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-cell"><span class="nav-number">4.2.2.</span> <span class="nav-text">step_cell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网格显示状态"><span class="nav-number">4.2.3.</span> <span class="nav-text">网格显示状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#live-a-generation"><span class="nav-number">4.2.4.</span> <span class="nav-text">live_a_generation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">5.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cgDeepLearn</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">别扫我~</div>
+    </div>
+  </div>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user-circle-o"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      <i class="fa fa-eye"></i>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz',
+        appKey: 'FrwRKt14p639teOiqUuU7D6j',
+        placeholder: 'ヾ(✿ﾟ▽ﾟ)ノ 来呀，快活呀!',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz", "FrwRKt14p639teOiqUuU7D6j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 9269,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+
+  <!-- 
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+ -->
+
+  <!-- 页面点击小红心 
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!-- keywords -->
+  <script type="text/javascript" src="/js/src/keywords.js"></script>
+
+
+</body>
+</html>

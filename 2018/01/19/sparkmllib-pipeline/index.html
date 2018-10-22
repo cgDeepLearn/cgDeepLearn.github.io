@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="D5-qRqseoFKaMoLLpwgLLeyygQcyL2YH5spNiQ4g9gE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="http://fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="pipeline," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cgDeepLearn" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Spark中的管道pipeline  ML Pipelines 管道中的主要概念MLlib对机器学习算法的API进行了标准化，使得将多种算法合并成一个流水线或工作流变得更加容易。本部分涵盖了Pipelines API引入的关键概念，其中流水线概念主要受scikit-learn项目的启发。  DataFrame：这个ML API使用Spark SQL中的DataFrame作为一个ML数据集，它可以容">
+<meta name="keywords" content="pipeline">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparkMLlib-Pipeline">
+<meta property="og:url" content="https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/index.html">
+<meta property="og:site_name" content="cgDeepLearn">
+<meta property="og:description" content="Spark中的管道pipeline  ML Pipelines 管道中的主要概念MLlib对机器学习算法的API进行了标准化，使得将多种算法合并成一个流水线或工作流变得更加容易。本部分涵盖了Pipelines API引入的关键概念，其中流水线概念主要受scikit-learn项目的启发。  DataFrame：这个ML API使用Spark SQL中的DataFrame作为一个ML数据集，它可以容">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/ml-Pipeline.png?raw=true">
+<meta property="og:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/ml-PipelineModel.png?raw=true">
+<meta property="og:updated_time" content="2018-03-01T09:37:17.598Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SparkMLlib-Pipeline">
+<meta name="twitter:description" content="Spark中的管道pipeline  ML Pipelines 管道中的主要概念MLlib对机器学习算法的API进行了标准化，使得将多种算法合并成一个流水线或工作流变得更加容易。本部分涵盖了Pipelines API引入的关键概念，其中流水线概念主要受scikit-learn项目的启发。  DataFrame：这个ML API使用Spark SQL中的DataFrame作为一个ML数据集，它可以容">
+<meta name="twitter:image" content="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/ml-Pipeline.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '5IB1N2USIP',
+      apiKey: '2acaab00a79e34bd9030a923f014cdcb',
+      indexName: 'my_github.io_search',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} ， 共耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/"/>
+
+
+
+
+
+  <title>SparkMLlib-Pipeline | cgDeepLearn</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-11315781-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--forkmeon github
+    <a href="https://github.com/cgDeepLearn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cgDeepLearn</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">More than code</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            最热
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cgDeepLearn">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cgDeepLearn">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SparkMLlib-Pipeline</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T17:03:04+08:00">
+                2018-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+                  >
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/MLlib/" itemprop="url" rel="index">
+                    <span itemprop="name">MLlib</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/19/sparkmllib-pipeline/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/19/sparkmllib-pipeline/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/19/sparkmllib-pipeline/" class="leancloud_visitors" data-flag-title="SparkMLlib-Pipeline">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,810
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><p class="description">Spark中的管道pipeline<br></p>
+
+<p><img src="" alt="" style="width:100%"><br>ML Pipelines</p>
+<h2 id="管道中的主要概念"><a href="#管道中的主要概念" class="headerlink" title="管道中的主要概念"></a><strong>管道中的主要概念</strong></h2><p>MLlib对机器学习算法的API进行了标准化，使得将多种算法合并成一个流水线或工作流变得更加容易。本部分涵盖了Pipelines API引入的关键概念，其中流水线概念主要受scikit-learn项目的启发。</p>
+<ul>
+<li><p><strong>DataFrame</strong>：这个ML API使用Spark SQL中的DataFrame作为一个ML数据集，它可以容纳各种数据类型。例如，一个DataFrame可以具有存储文本，特征向量，真实标签和预测的不同列。</p>
+</li>
+<li><p><strong>Transformer</strong>：一个Transformer是可以将一个DataFrame变换成成另一个DataFrame的算法。例如，一个ML模型是一个Transformer将一个DataFrame特征转化为一个DataFrame预测的模型。</p>
+</li>
+<li><p><strong>Estimator</strong>：一个 Estimator是一个可以被应用在DataFrame上来产生一个Transformer的算法。例如，一个学习算法是一种Estimator，它可以在DataFrame上训练并生成模型。</p>
+</li>
+<li><p><strong>Pipeline</strong>：Pipeline将多个Transformers和Estimators连接起来以指定ML工作流程。</p>
+</li>
+<li><p><strong>Parameter</strong>：所有Transformers和Estimators现在对于指定参数共享通用API。</p>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="DataFrame-数据帧"><a href="#DataFrame-数据帧" class="headerlink" title="DataFrame(数据帧)"></a><strong>DataFrame(数据帧)</strong></h3><p>机器学习可以应用于各种数据类型，如向量，文本，图像和结构化数据。这个API采用DataFrameSpark SQL来支持各种数据类型。</p>
+<p>DataFrame支持许多基本和结构化的类型; 请参阅Spark SQL数据类型参考以获取受支持类型的列表。除了Spark SQL指南中列出的类型以外，DataFrame还可以使用ML Vector类型。</p>
+<p>A DataFrame可以隐式地或显式地从常规创建RDD。有关示例，请参阅下面的代码示例和Spark SQL编程指南。</p>
+<p>a DataFrame中的列被命名。下面的代码示例使用“text”，“feature”和“label”等名称。</p>
+<h3 id="Pipeline-components-管道组件"><a href="#Pipeline-components-管道组件" class="headerlink" title="Pipeline components(管道组件)"></a><strong>Pipeline components(管道组件)</strong></h3><h4 id="Transformers"><a href="#Transformers" class="headerlink" title="Transformers"></a>Transformers</h4><p>A Transformer是包含特征变换器和学习模型的抽象。从技术上来说，a Transformer实现了一种方法(<em>transform()</em>),将一个DataFrame转换为另一个的方法，通常通过附加一列或多列。例如：</p>
+<ul>
+<li>特征转换器选取一个DataFrame，读取列（例如文本），将其映射到新的列（例如特征向量），并且输出具有附加映射列的新DataFrame</li>
+<li>学习模型可以选取一个DataFrame，读取包含特征向量的列，预测每个特征向量的标签，并输出带有预测标签的新列的DataFrame。</li>
+</ul>
+<h4 id="Estimators"><a href="#Estimators" class="headerlink" title="Estimators"></a>Estimators</h4><p>一个Estimator是在数据集上训练的学习算法的抽象概念。从技术上讲，一个Estimator实现了一个方法 <em>fit()</em>，它接受DataFrame并生成一个 Model，这是一个Transformer。例如，一个学习算法，如LogisticRegression(它是一个Estimator)，调用 <em>fit()</em> 函数来训练一个LogisticRegressionModel模型，它是一个Model也是一个Transformer。</p>
+<h4 id="Properties-o-pipeline-components"><a href="#Properties-o-pipeline-components" class="headerlink" title="Properties o pipeline components"></a>Properties o pipeline components</h4><p>Transformer.transform()s和Estimator.fit()s都是无状态的。将来，有状态算法可以通过替代概念来支持。<br>每个Transformer或者Estimator的实例具有唯一的ID，这在指定参数（在下面讨论）中是有用的。</p>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p>在机器学习中，通常运行一系列算法来处理和学习数据。例如，简单的文本文档处理工作流程可能包括几个阶段：</p>
+<ul>
+<li>将每个文档的文本分词。</li>
+<li>将每个文档的单词转换为数字特征向量。</li>
+<li>使用特征向量和标签来学习预测模型。</li>
+</ul>
+<p>MLlib表示这样一个工作流程Pipeline，它由一系列 PipelineStages（Transformers和Estimators）组成，并以特定顺序运行。我们将使用这个简单的工作流程作为本节中的一个运行示例。</p>
+<h4 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h4><p>A Pipeline是一个阶段序列，每个阶段是一个Transformer或一个Estimator。这些阶段是按顺序运行的，输入的DataFrame在每个阶段都经过转换。对于Transformer阶段，<em>transform()</em> 方法被调用作用于DataFrame上。对于Estimator阶段，<em>fit()</em>方法被调用，以产生Transformer（它成为PipelineModel或合适的Pipeline的一部分），以及Transformer的transform()方法也被调用作用于DataFrame。</p>
+<p>我们用简单的文本文档工作流来说明这一点。下图是a 。训练时间的使用情况Pipeline。<br><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/ml-Pipeline.png?raw=true" alt="Pipeline"></p>
+<p>在上面，最上面一行代表一个Pipeline有三个阶段。前两个（Tokenizer和HashingTF）是Transformers（蓝色），第三个（LogisticRegression）是Estimator（红色）。最下面一行代表流经管道的数据，其中圆柱表示DataFrames。这个Pipeline.fit()方法在原始DataFrame文档和标签上被调用。Tokenizer.transform()方法将原始文本文档分词，分词后的words作为一个新列添加到DataFrame中。HashingTF.transform()方法将单词列转换为特征向量，并向这些向量作为一个新列添加到DataFrame中。现在，既然LogisticRegression是一个Estimator，Pipeline首先调用LogisticRegression.fit()方法就生成一个LogisticRegressionModel。如果Pipeline有更多Estimators，它就会在DataFrame传送到下个阶段之前调用LogisticRegressionModel的transform() 方法。</p>
+<p>一个Pipeline是一个Estimator。因此，在Pipeline的fit()方法运行后，它产生一个PipelineModel，这是一个 Transformer。这PipelineModel是在测试时使用 ; 下图说明了这种用法。</p>
+<p><img src="https://github.com/cgDeepLearn/LearnSpark/blob/master/pics/ml-PipelineModel.png?raw=true" alt="PiplineModel"></p>
+<p>在上面的图中，PipelineModel具有和原始的Pipeline相同数量的阶段，但所有EstimatorS在原始Pipeline中已变成TransformerS。当PipelineModel的transform()方法在测试数据集被调用，数据在管道上按序传递。每个阶段的transform()方法都会更新数据集并将其传递到下一个阶段。</p>
+<p>Pipelines和PipelineModels有助于确保训练和测试数据经过相同的特征处理步骤。</p>
+<h4 id="Details"><a href="#Details" class="headerlink" title="Details"></a><strong>Details</strong></h4><p><em>DAG Pipelines</em>：A Pipeline的阶段被指定为一个有序数组。这里给出的例子都是线性Pipeline的，即Pipeline每个阶段使用前一阶段产生的数据。Pipeline只要数据流图形成有向无环图（DAG），就可以创建非线性的PipelineS。该图当前是基于每个阶段的输入和输出列名（通常指定为参数）隐含指定的。如果Pipeline形式为DAG，那么阶段必须按拓扑顺序指定。</p>
+<p><em>Runtime checking</em>：由于Pipelines可以在不同类型的DataFrames上运行，所以不能使用compile-time类型检查。 Pipelines和PipelineModels，而是在实际运行Pipeline之前进行runtime checking检查。这种类型的检查是通过使用DataFrame <em>schema</em>来完成的，schema是对DataFrame的列的数据类型的描述。</p>
+<p><em>Unique Pipeline stages</em>：A Pipeline的阶段应该是独一无二的实例。例如，同一个实例 myHashingTF不应该插入Pipeline两次，因为Pipeline阶段必须有唯一的ID。然而，不同的实例myHashingTF1和myHashingTF2（两个类型HashingTF）可以放在一起，Pipeline因为创建不同的实例使用不同的ID。</p>
+<h3 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a><strong>Parameters</strong></h3><p>MLlib Estimators和Transformers使用统一的API来指定参数。</p>
+<p>A Param是一个带有自包含文档的命名参数。A ParamMap是一组（参数，值）对。</p>
+<p>将参数传递给算法有两种主要方法：</p>
+<ol>
+<li>为实例设置参数。例如，如果lr是的一个实例LogisticRegression，它可以调用lr.setMaxIter(10)让lr.fit()至多10次迭代使用。这个API类似于spark.mllib包中使用的API 。</li>
+<li>传递ParamMap给fit()或transform()。任何在ParamMap中额参数将覆盖以前通过setter方法指定的参数。</li>
+</ol>
+<p>参数属于Estimators和Transformers的特定实例。例如，如果我们有两个LogisticRegression实例lr1和lr2，然后我们可以建立一个ParamMap与两个maxIter指定的参数：ParamMap(lr1.maxIter -&gt; 10, lr2.maxIter -&gt; 20)。如果一个Pipeline里有两个包含maxIter参数的算法，那么这很有用。</p>
+<h3 id="Saving-and-LoadingPipelines"><a href="#Saving-and-LoadingPipelines" class="headerlink" title="Saving and LoadingPipelines"></a><strong>Saving and LoadingPipelines</strong></h3><p>通常情况下，会将模型或管道保存到磁盘供以后使用。在Spark 1.6中，模型导入/导出功能被添加到管道API中。大多数基本的Transformers都和一些更加基本的ML模型一样被支持。请参阅算法的API文档以查看是否支持保存和加载。</p>
+<h2 id="Code-examples"><a href="#Code-examples" class="headerlink" title="Code examples"></a>Code examples</h2><p>本节给出了说明上述功能的代码示例。有关更多信息，请参阅API文档（Scala， Java和Python）。</p>
+<h3 id="Example-Estimator-Transformer-and-Param"><a href="#Example-Estimator-Transformer-and-Param" class="headerlink" title="Example: Estimator, Transformer, and Param"></a><strong>Example: Estimator, Transformer, and Param</strong></h3><p>这个例子涉及的概念Estimator，Transformer和Param。<br>请参阅<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Estimator" target="_blank" rel="noopener">EstimatorPython文档</a>，<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Transformer" target="_blank" rel="noopener">TransformerPython文档</a>和<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.param.Params" target="_blank" rel="noopener">ParamsPython文档</a>以获取有关API的更多详细信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml.linalg <span class="keyword">import</span> Vectors</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession </span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"ParamsExample"</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Prepare training data from a list of (label, features) tuples.</span></span><br><span class="line">training = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1.0</span>, Vectors.dense([<span class="number">0.0</span>, <span class="number">1.1</span>, <span class="number">0.1</span>])),</span><br><span class="line">    (<span class="number">0.0</span>, Vectors.dense([<span class="number">2.0</span>, <span class="number">1.0</span>, <span class="number">-1.0</span>])),</span><br><span class="line">    (<span class="number">0.0</span>, Vectors.dense([<span class="number">2.0</span>, <span class="number">1.3</span>, <span class="number">1.0</span>])),</span><br><span class="line">    (<span class="number">1.0</span>, Vectors.dense([<span class="number">0.0</span>, <span class="number">1.2</span>, <span class="number">-0.5</span>]))], [<span class="string">"label"</span>, <span class="string">"features"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a LogisticRegression instance. This instance is an Estimator.</span></span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.01</span>)</span><br><span class="line"><span class="comment"># Print out the parameters, documentation, and any default values.</span></span><br><span class="line">print(<span class="string">"LogisticRegression parameters:\n"</span> + lr.explainParams() + <span class="string">"\n"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Learn a LogisticRegression model. This uses the parameters stored in lr.</span></span><br><span class="line">model1 = lr.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Since model1 is a Model (i.e., a transformer produced by an Estimator),</span></span><br><span class="line"><span class="comment"># we can view the parameters it used during fit().</span></span><br><span class="line"><span class="comment"># This prints the parameter (name: value) pairs, where names are unique IDs for this</span></span><br><span class="line"><span class="comment"># LogisticRegression instance.</span></span><br><span class="line">print(<span class="string">"Model 1 was fit using parameters: "</span>)</span><br><span class="line">print(model1.extractParamMap())</span><br><span class="line"></span><br><span class="line"><span class="comment"># We may alternatively specify parameters using a Python dictionary as a paramMap</span></span><br><span class="line">paramMap = &#123;lr.maxIter: <span class="number">20</span>&#125;</span><br><span class="line">paramMap[lr.maxIter] = <span class="number">30</span>  <span class="comment"># Specify 1 Param, overwriting the original maxIter.</span></span><br><span class="line">paramMap.update(&#123;lr.regParam: <span class="number">0.1</span>, lr.threshold: <span class="number">0.55</span>&#125;)  <span class="comment"># Specify multiple Params.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You can combine paramMaps, which are python dictionaries.</span></span><br><span class="line">paramMap2 = &#123;lr.probabilityCol: <span class="string">"myProbability"</span>&#125;  <span class="comment"># Change output column name</span></span><br><span class="line">paramMapCombined = paramMap.copy()</span><br><span class="line">paramMapCombined.update(paramMap2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Now learn a new model using the paramMapCombined parameters.</span></span><br><span class="line"><span class="comment"># paramMapCombined overrides all parameters set earlier via lr.set* methods.</span></span><br><span class="line">model2 = lr.fit(training, paramMapCombined)</span><br><span class="line">print(<span class="string">"Model 2 was fit using parameters: "</span>)</span><br><span class="line">print(model2.extractParamMap())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare test data</span></span><br><span class="line">test = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1.0</span>, Vectors.dense([<span class="number">-1.0</span>, <span class="number">1.5</span>, <span class="number">1.3</span>])),</span><br><span class="line">    (<span class="number">0.0</span>, Vectors.dense([<span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">-0.1</span>])),</span><br><span class="line">    (<span class="number">1.0</span>, Vectors.dense([<span class="number">0.0</span>, <span class="number">2.2</span>, <span class="number">-1.5</span>]))], [<span class="string">"label"</span>, <span class="string">"features"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions on test data using the Transformer.transform() method.</span></span><br><span class="line"><span class="comment"># LogisticRegression.transform will only use the 'features' column.</span></span><br><span class="line"><span class="comment"># Note that model2.transform() outputs a "myProbability" column instead of the usual</span></span><br><span class="line"><span class="comment"># 'probability' column since we renamed the lr.probabilityCol parameter previously.</span></span><br><span class="line">prediction = model2.transform(test)</span><br><span class="line">result = prediction.select(<span class="string">"features"</span>, <span class="string">"label"</span>, <span class="string">"myProbability"</span>, <span class="string">"prediction"</span>) \</span><br><span class="line">    .collect()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> result:</span><br><span class="line">    print(<span class="string">"features=%s, label=%s -&gt; prob=%s, prediction=%s"</span></span><br><span class="line">          % (row.features, row.label, row.myProbability, row.prediction))</span><br><span class="line"></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/estimator_transformer_param_example.py” in the Spark repo.</p>
+<h3 id="Example-Pipeline"><a href="#Example-Pipeline" class="headerlink" title="Example: Pipeline"></a><strong>Example: Pipeline</strong></h3><p>本示例遵循Pipeline上图中所示的简单文本文档。<br>有关APi的更多详细信息，请参阅<a href="https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline" target="_blank" rel="noopener">PipelinePython文档</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> HashingTF, Tokenizer</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession  </span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">""</span>PipeLineExample<span class="string">""</span>).getOrCreate()</span><br><span class="line"><span class="comment"># Prepare training documents from a list of (id, text, label) tuples.</span></span><br><span class="line">training = spark.createDataFrame([</span><br><span class="line">    (<span class="number">0</span>, <span class="string">"a b c d e spark"</span>, <span class="number">1.0</span>),</span><br><span class="line">    (<span class="number">1</span>, <span class="string">"b d"</span>, <span class="number">0.0</span>),</span><br><span class="line">    (<span class="number">2</span>, <span class="string">"spark f g h"</span>, <span class="number">1.0</span>),</span><br><span class="line">    (<span class="number">3</span>, <span class="string">"hadoop mapreduce"</span>, <span class="number">0.0</span>)</span><br><span class="line">], [<span class="string">"id"</span>, <span class="string">"text"</span>, <span class="string">"label"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.</span></span><br><span class="line">tokenizer = Tokenizer(inputCol=<span class="string">"text"</span>, outputCol=<span class="string">"words"</span>)</span><br><span class="line">hashingTF = HashingTF(inputCol=tokenizer.getOutputCol(), outputCol=<span class="string">"features"</span>)</span><br><span class="line">lr = LogisticRegression(maxIter=<span class="number">10</span>, regParam=<span class="number">0.001</span>)</span><br><span class="line">pipeline = Pipeline(stages=[tokenizer, hashingTF, lr])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the pipeline to training documents.</span></span><br><span class="line">model = pipeline.fit(training)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare test documents, which are unlabeled (id, text) tuples.</span></span><br><span class="line">test = spark.createDataFrame([</span><br><span class="line">    (<span class="number">4</span>, <span class="string">"spark i j k"</span>),</span><br><span class="line">    (<span class="number">5</span>, <span class="string">"l m n"</span>),</span><br><span class="line">    (<span class="number">6</span>, <span class="string">"spark hadoop spark"</span>),</span><br><span class="line">    (<span class="number">7</span>, <span class="string">"apache hadoop"</span>)</span><br><span class="line">], [<span class="string">"id"</span>, <span class="string">"text"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make predictions on test documents and print columns of interest.</span></span><br><span class="line">prediction = model.transform(test)</span><br><span class="line">selected = prediction.select(<span class="string">"id"</span>, <span class="string">"text"</span>, <span class="string">"probability"</span>, <span class="string">"prediction"</span>)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> selected.collect():</span><br><span class="line">    rid, text, prob, prediction = row</span><br><span class="line">    print(<span class="string">"(%d, %s) --&gt; prob=%s, prediction=%f"</span> % (rid, text, str(prob), prediction))</span><br><span class="line"></span><br><span class="line">spark.stop()</span><br></pre></td></tr></table></figure>
+<p>Find full example code at “examples/src/main/python/ml/pipeline_example.py” in the Spark repo.</p>
+<h3 id="Model-selection-hyperparameter-tuning-模型选择-超参数调整"><a href="#Model-selection-hyperparameter-tuning-模型选择-超参数调整" class="headerlink" title="Model selection (hyperparameter tuning)- 模型选择(超参数调整)"></a><strong>Model selection (hyperparameter tuning)- 模型选择(超参数调整)</strong></h3><p>使用ML管道的一大好处是超参数优化。有关自动模型选择的更多信息，请参阅<a href="https://spark.apache.org/docs/latest/ml-tuning.html" target="_blank" rel="noopener">ML调整指南</a>。</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+    
+      <div>
+    
+        <div style="text-align:center;color: #8959a8;font-size:20px;">-------------阅读完毕<i class="fa fa-paw"></i>吐槽一番吧~-------------</div>
+    
+</div>
+    
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pipeline/" rel="tag"><i class="fa fa-tag"></i> pipeline</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div>
+          <div class="recommended_posts">
+    
+    
+    <div class="note primary">
+        <h4>推荐文章 </h4>
+            <ul>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/22/SparkMLlib-Classification-and-Regression/">SparkMLlib-Classification-and-Regression</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/21/sparkmllib-working-with-features/">SparkMLlib-Working-with-Features</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/19/sparkmllib-basic/">SparkMLlib-Basic</a></li>
+                
+                    <li><a href="https://blog.writeathink.cn/2018/01/19/hexo-music/">hexo-music</a></li>
+                
+            </ul>
+    </div>
+     
+</div>
+        </div>
+      
+
+      <div>
+        
+          
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/19/sparkmllib-pipeline/">SparkMLlib-Pipeline</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cgDeepLearn 的个人博客">cgDeepLearn</a></p>
+  <p><span>发布时间:</span>2018年01月19日 - 17:01</p>
+  <p><span>最后更新:</span>2018年03月01日 - 17:03</p>
+  <p><span>原始链接:</span><a href="/2018/01/19/sparkmllib-pipeline/" title="SparkMLlib-Pipeline">https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://blog.writeathink.cn/2018/01/19/sparkmllib-pipeline/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+        
+      </div>
+      
+      
+
+      
+        <div>
+          <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="cgDeepLearn 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+        </div>
+      
+
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/21/sparkmllib-working-with-features/" rel="prev" title="SparkMLlib-Working-with-Features">
+                <i class="fa fa-chevron-left"></i> SparkMLlib-Working-with-Features
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/19/sparkmllib-basic/" rel="next" title="SparkMLlib-Basic">
+                SparkMLlib-Basic <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    
+    </footer>
+
+    
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/images/avatar.gif"
+                alt="cgDeepLearn" />
+              </a>
+            
+              <p class="site-author-name" itemprop="name">cgDeepLearn</p>
+              <p class="site-description motion-element" itemprop="description">Code Rocks!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgDeepLearn" target="_blank" title="Github">
+                      
+                        <i class="fa fa-fw fa-github"></i>Github</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://music.163.com/#/user/home?id=36485986" target="_blank" title="网易云音乐">
+                      
+                        <i class="fa fa-fw fa-music"></i>网易云音乐</a>
+                  </span>
+                
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                链链看
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://writeathink.cn/" title="😆 writeathink 😆" target="_blank" rel="external nofollow">😆 writeathink 😆</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cgdeeplearn.github.io/about/" title="关于此博客" target="_blank" rel="external nofollow">关于此博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道中的主要概念"><span class="nav-number">1.</span> <span class="nav-text">管道中的主要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DataFrame-数据帧"><span class="nav-number">1.1.</span> <span class="nav-text">DataFrame(数据帧)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline-components-管道组件"><span class="nav-number">1.2.</span> <span class="nav-text">Pipeline components(管道组件)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Transformers"><span class="nav-number">1.2.1.</span> <span class="nav-text">Transformers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Estimators"><span class="nav-number">1.2.2.</span> <span class="nav-text">Estimators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties-o-pipeline-components"><span class="nav-number">1.2.3.</span> <span class="nav-text">Properties o pipeline components</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline"><span class="nav-number">1.3.</span> <span class="nav-text">Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#How-it-works"><span class="nav-number">1.3.1.</span> <span class="nav-text">How it works</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Details"><span class="nav-number">1.3.2.</span> <span class="nav-text">Details</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameters"><span class="nav-number">1.4.</span> <span class="nav-text">Parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Saving-and-LoadingPipelines"><span class="nav-number">1.5.</span> <span class="nav-text">Saving and LoadingPipelines</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-examples"><span class="nav-number">2.</span> <span class="nav-text">Code examples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-Estimator-Transformer-and-Param"><span class="nav-number">2.1.</span> <span class="nav-text">Example: Estimator, Transformer, and Param</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-Pipeline"><span class="nav-number">2.2.</span> <span class="nav-text">Example: Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-selection-hyperparameter-tuning-模型选择-超参数调整"><span class="nav-number">2.3.</span> <span class="nav-text">Model selection (hyperparameter tuning)- 模型选择(超参数调整)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束"><span class="nav-number">3.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cgDeepLearn</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">别扫我~</div>
+    </div>
+  </div>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user-circle-o"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      <i class="fa fa-eye"></i>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz',
+        appKey: 'FrwRKt14p639teOiqUuU7D6j',
+        placeholder: 'ヾ(✿ﾟ▽ﾟ)ノ 来呀，快活呀!',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("zmCAwXGTK2bRhJxfvugh16C0-gzGzoHsz", "FrwRKt14p639teOiqUuU7D6j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 9269,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+
+  <!-- 
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+ -->
+
+  <!-- 页面点击小红心 
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!-- keywords -->
+  <script type="text/javascript" src="/js/src/keywords.js"></script>
+
+
+</body>
+</html>
