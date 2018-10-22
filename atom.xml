@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.writeathink.cn/"/>
-  <updated>2018-10-22T01:36:41.379Z</updated>
+  <updated>2018-10-22T02:36:16.372Z</updated>
   <id>https://blog.writeathink.cn/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.writeathink.cn/2018/10/22/gRPC/"/>
     <id>https://blog.writeathink.cn/2018/10/22/gRPC/</id>
     <published>2018-10-22T01:10:35.000Z</published>
-    <updated>2018-10-22T01:36:41.379Z</updated>
+    <updated>2018-10-22T02:36:16.372Z</updated>
     
     <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p class="description"><br><br></p><p><img src="" alt="" style="width:100%"></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>gRPC  是一个高性能、开源和通用的 RPC 框架，面向移动和 HTTP/2 设计。目前提供 C、Java 和 Go 语言版本，分别是：grpc, grpc-java, grpc-go. 其中 C 版本支持 C, C++, Node.js, Python, Ruby, Objective-C, PHP 和 C# 支持.</p><p>gRPC 基于 HTTP/2 标准设计，带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求等特。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。<br><a id="more"></a></p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="gRPC是什么"><a href="#gRPC是什么" class="headerlink" title="gRPC是什么"></a>gRPC是什么</h3><p>在 gRPC 里客户端应用可以像调用本地对象一样直接调用另一台不同的机器上服务端应用的方法，使得您能够更容易地创建分布式应用和服务。与许多 RPC 系统类似，gRPC 也是基于以下理念：定义一个服务，指定其能够被远程调用的方法（包含参数和返回类型）。在服务端实现这个接口，并运行一个 gRPC 服务器来处理客户端调用。在客户端拥有一个存根能够像服务端一样的方法。</p><p><img src="http://www.grpc.io/img/grpc_concept_diagram_00.png" alt="grpc_concept_diagram_00"></p><p>gRPC 客户端和服务端可以在多种环境中运行和交互 - 从 google 内部的服务器到你自己的笔记本，并且可以用任何 gRPC 支持的语言来编写。所以，你可以很容易地用 Java 创建一个 gRPC 服务端，用 Go、Python、Ruby 来创建客户端。此外，Google 最新 API 将有 gRPC 版本的接口，使你很容易地将 Google 的功能集成到你的应用里。</p><h3 id="使用protocol-buffers"><a href="#使用protocol-buffers" class="headerlink" title="使用protocol buffers"></a>使用protocol buffers</h3><p>gRPC 默认使用 <code>protocol buffers</code>，这是 Google 开源的一套成熟的<code>结构数据序列化机制</code>（当然也可以使用其他数据格式如 JSON）。正如你将在下方例子里所看到的，你用 proto files 创建 gRPC 服务，用 protocol buffers 消息类型来定义方法参数和返回类型。你可以在 Protocol Buffers 文档找到更多关于 Protocol Buffers 的资料。</p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="准备Python环境"><a href="#准备Python环境" class="headerlink" title="准备Python环境"></a>准备Python环境</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -m pip install --upgrade pip</span><br><span class="line"></span><br><span class="line">$ python -m pip install virtualenv</span><br><span class="line">$ virtualenv venv</span><br><span class="line">$ <span class="built_in">source</span> venv/bin/activate</span><br><span class="line">$ python -m pip install --upgrade pip</span><br></pre></td></tr></table></figure><h3 id="安装gRPC"><a href="#安装gRPC" class="headerlink" title="安装gRPC"></a>安装gRPC</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在之前激活的虚拟环境下运行</span></span><br><span class="line">pip install grpcio</span><br></pre></td></tr></table></figure><p>同时还要安装gRPC tools:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install grpcio-tools googleapis-common-protos</span><br></pre></td></tr></table></figure><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><h3 id="下载官方例子"><a href="#下载官方例子" class="headerlink" title="下载官方例子"></a>下载官方例子</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone -b v1.15.0 https://github.com/grpc/grpc</span><br><span class="line"># Navigate to the &quot;hello, world&quot; Python example:</span><br><span class="line">$ cd grpc/examples/python/helloworld</span><br></pre></td></tr></table></figure><h3 id="运行一个gRPC应用"><a href="#运行一个gRPC应用" class="headerlink" title="运行一个gRPC应用"></a>运行一个gRPC应用</h3><p>在 <code>examples/python/helloworld</code> 目录中:</p><ol><li>运行服务端：</li></ol><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python greeter_server.py</span><br></pre></td></tr></table></figure><ol><li>在另一个terminal，运行客户端：</li></ol><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python greeter_client.py</span><br></pre></td></tr></table></figure><p>Congratulations! You’ve just run a client-server application with gRPC.</p><h3 id="更新一个gRPC服务"><a href="#更新一个gRPC服务" class="headerlink" title="更新一个gRPC服务"></a>更新一个gRPC服务</h3>]]></content>
     
@@ -43,6 +43,8 @@
       <category term="RPC" scheme="https://blog.writeathink.cn/tags/RPC/"/>
     
       <category term="分布式" scheme="https://blog.writeathink.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="微服务" scheme="https://blog.writeathink.cn/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
   </entry>
   
