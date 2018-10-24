@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.writeathink.cn/2018/10/24/Socket/</loc>
+    
+    <lastmod>2018-10-24T07:44:01.568Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.writeathink.cn/2018/07/31/MySQL-Datamask-ProxySQL/</loc>
     
     <lastmod>2018-10-23T02:17:11.228Z</lastmod>

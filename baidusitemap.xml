@@ -4,6 +4,36 @@
 
     
   <url>
+    <loc>https://blog.writeathink.cn/2018/10/24/Socket/</loc>
+    <lastmod>2018-10-24T07:44:01.568Z</lastmod>
+    <data>
+        <display>
+        <title>Python Socket编程</title>
+        <pubTime>2018-10-24T06:59:09.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>socket</tag>
+         
+        <tag>TCP</tag>
+         
+        <tag>UDP</tag>
+         
+        <tag>SocketServer</tag>
+         
+        <tag>Twisted</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://blog.writeathink.cn/2018/07/31/MySQL-Datamask-ProxySQL/</loc>
     <lastmod>2018-10-23T02:17:11.228Z</lastmod>
     <data>
