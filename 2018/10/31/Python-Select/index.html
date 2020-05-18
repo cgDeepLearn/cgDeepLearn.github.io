@@ -135,7 +135,7 @@
 
 
 
-  <meta name="keywords" content="python,select,socket,IO多路复用,epoll," />
+  <meta name="keywords" content="python,socket,select,IO多路复用,epoll," />
 
 
 
@@ -149,7 +149,7 @@
 
 
 <meta name="description" content="select模块以及IO多路复用   前言Python中的select模块专注于I/O多路复用，提供了select, poll, epoll三个方法(其中后两个在Linux中可用，windows仅支持select)，另外也提供了kqueue方法(freeBSD系统). select()的机制中提供一fd_set的数据结构，实际上是一long类型的数组， 每一个数组元素都能与一打开的文件句柄（不管是">
-<meta name="keywords" content="python,select,socket,IO多路复用,epoll">
+<meta name="keywords" content="python,socket,select,IO多路复用,epoll">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python下Select模块以及IO多路复用">
 <meta property="og:url" content="https://blog.writeathink.cn/2018/10/31/Python-Select/index.html">
@@ -578,9 +578,9 @@
 <li>运行结果</li>
 </ul>
 <p>分别运行服务端和客户端程序：</p>
-<figure class="highlight shell"><figcaption><span>服务端结果</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> python select_multi_server.py</span><br><span class="line">waiting for the next event...</span><br><span class="line">connection from ('127.0.0.1', 9078)</span><br><span class="line">waiting for the next event...</span><br><span class="line">connection from ('127.0.0.1', 9079)</span><br><span class="line">received "HelloI'm Robot" from ('127.0.0.1', 9078)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "Bye" from ('127.0.0.1', 9078)</span><br><span class="line">received "HelloI'm RobotBye" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">waiting for the next event...</span><br><span class="line">('127.0.0.1', 9078)</span><br><span class="line">('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">closing ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">closing ('127.0.0.1', 9079)</span><br><span class="line">has closed</span><br><span class="line">has closed</span><br><span class="line">waiting for the next event...</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><figcaption><span>服务端结果</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python select_multi_server.py</span></span><br><span class="line">waiting for the next event...</span><br><span class="line">connection from ('127.0.0.1', 9078)</span><br><span class="line">waiting for the next event...</span><br><span class="line">connection from ('127.0.0.1', 9079)</span><br><span class="line">received "HelloI'm Robot" from ('127.0.0.1', 9078)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "Bye" from ('127.0.0.1', 9078)</span><br><span class="line">received "HelloI'm RobotBye" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">waiting for the next event...</span><br><span class="line">('127.0.0.1', 9078)</span><br><span class="line">('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">closing ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">received "" from ('127.0.0.1', 9079)</span><br><span class="line">waiting for the next event...</span><br><span class="line">closing ('127.0.0.1', 9079)</span><br><span class="line">has closed</span><br><span class="line">has closed</span><br><span class="line">waiting for the next event...</span><br></pre></td></tr></table></figure>
 <hr>
-<figure class="highlight shell"><figcaption><span>客户端结果</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> python select_multi_client.py</span><br><span class="line">connecting to localhost port 8001...</span><br><span class="line">('127.0.0.1', 8001): sending "Hello" 0</span><br><span class="line">('127.0.0.1', 8001): sending "Hello" 0</span><br><span class="line">('127.0.0.1', 8001): sending "I'm Robot" 1</span><br><span class="line">('127.0.0.1', 8001): sending "I'm Robot" 1</span><br><span class="line">('127.0.0.1', 8001): sending "Bye" 2</span><br><span class="line">('127.0.0.1', 8001): sending "Bye" 2</span><br><span class="line">('127.0.0.1', 8001): received "[Wed Oct 31 09:41:05 2018] HelloI'm RobotBye"</span><br><span class="line">closing socket ('127.0.0.1', 9078)</span><br><span class="line">('127.0.0.1', 8001): received "[Wed Oct 31 09:41:05 2018] HelloI'm RobotBye"</span><br><span class="line">closing socket ('127.0.0.1', 9079)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><figcaption><span>客户端结果</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python select_multi_client.py</span></span><br><span class="line">connecting to localhost port 8001...</span><br><span class="line">('127.0.0.1', 8001): sending "Hello" 0</span><br><span class="line">('127.0.0.1', 8001): sending "Hello" 0</span><br><span class="line">('127.0.0.1', 8001): sending "I'm Robot" 1</span><br><span class="line">('127.0.0.1', 8001): sending "I'm Robot" 1</span><br><span class="line">('127.0.0.1', 8001): sending "Bye" 2</span><br><span class="line">('127.0.0.1', 8001): sending "Bye" 2</span><br><span class="line">('127.0.0.1', 8001): received "[Wed Oct 31 09:41:05 2018] HelloI'm RobotBye"</span><br><span class="line">closing socket ('127.0.0.1', 9078)</span><br><span class="line">('127.0.0.1', 8001): received "[Wed Oct 31 09:41:05 2018] HelloI'm RobotBye"</span><br><span class="line">closing socket ('127.0.0.1', 9079)</span><br></pre></td></tr></table></figure>
 <p>多次运行程序，你会发现客户端程序返回结果里的received后面的略有不同，你发现其中的原因了吗！</p>
 <h2 id="select、poll、epoll区别"><a href="#select、poll、epoll区别" class="headerlink" title="select、poll、epoll区别"></a>select、poll、epoll区别</h2><p><code>select</code>, <code>poll</code>, <code>epoll</code> 都是I/O多路复用的具体的实现，之所以有这三个存在，其实是因为他们出现是有先后顺序的。<br>I/O多路复用这个概念被提出来以后， select是第一个实现 (1983 左右在BSD里面实现的)。</p>
 <h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>select 被实现以后，很快就暴露出了很多问题:</p>
@@ -655,9 +655,9 @@
           
             <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
           
-            <a href="/tags/select/" rel="tag"><i class="fa fa-tag"></i> select</a>
-          
             <a href="/tags/socket/" rel="tag"><i class="fa fa-tag"></i> socket</a>
+          
+            <a href="/tags/select/" rel="tag"><i class="fa fa-tag"></i> select</a>
           
             <a href="/tags/IO多路复用/" rel="tag"><i class="fa fa-tag"></i> IO多路复用</a>
           
@@ -698,13 +698,13 @@
         <h4>推荐文章 </h4>
             <ul>
                 
+                    <li><a href="https://blog.writeathink.cn/2020/05/18/Mirco-service/">简单的python 微服务小框架</a></li>
+                
                     <li><a href="https://blog.writeathink.cn/2018/10/24/Socket/">Python Socket编程</a></li>
                 
                     <li><a href="https://blog.writeathink.cn/2018/10/22/gRPC/">gRPC简介及其在Python中使用</a></li>
                 
                     <li><a href="https://blog.writeathink.cn/2018/07/31/MySQL-Datamask-ProxySQL/">MySQL-Datamask-ProxySQL</a></li>
-                
-                    <li><a href="https://blog.writeathink.cn/2018/06/11/Mix-in-inherit/">只在使用 Mix-in 组件制作工具类时进行多重继承</a></li>
                 
             </ul>
     </div>
@@ -781,6 +781,10 @@
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/18/Mirco-service/" rel="prev" title="简单的python 微服务小框架">
+                <i class="fa fa-chevron-left"></i> 简单的python 微服务小框架
+              </a>
             
           </div>
 
@@ -885,7 +889,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1005,7 +1009,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         
-<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>

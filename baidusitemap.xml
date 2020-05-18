@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>https://blog.writeathink.cn/2020/05/18/Mirco-service/</loc>
+    <lastmod>2020-05-18T13:10:25.838Z</lastmod>
+    <data>
+        <display>
+        <title>简单的python 微服务小框架</title>
+        <pubTime>2020-05-18T13:04:17.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>微服务</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://blog.writeathink.cn/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://blog.writeathink.cn/2018/10/31/Python-Select/</loc>
     <lastmod>2018-10-31T08:44:14.674Z</lastmod>
     <data>
@@ -13,9 +35,9 @@
         
         <tag>python</tag>
          
-        <tag>select</tag>
-         
         <tag>socket</tag>
+         
+        <tag>select</tag>
          
         <tag>IO多路复用</tag>
          
@@ -41,11 +63,11 @@
         
         <tag>python</tag>
          
+        <tag>微服务</tag>
+         
         <tag>RPC</tag>
          
         <tag>分布式</tag>
-         
-        <tag>微服务</tag>
          
          
            
@@ -165,9 +187,9 @@
         <title>Python协程的演化-从yield/send到async/await</title>
         <pubTime>2018-03-12T01:51:27.000Z</pubTime>
         
-        <tag>yield from</tag>
-         
         <tag>yield/send</tag>
+         
+        <tag>yield from</tag>
          
         <tag>asyncio.coroutine</tag>
          
@@ -570,11 +592,11 @@
         <title>Python协程-coroutine</title>
         <pubTime>2018-01-30T02:45:38.000Z</pubTime>
         
+        <tag>yield from</tag>
+         
         <tag>yield</tag>
          
         <tag>coroutine</tag>
-         
-        <tag>yield from</tag>
          
          
            
