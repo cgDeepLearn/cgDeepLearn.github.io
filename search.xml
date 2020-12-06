@@ -34,8 +34,8 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>socket</tag>
         <tag>select</tag>
+        <tag>socket</tag>
         <tag>IO多路复用</tag>
         <tag>epoll</tag>
       </tags>
