@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[pdf-signature]]></title>
+    <url>%2F2020%2F12%2F06%2Fpdf-signature%2F</url>
+    <content type="text"><![CDATA[Java使用itext解析pdf签章 前言## ##]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>PDF</tag>
+        <tag>itext</tag>
+        <tag>signature</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[简单的python 微服务小框架]]></title>
     <url>%2F2020%2F05%2F18%2FMirco-service%2F</url>
     <content type="text"><![CDATA[快速开发你的小服务 前言编写文章中…… ## ## ##]]></content>
