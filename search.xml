@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[生成日报图表并发送邮件]]></title>
+    <url>%2F2020%2F12%2F06%2FDaily-Report%2F</url>
+    <content type="text"><![CDATA[使用pandas生成日报图表并发送邮件 前言## ##]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>numpy</tag>
+        <tag>pandas</tag>
+        <tag>matplotlib</tag>
+        <tag>email</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[初始化GO项目模板]]></title>
     <url>%2F2020%2F12%2F06%2Finit-go%2F</url>
     <content type="text"><![CDATA[使用cookiecutter初始化可自定义的GO项目模板 前言## ##]]></content>
