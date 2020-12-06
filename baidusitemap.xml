@@ -4,11 +4,33 @@
 
     
   <url>
-    <loc>https://blog.writeathink.cn/2020/12/06/pdf-signature/</loc>
-    <lastmod>2020-12-06T12:12:38.575Z</lastmod>
+    <loc>https://blog.writeathink.cn/2020/12/06/init-go/</loc>
+    <lastmod>2020-12-06T12:33:15.538Z</lastmod>
     <data>
         <display>
-        <title>pdf-signature</title>
+        <title>初始化GO项目模板</title>
+        <pubTime>2020-12-06T12:31:41.000Z</pubTime>
+        
+        <tag>cookiecutter</tag>
+         
+        <tag>golang</tag>
+         
+         
+           
+             
+              <breadCrumb title="GO" url="https://blog.writeathink.cn/categories/GO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://blog.writeathink.cn/2020/12/06/pdf-signature/</loc>
+    <lastmod>2020-12-06T12:31:26.409Z</lastmod>
+    <data>
+        <display>
+        <title>解析pdf电子签章</title>
         <pubTime>2020-12-06T12:10:14.000Z</pubTime>
         
         <tag>PDF</tag>
