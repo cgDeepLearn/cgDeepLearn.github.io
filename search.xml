@@ -65,8 +65,8 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>select</tag>
         <tag>socket</tag>
+        <tag>select</tag>
         <tag>IO多路复用</tag>
         <tag>epoll</tag>
       </tags>
