@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cgdeeplearn.github.io/2020/05/18/Mirco-service/</loc>
+    
+    <lastmod>2020-12-07T12:56:03.943Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
     
     <lastmod>2020-12-07T12:48:19.386Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>https://cgdeeplearn.github.io/2020/12/06/init-go/</loc>
     
     <lastmod>2020-12-06T12:33:15.538Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://cgdeeplearn.github.io/2020/05/18/Mirco-service/</loc>
-    
-    <lastmod>2020-05-18T13:10:25.838Z</lastmod>
     
   </url>
   

@@ -4,6 +4,36 @@
 
     
   <url>
+    <loc>https://cgdeeplearn.github.io/2020/05/18/Mirco-service/</loc>
+    <lastmod>2020-12-07T12:56:03.943Z</lastmod>
+    <data>
+        <display>
+        <title>简单的python 微服务小框架</title>
+        <pubTime>2020-05-18T13:04:17.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>微服务</tag>
+         
+        <tag>gevent</tag>
+         
+        <tag>gunicorn</tag>
+         
+        <tag>Werkzeug</tag>
+         
+        <tag>ServiceMesh</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="https://cgdeeplearn.github.io/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
     <lastmod>2020-12-07T12:48:19.386Z</lastmod>
     <data>
@@ -69,28 +99,6 @@
            
              
               <breadCrumb title="GO" url="https://cgdeeplearn.github.io/categories/GO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://cgdeeplearn.github.io/2020/05/18/Mirco-service/</loc>
-    <lastmod>2020-05-18T13:10:25.838Z</lastmod>
-    <data>
-        <display>
-        <title>简单的python 微服务小框架</title>
-        <pubTime>2020-05-18T13:04:17.000Z</pubTime>
-        
-        <tag>python</tag>
-         
-        <tag>微服务</tag>
-         
-         
-           
-             
-              <breadCrumb title="Python" url="https://cgdeeplearn.github.io/categories/Python/"/>
           
         </display>
     </data>
