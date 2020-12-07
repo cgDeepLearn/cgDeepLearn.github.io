@@ -156,7 +156,7 @@
 <meta property="og:site_name" content="cgDeepLearn">
 <meta property="og:description" content="Java使用itext解析pdf签章">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-07T12:44:45.814Z">
+<meta property="og:updated_time" content="2020-12-07T12:48:19.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解析pdf电子签章">
 <meta name="twitter:description" content="Java使用itext解析pdf签章">
@@ -521,12 +521,8 @@
 
 <p><img src="" alt="" style="width:100%"></p>
 <a id="more"></a>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>许多业务交易（包括金融、法律和其他受管制交易）都要求在对文档进行签名时提供较高程度的保证。当以电子方式分发文档时，收件人务必可以：</p>
-<ul>
-<li>验证文档真实性 — 确认对文档进行签名的每个人的身份</li>
-<li>验证文档完整性 — 确认在传输过程中文档未被更改</li>
-</ul>
-<p>那么我们怎么通过程序鉴别一个带有电子签章的pdf签章的有效性呢？</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div class="note info"><p><br><br>许多业务交易（包括金融、法律和其他受管制交易）都要求在对文档进行签名时提供较高程度的保证。当以电子方式分发文档时，收件人务必可以：<br><br>- 验证文档真实性 — 确认对文档进行签名的每个人的身份<br>- 验证文档完整性 — 确认在传输过程中文档未被更改<br><br>那么我们怎么通过程序鉴别一个带有电子签章的pdf签章的有效性呢？<br><br></p></div>
+
 <h2 id="电子签章"><a href="#电子签章" class="headerlink" title="电子签章"></a>电子签章</h2><p>电子签章有签名时间，签章有效期起止时间，从这三个时间我们就可以看一些基本的签章有效性和时间是否合理(是否被篡改)。</p>
 <h2 id="解析电子签章"><a href="#解析电子签章" class="headerlink" title="解析电子签章"></a>解析电子签章</h2><p>我们利用<code>itext</code>来解析电子签章。</p>
 <h3 id="读取加载pdf"><a href="#读取加载pdf" class="headerlink" title="读取加载pdf"></a>读取加载pdf</h3><p>通过读取pdf的url，将内容加载到流中</p>
