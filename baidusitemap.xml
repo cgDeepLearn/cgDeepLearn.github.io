@@ -3,6 +3,30 @@
 
 
     
+  <url>
+    <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
+    <lastmod>2020-12-07T13:10:14.890Z</lastmod>
+    <data>
+        <display>
+        <title>解析pdf电子签章</title>
+        <pubTime>2020-12-06T12:10:14.000Z</pubTime>
+        
+        <tag>PDF</tag>
+         
+        <tag>itextpdf</tag>
+         
+        <tag>signature</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="https://cgdeeplearn.github.io/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>https://cgdeeplearn.github.io/2020/12/06/Daily-Report/</loc>
@@ -26,30 +50,6 @@
            
              
               <breadCrumb title="Python" url="https://cgdeeplearn.github.io/categories/Python/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
-    <lastmod>2020-12-07T12:59:28.217Z</lastmod>
-    <data>
-        <display>
-        <title>解析pdf电子签章</title>
-        <pubTime>2020-12-06T12:10:14.000Z</pubTime>
-        
-        <tag>PDF</tag>
-         
-        <tag>itextpdf</tag>
-         
-        <tag>signature</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="https://cgdeeplearn.github.io/categories/Java/"/>
           
         </display>
     </data>
@@ -118,9 +118,9 @@
         
         <tag>python</tag>
          
-        <tag>socket</tag>
-         
         <tag>select</tag>
+         
+        <tag>socket</tag>
          
         <tag>IO多路复用</tag>
          
