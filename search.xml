@@ -18,7 +18,7 @@
   <entry>
     <title><![CDATA[初始化GO项目模板]]></title>
     <url>%2F2020%2F12%2F06%2Finit-go%2F</url>
-    <content type="text"><![CDATA[使用cookiecutter初始化可自定义的GO项目模板 前言## ##]]></content>
+    <content type="text"><![CDATA[使用cookiecutter初始化可自定义的GO项目模板 前言## 小结项目github地址: https://github.com/cgDeepLearn/initgo]]></content>
       <categories>
         <category>GO</category>
       </categories>

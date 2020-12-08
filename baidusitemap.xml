@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>https://cgdeeplearn.github.io/2020/12/06/init-go/</loc>
+    <lastmod>2020-12-08T12:14:23.743Z</lastmod>
+    <data>
+        <display>
+        <title>初始化GO项目模板</title>
+        <pubTime>2020-12-06T12:31:41.000Z</pubTime>
+        
+        <tag>cookiecutter</tag>
+         
+        <tag>golang</tag>
+         
+         
+           
+             
+              <breadCrumb title="GO" url="https://cgdeeplearn.github.io/categories/GO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
     <lastmod>2020-12-07T13:11:57.351Z</lastmod>
     <data>
@@ -80,28 +102,6 @@
            
              
               <breadCrumb title="Python" url="https://cgdeeplearn.github.io/categories/Python/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://cgdeeplearn.github.io/2020/12/06/init-go/</loc>
-    <lastmod>2020-12-06T12:33:15.538Z</lastmod>
-    <data>
-        <display>
-        <title>初始化GO项目模板</title>
-        <pubTime>2020-12-06T12:31:41.000Z</pubTime>
-        
-        <tag>cookiecutter</tag>
-         
-        <tag>golang</tag>
-         
-         
-           
-             
-              <breadCrumb title="GO" url="https://cgdeeplearn.github.io/categories/GO/"/>
           
         </display>
     </data>
