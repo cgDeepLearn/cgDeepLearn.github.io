@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cgdeeplearn.github.io/about/index.html</loc>
+    
+    <lastmod>2021-10-08T11:48:55.011Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://cgdeeplearn.github.io/2020/12/06/init-go/</loc>
     
     <lastmod>2020-12-08T12:14:23.743Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://cgdeeplearn.github.io/2020/12/06/pdf-signature/</loc>
     
     <lastmod>2020-12-07T13:11:57.351Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://cgdeeplearn.github.io/about/index.html</loc>
-    
-    <lastmod>2020-12-07T13:06:14.052Z</lastmod>
     
   </url>
   
