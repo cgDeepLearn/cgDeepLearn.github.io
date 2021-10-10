@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[scheduler]]></title>
     <url>%2F2021%2F10%2F10%2Fscheduler%2F</url>
-    <content type="text"><![CDATA[可拓展的任务调度器框架 前言平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，有支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢。 下面是基于个人现实中的一些情况，提炼实现的一个可扩展的任务调度框架… ## ## 总结此项目github地址: scheduler]]></content>
+    <content type="text"><![CDATA[可扩展的任务调度器框架 前言平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，并支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢? 下面是基于个人现实中的一些情况，提炼实现的一个可扩展的任务调度框架… ## ## 总结此项目github地址: scheduler]]></content>
       <categories>
         <category>Python</category>
       </categories>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cgdeeplearn.github.io/"/>
-  <updated>2021-10-10T07:52:27.106Z</updated>
+  <updated>2021-10-10T08:06:15.695Z</updated>
   <id>https://cgdeeplearn.github.io/</id>
   
   <author>
@@ -21,16 +21,16 @@
     <link href="https://cgdeeplearn.github.io/2021/10/10/scheduler/"/>
     <id>https://cgdeeplearn.github.io/2021/10/10/scheduler/</id>
     <published>2021-10-10T07:45:09.000Z</published>
-    <updated>2021-10-10T07:52:27.106Z</updated>
+    <updated>2021-10-10T08:06:15.695Z</updated>
     
-    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p class="description">可拓展的任务调度器框架<br></p><p><img src="" alt="" style="width:100%"></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><div class="note info"><p><br>平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，有支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢。</p><p>下面是基于个人现实中的一些情况，提炼实现的一个可扩展的任务调度框架…<br></p></div><br><a id="more"></a></p><p>##</p><p>##</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>此项目github地址: <a href="https://github.com/cgDeepLearn/scheduler" target="_blank" rel="noopener">scheduler</a></p>]]></content>
+    <content type="html"><![CDATA[<script src="/assets/js/APlayer.min.js"> </script><p class="description">可扩展的任务调度器框架<br></p><p><img src="" alt="" style="width:100%"></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><div class="note info"><p><br>平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，并支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢?</p><p>下面是基于个人现实中的一些情况，提炼实现的一个可扩展的任务调度框架…<br></p></div><br><a id="more"></a></p><p>##</p><p>##</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>此项目github地址: <a href="https://github.com/cgDeepLearn/scheduler" target="_blank" rel="noopener">scheduler</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;p class=&quot;description&quot;&gt;可拓展的任务调度器框架&lt;br&gt;&lt;/p&gt;
+      &lt;p class=&quot;description&quot;&gt;可扩展的任务调度器框架&lt;br&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;&quot; alt=&quot;&quot; style=&quot;width:100%&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&lt;div class=&quot;note info&quot;&gt;&lt;p&gt;&lt;br&gt;平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，有支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢。&lt;/p&gt;
+&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&lt;div class=&quot;note info&quot;&gt;&lt;p&gt;&lt;br&gt;平常在项目中我们经常会有一些后台的定时或者间隔的任务，比如间隔或者定时计算、数据规则判断告警等。如果需要统一灵活的配置管理，并支持大量任务的扩展，我们是否可以考虑做一个统一的调度管理框架呢?&lt;/p&gt;
 &lt;p&gt;下面是基于个人现实中的一些情况，提炼实现的一个可扩展的任务调度框架…&lt;br&gt;&lt;/p&gt;&lt;/div&gt;&lt;br&gt;
     
     </summary>
